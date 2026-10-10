@@ -20,9 +20,12 @@ export const FEEDBACK_REMEDY =
 export async function recordFeedback(
   input: FeedbackInput,
   via: "rest" | "mcp",
-): Promise<{ ok: true } | { ok: false }> {
+): Promise<{ ok: true; id: string } | { ok: false }> {
   if (typeof input.problem !== "string" || !input.problem.trim()) return { ok: false };
+  // Short id so a reporter can quote it back ("report fb_x7k2m9 never got a reply").
+  const id = `fb_${crypto.randomUUID().replace(/-/g, "").slice(0, 8)}`;
   await kvPush("agent:feedback", {
+    id,
     problem: input.problem.trim().slice(0, 1000),
     url: typeof input.url === "string" ? input.url.slice(0, 500) : null,
     agent: typeof input.agent === "string" ? input.agent.slice(0, 120) : null,
@@ -33,7 +36,7 @@ export async function recordFeedback(
   // The list is capped at 100 so a free KV tier cannot fill up. A separate
   // counter keeps the public number honest past that cap.
   await kvIncr(COUNT_KEY, TEN_YEARS);
-  return { ok: true };
+  return { ok: true, id };
 }
 
 export async function feedbackCount(): Promise<number | null> {

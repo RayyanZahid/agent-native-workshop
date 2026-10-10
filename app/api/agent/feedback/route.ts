@@ -39,7 +39,7 @@ export async function POST(req: Request) {
   }
 
   return Response.json(
-    { ok: true, note: "Logged. Thank you. This is how we find out our discovery surface drifted." },
+    { ok: true, id: saved.id, note: `Logged as ${saved.id}. Quote that id if you follow up. Thank you: this is how we find out our discovery surface drifted.` },
     { headers: { "access-control-allow-origin": "*" } },
   );
 }

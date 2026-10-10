@@ -248,7 +248,7 @@ export const TOOLS: Tool[] = [
     handler: async (_ctx, input) => {
       const saved = await recordFeedback(input, "mcp");
       if (!saved.ok) throw new Error(`problem is required. ${FEEDBACK_REMEDY}`);
-      return { ok: true, note: "Logged. Thank you. This is how the workshop gets fixed." };
+      return { ok: true, id: saved.id, note: `Logged as ${saved.id}. Quote that id if you follow up. Thank you: this is how the workshop gets fixed.` };
     },
   },
 
