@@ -1,0 +1,2474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent-Native</title>
+<meta name="description" content="Agent-Native: build a product agents can find, trust and call. Workshop deck, three parts plus a guided build.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 fill=%27%230a0806%27/%3E%3Ccircle cx=%278%27 cy=%278%27 r=%275%27 fill=%27%23ff4400%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="vendor/fonts/fonts.css">
+<style>
+/* =====================================================================
+   TOKENS. Immersive Commons (BRIEF.md). Do not add colours.
+   ember = THE accent, one per slide. phosphor / ice / amber = data only.
+   mute = rules and decoration, NEVER text (quality gate Q5).
+   TYPE FLOORS are the defaults (quality gate Q1, 1920x1080 canvas):
+   sentences >= 28px, labels >= 22px, statements >= 96px.
+   ===================================================================== */
+:root{
+  --ink:#0a0806; --paper:#f2ede3; --paper-dim:#c9c2b4; --mute:#8b8177;
+  --ember:#ff4400; --phosphor:#a7ff57; --ice:#6fb8ff; --amber:#ffb83d;
+  --ink-dim:#4a4238;                       /* secondary text on a paper ground */
+  --font-head:'Space Grotesk', Arial, sans-serif;
+  --font-body:'Space Grotesk', Arial, sans-serif;
+  --font-mono:'JetBrains Mono', Consolas, ui-monospace, monospace;
+  --fs-label:24px;  --fs-body:32px;  --fs-lede:40px;
+  --fs-h2:84px;     --fs-quote:88px; --fs-statement:128px; --fs-num:300px;
+  --ease:cubic-bezier(.2,.7,.2,1);
+  --ease-io:cubic-bezier(.65,0,.35,1);
+  --W:1920px; --H:1080px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{font-family:var(--font-body);color:var(--paper)}
+
+/* ---------- viewport + 16:9 stage (letterboxed) ---------- */
+#viewport{position:fixed;inset:0;background:#000}
+#stage{position:absolute;left:0;top:0;width:var(--W);height:var(--H);
+  transform-origin:0 0;background:var(--ink);overflow:hidden;--px:0;--py:0}
+#ambient{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;
+  transition:opacity .9s var(--ease)}
+#wipe{position:absolute;top:0;bottom:0;left:0;width:200px;background:var(--ember);
+  z-index:41;transform:translateX(-220px);pointer-events:none;will-change:transform}
+#flash{position:absolute;inset:0;background:var(--paper);z-index:42;opacity:0;pointer-events:none}
+#blackout{position:absolute;inset:0;background:#000;z-index:60;opacity:0;pointer-events:none;
+  transition:opacity .35s var(--ease)}
+#stage.is-black #blackout{opacity:1}
+.lift-ghost{position:absolute;z-index:3;pointer-events:none;border-radius:18px;will-change:left,top,width,height}
+
+/* ---------- slides ---------- */
+.slide{position:absolute;inset:0;z-index:1;visibility:hidden;opacity:0;overflow:hidden;
+  display:flex;flex-direction:column;padding:96px 144px 128px;
+  background:var(--bg);color:var(--fg)}
+.slide.is-active,.slide.is-leaving{visibility:visible;opacity:1}
+.slide.is-active{z-index:2}
+.slide.instant *,.slide.static *{transition:none!important}
+.slide.static *{animation:none!important}
+.slide[data-theme="dark"],.slide:not([data-theme]){
+  --bg:transparent; --fg:var(--paper); --muted:var(--paper-dim); --em:var(--ember);
+  --panel:#16120e; --line:rgba(139,129,119,.5)}
+.slide[data-theme="light"]{
+  --bg:var(--paper); --fg:var(--ink); --muted:var(--ink-dim); --em:var(--ink);
+  --panel:#e4ddcf; --line:rgba(10,8,6,.3)}
+.notes{display:none!important}
+
+/* ---------- type ---------- */
+.kicker,.label,.meta,.source,.credit,.tag,.cite{font:500 var(--fs-label)/1.25 var(--font-mono);
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0}
+.kicker{display:flex;gap:18px;align-items:center}
+.kicker b{font-weight:500;color:var(--fg)}
+.source{text-transform:none;letter-spacing:.02em}
+h1,h2,h3{font-family:var(--font-head);font-weight:700;margin:0;color:var(--fg)}
+h1 em,h2 em,h3 em,.statement em,.stat-num em,.quote em,.claim em{font-style:normal;color:var(--em)}
+.slide[data-theme="light"] em{text-decoration:underline;text-decoration-color:var(--ember);
+  text-decoration-thickness:.09em;text-underline-offset:.12em}
+.display{font-size:152px;line-height:.96;letter-spacing:-.045em}
+.statement{font:700 var(--fs-statement)/1.0 var(--font-head);letter-spacing:-.04em;margin:0}
+.headline{font-size:var(--fs-h2);line-height:1.04;letter-spacing:-.035em;max-width:16ch}
+.headline.sm{font-size:68px;letter-spacing:-.03em;max-width:none}
+.lede{font:400 var(--fs-lede)/1.36 var(--font-body);color:var(--muted);margin:0;max-width:34ch}
+.body{font:400 var(--fs-body)/1.42 var(--font-body);color:var(--muted);margin:0}
+.claim{font:600 56px/1.12 var(--font-head);letter-spacing:-.025em;margin:0;color:var(--fg)}
+.mono{font-family:var(--font-mono)}
+.spacer{flex:1}
+.rule{height:1px;background:var(--line);border:0;margin:0}
+.ember-rule{width:120px;height:8px;background:var(--ember)}
+.mute-rule{width:120px;height:8px;background:var(--mute)}
+/* a pending fact: greppable, and `quality.py --ship` fails while any remain */
+.tbd{display:inline-block;vertical-align:middle;font:500 22px/1 var(--font-mono);letter-spacing:.04em;
+  color:var(--amber);border:1px solid var(--amber);border-radius:6px;
+  padding:6px 10px;margin-left:10px;white-space:nowrap;text-transform:none;font-style:normal}
+
+/* ---------- builds (fragments) ---------- */
+[data-build]{opacity:0;transform:translateY(22px);
+  transition:opacity .6s var(--ease),transform .7s var(--ease)}
+[data-build].built{opacity:1;transform:none}
+[data-build][data-build-style="fade"]{transform:none}
+[data-build][data-build-style="cut"]{transition:none;transform:none}
+
+/* ---------- media (placeholder empty state: registration marks) ---------- */
+.ph{position:relative;background-color:var(--panel);
+  --t:rgba(139,129,119,.7);
+  background-image:
+   linear-gradient(var(--t),var(--t)),linear-gradient(var(--t),var(--t)),
+   linear-gradient(var(--t),var(--t)),linear-gradient(var(--t),var(--t)),
+   linear-gradient(var(--t),var(--t)),linear-gradient(var(--t),var(--t)),
+   linear-gradient(var(--t),var(--t)),linear-gradient(var(--t),var(--t));
+  background-repeat:no-repeat;
+  background-size:22px 1px,1px 22px,22px 1px,1px 22px,22px 1px,1px 22px,22px 1px,1px 22px;
+  background-position:16px 16px,16px 16px,calc(100% - 16px) 16px,calc(100% - 16px) 16px,
+   16px calc(100% - 16px),16px calc(100% - 16px),calc(100% - 16px) calc(100% - 16px),calc(100% - 16px) calc(100% - 16px)}
+.media{position:relative;margin:0;overflow:hidden;background:var(--panel);border-radius:8px}
+.media>video,.media>img,.media>iframe,.media>canvas{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;border:0;display:block}
+.media.is-empty>video,.media.is-empty>img{display:none}
+.media .ph-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:14px;color:var(--muted);text-align:center;pointer-events:none;padding:0 64px}
+.media .ph-label .id{font:500 32px/1 var(--font-mono);letter-spacing:.02em;color:var(--fg)}
+.media .ph-label .what{font:400 32px/1.3 var(--font-body);color:var(--muted)}
+.media:not(.is-empty) .ph-label{display:none}
+.credit{letter-spacing:.06em}
+img.is-missing{display:none!important}
+/* text over an image needs a scrim (quality gate Q3) */
+.slide > .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none}
+.slide > .scrim{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(10,8,6,.92) 0%,rgba(10,8,6,.7) 46%,rgba(10,8,6,.15) 100%)}
+.slide > :where(*:not(.bg):not(.scrim):not(aside)){position:relative;z-index:1}
+
+/* ---------- HUD ---------- */
+#hud{position:absolute;left:144px;right:144px;bottom:48px;z-index:30;display:flex;
+  align-items:center;gap:24px;pointer-events:none;transition:opacity .5s var(--ease)}
+#hud .count{font:500 22px/1 var(--font-mono);letter-spacing:.1em;color:var(--hud-fg,var(--paper-dim));
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+#hud .bar{flex:1;height:2px;background:var(--hud-line,rgba(139,129,119,.35));position:relative}
+#hud .bar i{position:absolute;left:0;top:0;height:2px;background:var(--ember);transition:width .8s var(--ease)}
+#stage[data-theme="light"] #hud{--hud-fg:var(--ink-dim);--hud-line:rgba(10,8,6,.2)}
+#stage[data-hud="off"] #hud{opacity:0}
+#cutflag{position:absolute;right:144px;top:40px;z-index:30;font:500 22px/1 var(--font-mono);letter-spacing:.1em;
+  color:var(--amber);opacity:0;pointer-events:none;text-transform:uppercase}
+#stage.short #cutflag{opacity:1}
+
+/* =====================================================================
+   TEMPLATES. Every slide carries data-comp="<name>" and class t-<name>.
+   Each is designed to fill the safe area (x 100..1820, y 50..1040).
+   ===================================================================== */
+
+/* title ------------------------------------------------------------- */
+.t-title{flex-direction:row;gap:72px;align-items:stretch}
+.t-title .col{flex:1.2;display:flex;flex-direction:column;min-width:0}
+.t-title .display{margin-top:auto;max-width:9ch}
+.t-title .lede{margin-top:44px;max-width:26ch;color:var(--fg)}
+.t-title .foot{margin-top:56px;display:flex;gap:44px;flex-wrap:wrap}
+.t-title .art{flex:.8;display:flex;align-items:center;justify-content:center;min-width:0}
+.t-title .art svg{width:100%;height:auto;max-height:100%}
+
+/* statement (exempt from the fill rule: one idea, big) --------------- */
+.t-statement{justify-content:center;gap:0}
+.t-statement .statement{max-width:1500px}
+.t-statement .line{display:block}
+.t-statement .sub{margin-top:56px;max-width:36ch}
+.t-statement .kicker{position:absolute;left:144px;top:96px}
+
+/* big-number (max 2 numbers, hero >= 160px) -------------------------- */
+.stat-num.hot{color:var(--em)}
+.t-big-number .main{flex:1;display:flex;align-items:center;gap:104px;min-height:0}
+.t-big-number .num-block{display:flex;flex-direction:column;gap:20px;min-width:0;flex:none}
+.stat-num{font:700 var(--fs-num)/.9 var(--font-head);letter-spacing:-.06em;color:var(--fg);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.t-big-number .side{flex:1;display:flex;flex-direction:column;gap:36px;border-left:2px solid var(--line);padding-left:72px}
+.t-big-number .side .lede{max-width:26ch}
+.t-big-number .foot{display:flex;justify-content:space-between;gap:40px;align-items:flex-end}
+.t-big-number.two .nums{flex:1;display:flex;align-items:stretch;gap:96px;min-height:0}
+.t-big-number.two .num-block{flex:1;justify-content:center;background:var(--panel);border-top:8px solid var(--mute);padding:48px 56px}
+.t-big-number.two .stat-num{font-size:260px}
+.t-big-number.two .num-block .lede{max-width:18ch}
+
+/* split (text + visual) --------------------------------------------- */
+.t-split{flex-direction:row;gap:80px;align-items:stretch}
+.t-split .l{flex:1;display:flex;flex-direction:column;min-width:0}
+.t-split .r{flex:1.05;display:flex;min-width:0}
+.t-split .r > *{flex:1;width:100%}
+.t-split .headline{margin-top:32px}
+.t-split .points{margin:auto 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:30px}
+.t-split .points li{display:flex;gap:24px;align-items:baseline;font:400 var(--fs-body)/1.32 var(--font-body);color:var(--muted)}
+.t-split .points li b{font-weight:700;color:var(--fg);white-space:nowrap}
+.t-split .points li::before{content:'';flex:none;width:14px;height:14px;background:var(--mute);transform:translateY(-2px)}
+.code{margin:0;padding:48px 52px;background:var(--ink);color:var(--paper);font:500 40px/1.8 var(--font-mono);border-radius:10px;display:flex;flex-direction:column;justify-content:center;white-space:pre}
+.code .k{color:var(--ice)} .code .ok{color:var(--phosphor)}
+.panel{background:var(--panel);border-radius:10px;box-shadow:inset 0 0 0 2px var(--line);overflow:hidden}
+.panel svg{display:block;width:100%;height:100%}
+
+/* diagram (full-bleed SVG with labels) ------------------------------- */
+.t-diagram .top{display:flex;justify-content:space-between;align-items:flex-end;gap:48px}
+.t-diagram .headline{max-width:none;font-size:68px}
+.t-diagram svg.dg{display:block;width:1632px;height:690px;margin-top:36px;flex:none;overflow:hidden}
+.dg text{font-family:var(--font-body);fill:var(--fg)}
+.dg .lbl{font:500 24px var(--font-mono);fill:var(--muted);letter-spacing:.04em}
+.dg .big{font:700 34px var(--font-head);fill:var(--fg)}
+.dg .txt{font:400 30px var(--font-body);fill:var(--muted)}
+.dg .box{fill:var(--panel);stroke:var(--mute);stroke-width:2}
+.dg .ln{stroke:var(--mute);stroke-width:3;fill:none}
+.dg .hot{stroke:var(--ember);stroke-width:5;fill:none}
+.dg .hotfill{fill:var(--ember)}
+.dg .data-ice{fill:var(--ice)} .dg .data-phos{fill:var(--phosphor)} .dg .data-amb{fill:var(--amber)}
+.slide[data-theme="light"] .dg .data-ice,.slide[data-theme="light"] .dg .data-phos,
+.slide[data-theme="light"] .dg .data-amb{fill:var(--ink)}
+
+/* flow (3 to 4 steps, built in sequence) ----------------------------- */
+.t-flow .top{display:flex;flex-direction:column;gap:28px}
+.t-flow .headline{max-width:22ch;font-size:76px}
+.steps{flex:1;display:flex;gap:44px;margin:56px 0 0;padding:0;list-style:none;min-height:0}
+.steps li{flex:1;position:relative;display:flex;flex-direction:column;gap:26px;min-width:0;
+  background:var(--panel);border-top:8px solid var(--mute);padding:40px 36px}
+.steps li.hot{border-top-color:var(--ember)}
+.steps li:not(:last-child)::after{content:'';position:absolute;right:-44px;top:50%;width:44px;height:3px;background:var(--mute)}
+.steps .n{font:700 96px/1 var(--font-head);color:var(--muted);letter-spacing:-.04em}
+.steps h3{margin-top:auto;font:700 52px/1.06 var(--font-head);letter-spacing:-.025em}
+.steps p{margin:0;font:400 34px/1.36 var(--font-body);color:var(--muted)}
+.steps.three h3{font-size:64px}
+
+/* quote -------------------------------------------------------------- */
+.t-quote{justify-content:center}
+.t-quote blockquote.quote{margin:0;position:relative;font:600 var(--fs-quote)/1.08 var(--font-head);
+  letter-spacing:-.035em;max-width:1560px;color:var(--fg)}
+.t-quote blockquote.quote::before{content:'\201C';position:absolute;left:-12px;top:-176px;
+  font:700 360px/1 var(--font-head);color:var(--ember);pointer-events:none}
+.t-quote .who{margin-top:64px;display:flex;flex-direction:column;gap:12px}
+.t-quote .who b{font:600 40px/1.1 var(--font-head);color:var(--fg)}
+.t-quote .kicker{position:absolute;left:144px;top:96px}
+
+/* demo (full-bleed live iframe / video with a fallback) -------------- */
+.t-demo{padding:0}
+.t-demo .media{position:absolute;inset:0;border-radius:0;z-index:0}
+.t-demo .media > iframe{background:#000}
+.t-demo .bar{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;justify-content:space-between;
+  align-items:flex-end;gap:48px;padding:72px 144px 60px;
+  background:linear-gradient(0deg,rgba(10,8,6,.94) 0%,rgba(10,8,6,.82) 55%,rgba(10,8,6,0) 100%)}
+.t-demo .media .ph-label .id{font-size:64px}
+.t-demo .media .ph-label .what{font-size:44px;max-width:22ch}
+.t-demo .bar .claim{font-size:48px;max-width:22ch;color:var(--paper)}
+.t-demo .bar .meta{color:var(--paper-dim)}
+.t-demo .fbflag{position:absolute;right:144px;top:56px;z-index:3;display:none;font:500 var(--fs-label)/1 var(--font-mono);
+  color:var(--amber);text-transform:uppercase;letter-spacing:.1em;background:rgba(10,8,6,.85);padding:12px 18px;border:1px solid var(--amber);border-radius:6px}
+.t-demo.use-fallback .fbflag{display:block}
+.t-demo.use-fallback .media > iframe{display:none}
+
+/* close -------------------------------------------------------------- */
+.t-close{flex-direction:row;align-items:stretch;gap:72px}
+.t-close .l{flex:1.1;display:flex;flex-direction:column;min-width:0}
+.t-close .statement{font-size:116px;margin-top:auto;max-width:9ch}
+.t-close .mute-rule{margin-top:48px}
+.t-close .r{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:0;min-width:0}
+.t-close .links{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.t-close .links li{padding:30px 0;border-top:2px solid var(--line);display:flex;flex-direction:column;gap:12px}
+.t-close .links li b{font:500 38px/1.15 var(--font-mono);color:var(--fg);overflow-wrap:anywhere}
+
+/* ==== DECK ADDITIONS (generated) ==== */
+/* ---------- the membership card motif (inline SVG, drawn in gen.py) ---------- */
+.cv .cb{fill:var(--panel);stroke:var(--mute);stroke-width:3}
+.cv.hot .cb,.cv .main .cb{stroke:var(--ember);stroke-width:4}
+.cv .ca{fill:none;stroke:var(--paper-dim);stroke-width:3}
+.cv .cn{stroke:var(--paper);stroke-width:5;stroke-linecap:round;fill:none}
+.cv .ch{stroke:var(--paper-dim);stroke-width:4;stroke-linecap:round;fill:none}
+.cv .cd{stroke:var(--mute);stroke-width:2;fill:none}
+.cv .cp{fill:var(--mute)}
+.cv .cc{fill:none;stroke:var(--mute);stroke-width:2}
+.cv .pt{fill:var(--ink);stroke:var(--mute);stroke-width:3}
+.cv .found,.cv .reached{--c:var(--ice)} .cv .trusted{--c:var(--amber)} .cv .paid{--c:var(--phosphor)}
+.cv .stub{fill:none;stroke:var(--mute);stroke-width:3}
+.cv .stub.lit{stroke:var(--c)} .cv .pt.lit{fill:var(--c);stroke:var(--c)}
+.cv .nm{font:700 56px var(--font-head);fill:var(--fg)}
+.portg .draw{fill:none;stroke:var(--c);stroke-width:4;stroke-dasharray:1;stroke-dashoffset:1;stroke-linecap:round}
+.portg.built .draw{stroke-dashoffset:0;transition:stroke-dashoffset .9s var(--ease) .1s}
+.portg .pt{transition:fill .5s ease,stroke .5s ease}
+.portg.built .pt{fill:var(--c);stroke:var(--c);transition-delay:.7s}
+.cv.ghost{opacity:.3}
+.cv.ghost .cb{fill:none}
+/* the fan: one card becomes many, each receives its four ports in turn */
+.fan .c{transform:translate(var(--sx),var(--sy));transition:transform 1.1s var(--ease) var(--d)}
+.fan.built .c{transform:translate(var(--tx),var(--ty)) rotate(var(--rot))}
+.fan .pt{stroke-width:2.5;transition:fill .5s ease var(--pd),stroke .5s ease var(--pd)}
+.fan.built .pt.found,.fan.built .pt.reached{fill:var(--ice);stroke:var(--ice)}
+.fan.built .pt.trusted{fill:var(--amber);stroke:var(--amber)}
+.fan.built .pt.paid{fill:var(--phosphor);stroke:var(--phosphor)}
+
+/* ---------- title ---------- */
+.t-title .foot{flex-direction:column;align-items:flex-start;gap:24px;flex-wrap:nowrap}
+.t-title .who{font:600 40px/1.1 var(--font-head);color:var(--fg)}
+/* ---------- statements ---------- */
+.mono-k{text-transform:none;font-size:28px;letter-spacing:.02em}
+.mono-k b{color:var(--fg)}
+.statement.raw{font:700 160px/1.04 var(--font-mono);letter-spacing:-.045em;max-width:none}
+.statement.raw .rl{display:block}
+.statement.agents{margin-top:72px;font-size:112px}
+.s100{font-size:100px;max-width:780px}
+.s112{font-size:112px}
+.t-statement.fanned{flex-direction:row;align-items:center;gap:40px}
+.t-statement.fanned .statement{flex:none;max-width:760px}
+.fansvg{flex:none;width:820px;height:840px;margin-left:auto}
+.pho{color:var(--phosphor)}
+.stat-num.pho{color:var(--phosphor)}
+.t-big-number .side .source{margin-top:12px}
+ul.plain{list-style:none;margin:64px 0 0;padding:0;display:flex;flex-direction:column;gap:30px}
+ul.plain li{display:flex;gap:28px;align-items:baseline;font:400 52px/1.15 var(--font-head);letter-spacing:-.02em;color:var(--fg)}
+ul.plain li::before{content:'';flex:none;width:18px;height:18px;background:var(--mute);transform:translateY(-4px)}
+/* ---------- split halves (s04) ---------- */
+.t-split.halves{flex-direction:column;gap:36px}
+.t-split.halves .pair{flex:1;display:flex;gap:64px;min-height:0}
+.t-split.halves .half{flex:1;display:flex;flex-direction:column;gap:18px;min-width:0}
+.t-split.halves .half .panel{height:400px;flex:none}
+.t-split.halves h3{font:700 52px/1.05 var(--font-head);letter-spacing:-.025em}
+.net .ne path{stroke:var(--ice);stroke-width:2;opacity:.5;fill:none}
+.net .nn circle{fill:var(--ice)}
+.net .iso circle{fill:none;stroke:var(--paper-dim);stroke-width:3}
+/* ---------- diagram extras ---------- */
+.dg .box.ice{stroke:var(--ice);stroke-width:3}
+.dg .ln.pho{stroke:var(--phosphor);stroke-width:4}
+.dg text.pho{fill:var(--phosphor)}
+.dg .paidpt{fill:var(--ink);stroke:var(--mute);stroke-width:3}
+g.built .paidpt{fill:var(--phosphor);stroke:var(--phosphor);transition:fill .4s ease 2.5s,stroke .4s ease 2.5s}
+.dg .dot{fill:var(--phosphor);transform:translateX(0)}
+g.built .dot{transform:translateX(var(--dist));transition:transform 2.2s cubic-bezier(.5,0,.2,1) .4s}
+.dg .tagbox{fill:none;stroke:var(--amber);stroke-width:3}
+.dg .amt{font:600 28px var(--font-body);fill:var(--amber)}
+.amb.built .tagbox{animation:pulse 1.2s ease .3s 1}
+@keyframes pulse{50%{stroke-width:8}}
+/* ---------- flow extras ---------- */
+.steps li.pay{border-top-color:var(--phosphor)}
+.steps li.human{border-top-color:var(--amber)}
+.steps .hd{display:flex;justify-content:space-between;align-items:center}
+.steps.four,.t-flow .steps{gap:36px}
+.t-flow .steps li{padding:36px 32px}
+.t-flow .steps h3{font-size:46px}
+.tap{flex:none}
+/* ---------- demo ---------- */
+.t-demo .demo-k{position:absolute;left:144px;top:96px;z-index:3}
+.t-demo .live{position:absolute;left:144px;right:144px;top:176px;bottom:176px;display:flex;gap:56px;z-index:2}
+.t-demo.use-fallback .live{display:none}
+.t-demo:not(.use-fallback) .media{display:none}
+.pane{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  background:var(--panel);border-radius:14px;box-shadow:inset 0 0 0 2px var(--line)}
+.pane .tag{position:absolute;left:32px;top:28px}
+.pane.agent{flex:1.9}
+.demo-frame{flex:1;border:0;border-radius:14px;background:#0a0806;box-shadow:inset 0 0 0 2px var(--line)}
+.demo-side{flex:none;width:260px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:14px}
+.demo-side .label{font:500 22px/1.2 var(--font-mono);color:var(--muted);text-align:center}
+.pane.phone{flex:.75;border-radius:56px;box-shadow:inset 0 0 0 4px var(--amber)}
+.pane .pt1{font:700 64px/1.05 var(--font-head);letter-spacing:-.03em;margin:0;color:var(--fg)}
+.pane .pt2{font:400 40px/1.2 var(--font-body);margin:0;color:var(--muted)}
+/* ---------- close variants ---------- */
+.t-close.list .l{flex:1.3}
+.t-close.list .statement{font-size:100px;max-width:none}
+.t-close.list .r{flex:1.2;justify-content:center}
+.asks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.asks li{display:flex;gap:32px;align-items:center;padding:40px 0;border-top:2px solid var(--line)}
+.asks .n{font:700 88px/1 var(--font-head);color:var(--ember);min-width:64px;letter-spacing:-.04em}
+.asks b{display:block;font:700 44px/1.12 var(--font-head);color:var(--fg);letter-spacing:-.02em}
+.asks span:not(.n){display:block;font:400 32px/1.35 var(--font-body);color:var(--muted);margin-top:8px}
+.asks .tap{margin-left:auto;width:56px;height:56px}
+.t-close.fin .statement{max-width:none}
+.t-close.fin .mute-rule{margin-top:48px}
+.t-close.fin .mono-lines{font:500 38px/1.4 var(--font-mono);margin:36px 0 0;color:var(--fg)}
+.t-close.fin .thanks{margin-top:28px}
+.t-close.fin .r{align-items:flex-start;justify-content:center;gap:44px}
+.cardfin{flex:none;width:640px;height:400px}
+.qrrow{display:flex;align-items:center;gap:32px}
+.qr{flex:none;border-radius:6px}
+
+.t-title .display{font-size:144px}
+.t-title .lede{margin-top:32px}
+.t-title .foot{margin-top:40px}
+.cv.ghost{opacity:.5}
+.t-big-number.one .stat-num{font-size:420px}
+.t-big-number.one .side{padding-left:80px}
+.t-big-number.one .side .lede{font-size:52px;max-width:none}
+.t-big-number.one .side .body{font-size:40px}
+.t-big-number.one .side .source{font-size:28px}
+.t-split.halves .headline{max-width:none}
+.steps .n{font-size:96px}
+.t-flow .steps h3{font-size:48px}
+.cv .nm{font-size:72px}
+
+.pay10 .dg .lbl{font-size:28px}
+.t-flow.compact .steps{flex:none;height:600px;margin:auto 0}
+.asks b{font-size:52px}
+.asks span:not(.n){font-size:36px}
+
+/* ==== END DECK ADDITIONS ==== */
+/* =====================================================================
+   OVERVIEW
+   ===================================================================== */
+#stage.overview .slide{visibility:visible;opacity:1;transform-origin:0 0;cursor:pointer;
+  transition:transform .5s var(--ease-io);outline:0}
+#stage.overview .slide[data-theme="dark"],#stage.overview .slide:not([data-theme]){background:var(--ink);
+  box-shadow:0 0 0 1px rgba(242,237,227,.1)}
+#stage.overview .slide.is-selected{box-shadow:0 0 0 10px var(--ember)}
+#stage.overview [data-build]{opacity:1;transform:none;transition:none}
+#stage.overview #ambient,#stage.overview #hud{opacity:0}
+#stage.overview .slide *{pointer-events:none}
+#stage.overview{background:#000}
+#ov-label{position:absolute;left:60px;top:64px;z-index:30;font:500 24px var(--font-mono);letter-spacing:.1em;
+  text-transform:uppercase;color:var(--paper-dim);opacity:0;pointer-events:none;transition:opacity .4s}
+#stage.overview #ov-label{opacity:1}
+
+/* =====================================================================
+   PRESENTER VIEW  (?view=presenter)
+   ===================================================================== */
+#presenter{display:none}
+html.presenter #viewport{display:none}
+html.presenter,html.presenter body{overflow:auto}
+html.presenter #presenter{display:grid;position:fixed;inset:0;padding:28px;gap:24px;background:#000;
+  grid-template-columns:1.65fr 1fr;grid-template-rows:auto 1fr auto}
+#presenter .p-top{grid-column:1/3;display:flex;justify-content:space-between;align-items:baseline;
+  font:500 18px var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--paper-dim)}
+#presenter .p-top .timer{font:700 56px/1 var(--font-head);letter-spacing:-.02em;color:var(--paper);
+  font-variant-numeric:tabular-nums;text-transform:none}
+#presenter .p-top .timer.over{color:var(--ember)}
+#presenter .p-frame{position:relative;background:var(--ink);overflow:hidden;border-radius:6px;
+  box-shadow:0 0 0 1px rgba(242,237,227,.1);align-self:start;aspect-ratio:16/9;width:100%}
+#presenter .p-frame .slide{visibility:visible;opacity:1;transform-origin:0 0;width:1920px;height:1080px;right:auto;bottom:auto}
+#presenter .p-frame .slide[data-theme="dark"],#presenter .p-frame .slide:not([data-theme]){background:var(--ink)}
+#presenter .p-right{display:flex;flex-direction:column;gap:18px;min-height:0}
+#presenter .p-cap{font:500 15px var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--paper-dim)}
+#presenter .p-notes{font:400 26px/1.5 var(--font-body);color:var(--paper);overflow:auto;min-height:0;flex:1;padding-right:12px}
+#presenter .p-notes p,#presenter .p-notes li{margin:0 0 .8em}
+#presenter .p-notes ul{padding-left:1.1em;margin:0}
+#presenter .p-notes code{font-size:.8em;color:var(--paper-dim)}
+#presenter .p-bottom{grid-column:1/3;display:flex;gap:28px;align-items:center;font:500 16px var(--font-mono);
+  letter-spacing:.08em;text-transform:uppercase;color:var(--paper-dim)}
+#presenter .p-bottom .bld{color:var(--ember)}
+#presenter .p-cutnote{color:var(--amber)}
+
+/* =====================================================================
+   REDUCED MOTION
+   ===================================================================== */
+@media (prefers-reduced-motion: reduce){
+  [data-build]{transform:none;transition:opacity .3s linear}
+  #stage.overview .slide{transition:none}
+}
+</style>
+</head>
+<body>
+<div id="viewport">
+<div id="stage" data-theme="dark">
+  <canvas id="ambient" width="1920" height="1080"></canvas>
+
+
+<!-- THE DECK v2 · assembled from _chunks/ -->
+<style>
+/* v2: inline spans inside .code must not become flex items */
+pre.code{display:block;align-self:center}
+/* v2: four asks instead of three, tighten so it fits 1080 */
+.t-close.list .asks li{padding:22px 0}
+.t-close.list .asks b{font-size:44px}
+.t-close.list .asks span:not(.n){font-size:30px;margin-top:4px}
+.t-close.list .asks .n{font-size:72px}
+</style>
+
+
+<style>
+/* ---------- symbol system (see _chunks/ICONS.md) ---------- */
+.ico{width:96px;height:96px;color:var(--paper);display:inline-block;flex-shrink:0;vertical-align:middle;overflow:visible}
+.ico.s{width:64px;height:64px}
+.ico.l{width:160px;height:160px}
+.ico.xl{width:240px;height:240px}
+.ico.ice{color:var(--ice)} .ico.pho{color:var(--phosphor)} .ico.ember{color:var(--ember)}
+.ico.amber{color:var(--amber)} .ico.dim{color:var(--paper-dim)}
+.sym{display:flex;flex-direction:row;align-items:center;gap:28px}
+.sym figure,.sym-chain figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:14px}
+.sym figcaption,.sym-chain figcaption{font:500 28px/1.2 var(--font-mono);color:var(--paper-dim);letter-spacing:.02em;text-align:center}
+.sym .sym-k{font:700 30px/1.15 var(--font-head);color:var(--paper);margin:0 24px 0 0;min-width:200px}
+.ico.sym-arrow{width:56px;height:56px;color:var(--paper-dim)}
+.sym-grid{display:grid;grid-template-columns:repeat(2,auto);gap:56px 96px;justify-content:start}
+.sym-chain{display:flex;flex-direction:row;align-items:center;gap:20px}
+/* light slides: ink line art, ink-dim captions; accents darkened to hold contrast on paper */
+.slide[data-theme="light"] .ico{color:var(--ink)}
+.slide[data-theme="light"] .ico.dim,.slide[data-theme="light"] .ico.sym-arrow{color:var(--ink-dim)}
+.slide[data-theme="light"] .sym figcaption,.slide[data-theme="light"] .sym-chain figcaption{color:var(--ink-dim)}
+.slide[data-theme="light"] .sym .sym-k{color:var(--ink)}
+.slide[data-theme="light"] .ico.ice{color:#1f6fc4}
+.slide[data-theme="light"] .ico.pho{color:#3d8a00}
+.slide[data-theme="light"] .ico.ember{color:var(--ember)}
+.slide[data-theme="light"] .ico.amber{color:#b97800}
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-eye" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 24c5-9 12.5-14 21-14s16 5 21 14c-5 9-12.5 14-21 14S8 33 3 24z"/><circle cx="24" cy="24" r="7"/><circle cx="24" cy="24" r="2.5" fill="currentColor"/></symbol>
+<symbol id="i-agent" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="14" width="32" height="26" rx="8"/><path d="M24 14V9"/><circle cx="24" cy="6" r="3"/><circle cx="18" cy="26" r="2.5" fill="currentColor"/><circle cx="30" cy="26" r="2.5" fill="currentColor"/><path d="M19 33h10"/><path d="M4 23v9M44 23v9"/></symbol>
+<symbol id="i-person" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="15" r="8"/><path d="M8 42c0-9 7-15 16-15s16 6 16 15"/></symbol>
+<symbol id="i-people" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="16" r="7"/><path d="M4 41c0-8 6-13 14-13s14 5 14 13"/><circle cx="33" cy="13" r="6"/><path d="M34 25c6 0 11 4 11 11"/></symbol>
+<symbol id="i-org" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 43h36"/><rect x="10" y="7" width="20" height="36"/><path d="M30 19h9v24"/><path d="M15 14h3M22 14h3M15 21h3M22 21h3M15 28h3M22 28h3M18 43v-7h4v7"/></symbol>
+<symbol id="i-startup" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4c7 5 10 13 9 24H15C14 17 17 9 24 4z"/><circle cx="24" cy="17" r="3.5"/><path d="M15 22l-6 8v5l6-3M33 22l6 8v5l-6-3"/><path d="M20 33l-1 8M24 33v10M28 33l1 8"/></symbol>
+<symbol id="i-page" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4h18l10 10v30H11z"/><path d="M29 4v10h10"/><path d="M17 24h16M17 31h16M17 38h10"/></symbol>
+<symbol id="i-cursor" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l28 13-12 4-5 13z"/><path d="M26 23l12 13"/></symbol>
+<symbol id="i-button" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="12" width="40" height="18" rx="9"/><path d="M12 21h14"/><path d="M30 22l11 5.5-4.5 1.5-1.5 4.5z"/></symbol>
+<symbol id="i-login" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M28 6h10a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H28"/><path d="M6 24h24M21 15l9 9-9 9"/></symbol>
+<symbol id="i-key" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="30" r="9"/><circle cx="15" cy="30" r="2.5"/><path d="M21.5 23.5L40 5M33 12l5 5M28 17l4 4"/></symbol>
+<symbol id="i-form" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="4" width="32" height="40" rx="3"/><path d="M14 12h12"/><rect x="14" y="17" width="20" height="6" rx="1.5"/><path d="M14 29h12"/><rect x="14" y="33" width="20" height="6" rx="1.5"/></symbol>
+<symbol id="i-search" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="20" cy="20" r="13"/><path d="M30 30l13 13"/></symbol>
+<symbol id="i-card" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="40" height="28" rx="4"/><path d="M4 18h40"/><path d="M10 30h8M22 30h5"/></symbol>
+<symbol id="i-tool" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M29 6a10 10 0 0 0-9 14L6 34a4.2 4.2 0 0 0 6 6l14-14a10 10 0 0 0 14-9l-6 6-6-1-1-6 6-6c-1-.5-2.5-1-4-1z"/></symbol>
+<symbol id="i-plug" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 4v10M30 4v10"/><path d="M12 14h24v8a12 12 0 0 1-24 0z"/><path d="M24 34v10"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="9" width="38" height="34" rx="4"/><path d="M5 19h38M15 4v9M33 4v9"/><path d="M13 27h4M22 27h4M31 27h4M13 35h4M22 35h4"/></symbol>
+<symbol id="i-wallet" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M38 14V9a3 3 0 0 0-3-3H9a5 5 0 0 0 0 10"/><path d="M4 11v28a4 4 0 0 0 4 4h32a2 2 0 0 0 2-2V16a2 2 0 0 0-2-2H9a5 5 0 0 1-5-3"/><path d="M42 24h-8a4 4 0 0 0 0 8h8z"/></symbol>
+<symbol id="i-coin" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="19"/><path d="M30 17c-1.5-2-4-3-6-3-4 0-7 2-7 5 0 7 13 3 13 10 0 3-3 5-7 5-2.5 0-5-1-6.5-3"/><path d="M24 10v4M24 34v4"/></symbol>
+<symbol id="i-inbox" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 26l7-18h26l7 18v14a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z"/><path d="M4 26h11l3 6h12l3-6h11"/></symbol>
+<symbol id="i-message" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10a4 4 0 0 1 4-4h28a4 4 0 0 1 4 4v20a4 4 0 0 1-4 4H18l-10 8v-8a4 4 0 0 1-2-4z"/><path d="M14 16h20M14 24h13"/></symbol>
+<symbol id="i-lock" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="21" width="32" height="23" rx="4"/><path d="M15 21v-6a9 9 0 0 1 18 0v6"/><path d="M24 30v6"/></symbol>
+<symbol id="i-unlock" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="21" width="32" height="23" rx="4"/><path d="M15 21v-6a9 9 0 0 1 17.5-3"/><path d="M24 30v6"/></symbol>
+<symbol id="i-shield" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4l16 6v12c0 10-7 18-16 22C15 40 8 32 8 22V10z"/><path d="M17 24l5 5 9-10"/></symbol>
+<symbol id="i-id" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="40" height="30" rx="4"/><circle cx="16" cy="21" r="4.5"/><path d="M9 33c1-4 3.5-6 7-6s6 2 7 6"/><path d="M28 19h10M28 26h10M28 33h6"/></symbol>
+<symbol id="i-handshake" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g transform="scale(2)" stroke-width="1.25"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></g></symbol>
+<symbol id="i-tap" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 26V10a3 3 0 0 1 6 0v12"/><path d="M25 21a3 3 0 0 1 6 0v3M31 23a3 3 0 0 1 6 0v8c0 7-5 13-12 13h-2c-4 0-7-2-9-5l-6-9a3 3 0 0 1 5-3l3 4"/><path d="M12 9a10 10 0 0 1 20 0"/></symbol>
+<symbol id="i-check" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="19"/><path d="M15 24.5l6 6 12-13"/></symbol>
+<symbol id="i-receipt" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4h28v40l-5-3.5-4.5 3.5-4.5-3.5-4.5 3.5-4.5-3.5-5 3.5z"/><path d="M19 11l-4 6h5M19 13v7M23 11h4v9h-4zM31 11h3v4.5h-3V20h3" stroke-width="2"/><path d="M16 27h16M16 33h10"/></symbol>
+<symbol id="i-link" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 28a9 9 0 0 0 13 1l7-7a9 9 0 0 0-13-13l-3 3"/><path d="M28 20a9 9 0 0 0-13-1l-7 7a9 9 0 0 0 13 13l3-3"/></symbol>
+<symbol id="i-globe" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="19"/><path d="M5 24h38"/><path d="M24 5c5 5 8 12 8 19s-3 14-8 19c-5-5-8-12-8-19s3-14 8-19z"/></symbol>
+<symbol id="i-network" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="5"/><circle cx="8" cy="9" r="4"/><circle cx="40" cy="9" r="4"/><circle cx="8" cy="39" r="4"/><circle cx="40" cy="39" r="4"/><path d="M11 12l9 8M37 12l-9 8M11 36l9-8M37 36l-9-8M12 9h24"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M27 3L9 28h14l-3 17 19-26H25z"/></symbol>
+<symbol id="i-news" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 8h32v32a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V18h6"/><path d="M10 18v22a4 4 0 0 1-4 4"/><rect x="16" y="15" width="10" height="9"/><path d="M30 16h6M30 22h6M16 30h20M16 36h20"/></symbol>
+<symbol id="i-scan" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14V8a4 4 0 0 1 4-4h6M34 4h6a4 4 0 0 1 4 4v6M44 34v6a4 4 0 0 1-4 4h-6M14 44H8a4 4 0 0 1-4-4v-6"/><path d="M10 24h28"/><path d="M14 16h20M14 32h20" stroke-width="2" opacity=".55"/></symbol>
+<symbol id="i-code" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 13L4 24l11 11M33 13l11 11-11 11M28 7l-8 34"/></symbol>
+<symbol id="i-chart" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5v38h38"/><path d="M12 33l9-10 7 6 13-15"/><path d="M33 14h8v8"/></symbol>
+<symbol id="i-robot-swarm" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="7" width="16" height="13" rx="4"/><path d="M24 7V3"/><circle cx="20.5" cy="13.5" r="1.4" fill="currentColor"/><circle cx="27.5" cy="13.5" r="1.4" fill="currentColor"/><rect x="3" y="29" width="16" height="13" rx="4"/><path d="M11 29v-4"/><circle cx="7.5" cy="35.5" r="1.4" fill="currentColor"/><circle cx="14.5" cy="35.5" r="1.4" fill="currentColor"/><rect x="29" y="29" width="16" height="13" rx="4"/><path d="M37 29v-4"/><circle cx="33.5" cy="35.5" r="1.4" fill="currentColor"/><circle cx="40.5" cy="35.5" r="1.4" fill="currentColor"/></symbol>
+<symbol id="i-storefront" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18l4-12h32l4 12"/><path d="M4 18a5 5 0 0 0 10 0 5 5 0 0 0 10 0 5 5 0 0 0 10 0 5 5 0 0 0 10 0"/><path d="M8 23v20h32V23"/><path d="M19 43V32h10v11"/></symbol>
+<symbol id="i-approve" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 30V18a3 3 0 0 1 6 0v9"/><path d="M20 26a3 3 0 0 1 6 0v2M26 27a3 3 0 0 1 6 0v6c0 6-4 11-10 11h-2c-3 0-6-2-7.5-4L7 33a3 3 0 0 1 5-3l2 3"/><circle cx="37" cy="11" r="8"/><path d="M33 11l3 3 5-6"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 24h37M30 12l12 12-12 12"/></symbol>
+<symbol id="i-arrow-loop" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M41 24a17 17 0 1 1-5-12"/><path d="M38 4v9h-9"/></symbol>
+<symbol id="i-question" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="19"/><path d="M18 18a6 6 0 1 1 8.5 5.5c-1.6.8-2.5 2-2.5 3.5v2"/><circle cx="24" cy="35" r="1.5" fill="currentColor"/></symbol>
+<symbol id="i-star" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4l6 13 14 1.5-10.5 9.5 3 14L24 35l-12.5 7 3-14L4 18.5 18 17z"/></symbol>
+</defs></svg>
+
+
+
+
+<!-- I.1 · title -->
+<style>
+.s1-01 .art{flex-direction:column;gap:32px}
+.s1-01 .art svg.cv{max-height:72%}
+.s1-01 .sym.mini{display:flex;align-items:center;gap:28px;color:var(--paper-dim)}
+.s1-01 .sym.mini figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.s1-01 .sym.mini .ico{width:80px;height:80px}
+.s1-01 .sym.mini .sym-arrow{width:48px;height:48px;opacity:.6}
+.s1-01 .sym.mini figcaption{font:500 20px/1 var(--font-mono);letter-spacing:.12em;text-transform:uppercase}
+</style>
+
+<!-- ===== 0-00.html ===== -->
+<!-- 0.0 · title -->
+<style>
+.anw000 .col{flex:1.15}
+.anw000 .display{font-size:132px;max-width:none;white-space:nowrap}
+.anw000 .lede{margin-top:40px;max-width:32ch;color:var(--fg)}
+.anw000 .foot{margin-top:48px}
+.anw000 .art{position:relative;flex:.95;align-items:center;justify-content:center}
+.anw000 .art>svg.mk{width:100%;height:auto;max-height:100%}
+.anw000 .art .ico{position:absolute;width:132px;height:132px}
+.anw000 .art .ico.rd{left:2px;top:58px;color:var(--paper-dim)}
+.anw000 .art .ico.ag{right:6px;bottom:72px;color:var(--ice)}
+.anw000 .mk .face{fill:var(--panel);stroke:var(--ember);stroke-width:4}
+.anw000 .mk .ln{stroke:var(--paper);stroke-width:7;stroke-linecap:round;fill:none}
+.anw000 .mk .ln2{stroke:var(--paper-dim);stroke-width:6;stroke-linecap:round;fill:none}
+.anw000 .mk .rule{stroke:var(--mute);stroke-width:2;fill:none}
+.anw000 .mk .chip{fill:none;stroke:var(--mute);stroke-width:2}
+.anw000 .mk .dot{fill:var(--mute)}
+.anw000 .mk .stub{stroke:var(--mute);stroke-width:3;fill:none}
+.anw000 .mk .port{fill:var(--ink);stroke:var(--mute);stroke-width:3}
+.anw000 .mk .port.lit{fill:var(--ice);stroke:var(--ice)}
+.anw000 .mk .eyeline{stroke:var(--paper-dim);stroke-width:3;stroke-dasharray:10 12;fill:none}
+.anw000 .mk .callline{stroke:var(--ember);stroke-width:5;fill:none}
+</style>
+<section class="slide t-title anw000" data-comp="title" data-theme="dark" data-transition="cut" data-hud="off" data-section="Opening" data-cut="keep">
+  <div class="col">
+    <p class="kicker"><b>Workshop</b> Harvard Evolution AI</p>
+    <h1 class="display">Agent-Native</h1>
+    <p class="lede">Build a product agents can find, trust and call.</p>
+    <div class="foot"><span class="who">Rayyan Zahid &middot; Immersive Commons</span><div class="ember-rule"></div>
+      <span class="meta" data-nonfact>Three parts, then you build one &middot; today</span></div>
+  </div>
+  <div class="art" aria-hidden="true">
+    <svg class="mk" viewBox="0 0 620 850" width="620" height="850" xmlns="http://www.w3.org/2000/svg">
+      <rect class="face" x="160" y="280" width="300" height="290" rx="18"/>
+      <path class="ln" d="M200 330 H400"/>
+      <path class="ln2" d="M200 368 H342"/>
+      <path class="rule" d="M190 408 H430"/>
+      <circle class="dot" cx="210" cy="448" r="8"/>
+      <circle class="dot" cx="244" cy="448" r="8"/>
+      <circle class="dot" cx="278" cy="448" r="8"/>
+      <rect class="chip" x="356" y="428" width="76" height="40" rx="8"/>
+      <path class="stub" d="M310 280 V228"/>
+      <path class="stub" d="M460 425 H512"/>
+      <path class="stub" d="M310 570 V622"/>
+      <path class="stub" d="M160 425 H108"/>
+      <path class="eyeline" d="M116 196 C180 230 240 252 310 262"/>
+      <path class="callline" d="M520 660 C556 580 548 490 522 436"/>
+      <circle class="port" cx="310" cy="280" r="15"/>
+      <circle class="port lit" cx="460" cy="425" r="15"/>
+      <circle class="port lit" cx="310" cy="570" r="15"/>
+      <circle class="port" cx="160" cy="425" r="15"/>
+    </svg>
+    <svg class="ico rd"><use href="#i-eye"/></svg>
+    <svg class="ico ag"><use href="#i-agent"/></svg>
+  </div>
+  <aside class="notes"><p>I'm Ray. I run Immersive Commons, an AI builder community in San Francisco.</p><p>This workshop is about one thing: making a product that an agent can actually use.</p><p>Not a prettier page. A surface an agent can find, trust and call.</p><p>Three parts. What agent-native means. The seven layers. Then you build one yourself.</p><ul class="ledger"><li>no visible numbers</li><li>subtitle line = data-nonfact (workshop logistics)</li></ul></aside>
+</section>
+
+<!-- ===== 0-01.html ===== -->
+<!-- 0.1 · the opener that IS the demo -->
+<style>
+.anw001{justify-content:center}
+.anw001 .cmdbox{display:flex;align-items:center;gap:32px;background:var(--panel);
+  border-left:14px solid var(--ember);border-radius:0 12px 12px 0;padding:52px 56px;margin:0}
+.anw001 .chev{flex:none;font:700 62px/1 var(--font-mono);color:var(--ember)}
+.anw001 .cmd{margin:0;font:500 62px/1.34 var(--font-mono);letter-spacing:-.01em;color:var(--paper);white-space:pre}
+.anw001 .capline{display:flex;align-items:baseline;gap:28px;margin:0 0 28px}
+.anw001 .lede{max-width:none;margin-top:52px;font-size:44px}
+.anw001 .body{max-width:62ch;margin-top:28px;font-size:34px}
+.anw001 .row{display:flex;align-items:center;gap:26px;margin-top:48px}
+.anw001 .row .ico{width:76px;height:76px}
+.anw001 .row .ico.sm{width:48px;height:48px;color:var(--paper-dim)}
+.anw001 .row figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:12px}
+.anw001 .row figcaption{font:500 24px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--paper-dim)}
+</style>
+<section class="slide t-statement anw001" data-comp="statement" data-theme="dark" data-transition="cut" data-flash data-section="Opening" data-cut="keep">
+  <p class="kicker"><b>Right now</b> the deck is the demo</p>
+  <div class="capline"><p class="label">Type this into any agent you have open</p></div>
+  <p class="cmdbox"><span class="chev">&gt;</span><span class="cmd">Use agent-native-workshop.vercel.app
+and walk me through this workshop.</span></p>
+  <p class="lede">Your agent finds the manifest, loads SKILL.md, and can hand you every build step in this room.</p>
+  <p class="body">Nothing is scraped. This deck exposes itself the same way it is about to teach you to expose your product.</p>
+  <div class="row" aria-hidden="true">
+    <figure><svg class="ico ice"><use href="#i-agent"/></svg><figcaption>Your agent</figcaption></figure>
+    <svg class="ico sm"><use href="#i-arrow"/></svg>
+    <figure><svg class="ico"><use href="#i-page"/></svg><figcaption>Manifest</figcaption></figure>
+    <svg class="ico sm"><use href="#i-arrow"/></svg>
+    <figure><svg class="ico"><use href="#i-tool"/></svg><figcaption>Steps</figcaption></figure>
+  </div>
+  <aside class="notes"><p>Before I say anything else, open an agent and type this line.</p><p>Go ahead. Claude, ChatGPT, Cursor, whatever you have.</p><p>It will find the manifest at that domain, load the skill file, and start walking you through this workshop.</p><p>I did not give it a scraper. I gave it a door.</p><p>That is the whole workshop in one line. This deck is built the way I am about to ask you to build your product.</p><p>If it works for you, say so out loud. If it does not, tell me and we debug it live.</p><ul class="ledger"><li>no visible numbers</li><li>live URL = agent-native-workshop.vercel.app (this deck)</li></ul></aside>
+</section>
+
+<!-- ===== 1-00.html ===== -->
+<!-- I.0 · section opener -->
+<style>
+.anw100{justify-content:center}
+.anw100 .statement{max-width:1080px}
+.anw100 .ember-rule{margin-top:56px}
+.anw100 .sub{margin-top:40px;max-width:36ch;font-size:44px}
+.anw100 .mark{position:absolute;right:144px;top:50%;transform:translateY(-50%);width:360px;height:520px}
+.anw100 .mark .bar{fill:var(--mute)}
+.anw100 .mark .ring{fill:none;stroke:var(--mute);stroke-width:4}
+.anw100 .beats{display:flex;gap:44px;margin-top:52px}
+.anw100 .beats .ico{width:88px;height:88px}
+.anw100 .beats figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:14px}
+.anw100 .beats figcaption{font:500 24px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--paper-dim)}
+</style>
+<section class="slide t-statement anw100" data-comp="statement" data-theme="dark" data-transition="ember-wipe" data-section="I · What agent-native means" data-cut="keep">
+  <p class="kicker"><b>Part I</b> the idea, before the stack</p>
+  <svg class="mark" viewBox="0 0 360 520" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect class="bar" x="60" y="20" width="240" height="34"/>
+    <rect class="bar" x="150" y="54" width="60" height="412"/>
+    <rect class="bar" x="60" y="466" width="240" height="34"/>
+    <circle class="ring" cx="180" cy="260" r="168"/>
+  </svg>
+  <p class="statement"><span class="line">What agent-native</span><span class="line"><em>means.</em></span></p>
+  <div class="ember-rule"></div>
+  <p class="lede sub">Two visitors arrive. Five verbs decide whether one of them can do anything at all.</p>
+  <div class="beats" aria-hidden="true">
+    <figure><svg class="ico"><use href="#i-eye"/></svg><figcaption>Two readers</figcaption></figure>
+    <figure><svg class="ico ice"><use href="#i-link"/></svg><figcaption>Five verbs</figcaption></figure>
+    <figure><svg class="ico"><use href="#i-network"/></svg><figcaption>Seven layers</figcaption></figure>
+  </div>
+  <aside class="notes"><p>Part one. What agent-native actually means.</p><p>Three moves here. Two visitors arrive at your product and only one of them gets served.</p><p>Then a definition you can test your own site against: five verbs.</p><p>Then the claim the rest of the workshop rests on. It is the same seven layers every time.</p><p>Keep your own product in your head while I do this. You will be auditing it shortly.</p><ul class="ledger"><li>no visible numbers</li><li>roman numeral is drawn as SVG decoration, aria-hidden</li></ul></aside>
+</section>
+
+<!-- ===== 1-01.html ===== -->
+<!-- I.1 · two visitors, one unserved -->
+<style>
+.anw101 .headline{margin-top:28px;font-size:76px;max-width:none}
+.anw101 .points{gap:28px}
+.anw101 .r{flex-direction:column;justify-content:center;gap:24px}
+.anw101 .r>*{flex:none;width:100%}
+.anw101 .code{font-size:34px;line-height:1.7;padding:44px 48px;align-self:stretch}
+.anw101 .code .dim{color:var(--paper-dim)}
+.anw101 .vis{display:flex;align-items:center;gap:22px}
+.anw101 .vis .ico{width:62px;height:62px}
+.anw101 .vis .ico.sm{width:40px;height:40px;color:var(--paper-dim)}
+.anw101 .vis .label{margin:0}
+</style>
+<section class="slide t-split anw101" data-comp="split" data-theme="dark" data-transition="fade" data-section="I · What agent-native means" data-cut="skip">
+  <div class="l">
+    <p class="kicker"><b>Two visitors</b> one of them is unserved</p>
+    <h2 class="headline">A human reads pixels. An agent reads <em>bytes.</em></h2>
+    <ul class="points">
+      <li data-build><b>Browser:</b> a rendered page, a layout, somewhere to click.</li>
+      <li data-build><b>curl:</b> a shell. Markup, a hydration payload, nothing to act on.</li>
+      <li data-build><b>The agent</b> is not a crawler looking for text. It is a caller looking for a function.</li>
+    </ul>
+  </div>
+  <div class="r">
+    <div class="vis" aria-hidden="true">
+      <svg class="ico ice"><use href="#i-agent"/></svg>
+      <svg class="ico sm"><use href="#i-arrow"/></svg>
+      <svg class="ico"><use href="#i-code"/></svg>
+      <p class="label">What the agent actually gets</p>
+    </div>
+    <pre class="code" data-build data-build-style="fade"><span class="k">$ curl https://your.site</span>
+&lt;div id="root"&gt;&lt;/div&gt;
+&lt;script&gt;__DATA__= ...&lt;/script&gt;
+
+<span class="dim"># no manifest</span>
+<span class="dim"># no tool list</span>
+<span class="dim"># nothing to call</span></pre>
+  </div>
+  <aside class="notes"><p>Two visitors arrive at your product today.</p><p>One is a person. They get the page you designed. Layout, buttons, somewhere to click.</p><p>The other is an agent. Open your own site with curl instead of a browser and look at what comes back.</p><p>You get a shell. Some markup, a hydration payload, and nothing it can act on.</p><p>Here is the part people miss. The agent is not a crawler hunting for text. It is a caller looking for a function.</p><p>It is not asking what you look like. It is asking what you can do.</p><p>Run that curl on your own domain in the break. It is the cheapest audit there is.</p><ul class="ledger"><li>no visible numbers</li><li>curl output is illustrative, not a capture of a named site</li></ul></aside>
+</section>
+
+<!-- ===== 1-02.html ===== -->
+<!-- I.2 · agent-native, defined: five verbs -->
+<style>
+.anw102 .headline{font-size:60px;max-width:none}
+.anw102 svg.dg{height:560px;margin-top:30px}
+.anw102 .dg .vb{font:700 42px var(--font-head);fill:var(--fg);letter-spacing:-.02em}
+.anw102 .dg .gl{font:400 30px var(--font-body);fill:var(--paper-dim)}
+.anw102 .dg .lk{fill:none;stroke:var(--mute);stroke-width:3}
+.anw102 .dg .nodeo{fill:var(--panel);stroke:var(--mute);stroke-width:3}
+.anw102 .dg .nodei{fill:var(--ice)}
+.anw102 .dg .rl{stroke:var(--mute);stroke-width:2}
+.anw102 .dg .cap{fill:var(--ice)}
+.anw102 .close{margin-top:26px;font-size:34px;color:var(--paper-dim)}
+</style>
+<section class="slide t-diagram anw102" data-comp="diagram" data-theme="dark" data-transition="lift" data-section="I · What agent-native means" data-cut="keep">
+  <div class="top"><div><p class="kicker"><b>Agent-native, defined</b> five verbs you can test for</p>
+    <h2 class="headline">Five verbs. Miss one and the <em>chain breaks.</em></h2></div></div>
+  <svg class="dg" viewBox="0 0 1632 560" xmlns="http://www.w3.org/2000/svg">
+    <g data-build data-build-style="fade">
+      <circle class="nodeo" cx="36" cy="60" r="22"/><circle class="nodei" cx="36" cy="60" r="9"/>
+      <text class="vb" x="96" y="74">Discoverable</text>
+      <text class="gl" x="520" y="71">an agent that knows only your domain finds everything else</text>
+      <path class="rl" d="M96 104 H1596"/><circle class="cap" cx="1604" cy="104" r="7"/>
+      <path class="lk" d="M36 82 V150"/>
+    </g>
+    <g data-build data-build-style="fade">
+      <circle class="nodeo" cx="36" cy="172" r="22"/><circle class="nodei" cx="36" cy="172" r="9"/>
+      <text class="vb" x="96" y="186">Readable</text>
+      <text class="gl" x="520" y="183">it gets substance, not chrome</text>
+      <path class="rl" d="M96 216 H1596"/><circle class="cap" cx="1604" cy="216" r="7"/>
+      <path class="lk" d="M36 194 V262"/>
+    </g>
+    <g data-build data-build-style="fade">
+      <circle class="nodeo" cx="36" cy="284" r="22"/><circle class="nodei" cx="36" cy="284" r="9"/>
+      <text class="vb" x="96" y="298">Authenticatable</text>
+      <text class="gl" x="520" y="295">credentials without a human pasting a key into a prompt</text>
+      <path class="rl" d="M96 328 H1596"/><circle class="cap" cx="1604" cy="328" r="7"/>
+      <path class="lk" d="M36 306 V374"/>
+    </g>
+    <g data-build data-build-style="fade">
+      <circle class="nodeo" cx="36" cy="396" r="22"/><circle class="nodei" cx="36" cy="396" r="9"/>
+      <text class="vb" x="96" y="410">Callable</text>
+      <text class="gl" x="520" y="407">it can do what a human can do, through a typed interface</text>
+      <path class="rl" d="M96 440 H1596"/><circle class="cap" cx="1604" cy="440" r="7"/>
+      <path class="lk" d="M36 418 V486"/>
+    </g>
+    <g data-build data-build-style="fade">
+      <circle class="nodeo" cx="36" cy="508" r="22"/><circle class="nodei" cx="36" cy="508" r="9"/>
+      <text class="vb" x="96" y="522">Payable</text>
+      <text class="gl" x="520" y="519">it knows the cost before committing, even if the answer is nothing</text>
+      <path class="rl" d="M96 552 H1596"/><circle class="cap" cx="1604" cy="552" r="7"/>
+    </g>
+  </svg>
+  <p class="body close">Discovery with no auth path is a dead end. Auth with no tools is a login to nowhere.</p>
+  <aside class="notes"><p>Here is the definition. Five verbs. You can hold your own product against each one.</p><p>Discoverable. An agent that knows only your domain can find everything else from there.</p><p>Readable. It gets the substance, not the chrome.</p><p>Authenticatable. It gets credentials without a human pasting an API key into a prompt.</p><p>Callable. It can do what a human can do, through a typed interface.</p><p>Payable. It knows the cost before it commits, even when the answer is that there is no charge.</p><p>Now the important bit. Miss any one of these and the chain breaks at that link.</p><p>Discovery with no auth path is a dead end. Auth with no tools is a login to nowhere.</p><p>Most sites I audit have one or two of the five and think they are done.</p><ul class="ledger"><li>no visible numbers</li><li>five verbs = Ray's own framing, the spine of Part II</li></ul></aside>
+</section>
+
+<!-- ===== 1-03.html ===== -->
+<!-- I.3 · why bother -->
+<style>
+.anw103.t-statement{flex-direction:row;align-items:center;justify-content:space-between;gap:56px}
+.anw103 .txt{flex:1 1 auto;max-width:1056px}
+.anw103 .statement{font-size:112px;max-width:1056px}
+.anw103 .sub{margin-top:44px;max-width:38ch;font-size:42px}
+.anw103 .body{margin-top:26px;max-width:52ch;font-size:34px}
+.anw103 .vis{flex:none;width:480px;display:flex;flex-direction:column;align-items:center;gap:26px}
+.anw103 .vis .ico{width:150px;height:150px}
+.anw103 .vis .ico.dn{width:56px;height:56px;color:var(--paper-dim);transform:rotate(90deg)}
+.anw103 .vis .label{margin:0;text-align:center}
+.anw103 .vis .shelf{width:420px;height:280px}
+.anw103 .shelf .frame{fill:var(--panel);stroke:var(--mute);stroke-width:3}
+.anw103 .shelf .slot{fill:none;stroke:var(--mute);stroke-width:3;stroke-dasharray:14 14}
+</style>
+<section class="slide t-statement anw103" data-comp="statement" data-theme="dark" data-transition="fade" data-section="I · What agent-native means" data-cut="skip">
+  <p class="kicker"><b>Why bother</b> the decision happens without you</p>
+  <div class="txt">
+    <p class="statement"><span class="line">An agent that cannot</span><span class="line">call you cannot</span><span class="line" data-build><em>recommend</em> you.</span></p>
+    <p class="lede sub" data-build data-build-style="fade">Agents are becoming where products get chosen, not just the tool that fetches them.</p>
+    <p class="body" data-build data-build-style="fade">The choice happens before a human ever sees your landing page, using whatever your domain exposes. An empty tool list reads as having no tools, not as having a beautiful website.</p>
+  </div>
+  <div class="vis" aria-hidden="true">
+    <svg class="ico ice"><use href="#i-agent"/></svg>
+    <svg class="ico dn"><use href="#i-arrow"/></svg>
+    <svg class="shelf" viewBox="0 0 420 280" xmlns="http://www.w3.org/2000/svg">
+      <rect class="frame" x="10" y="10" width="400" height="260" rx="14"/>
+      <rect class="slot" x="48" y="56" width="324" height="48" rx="8"/>
+      <rect class="slot" x="48" y="122" width="324" height="48" rx="8"/>
+      <rect class="slot" x="48" y="188" width="324" height="48" rx="8"/>
+    </svg>
+    <p class="label">Tools found: none</p>
+  </div>
+  <aside class="notes"><p>So why bother. Here is the blunt version.</p><p>An agent that cannot call you cannot recommend you.</p><p>Agents are turning into the place products get chosen, not just the thing that fetches them.</p><p>Somebody asks their agent to find a tool that does X. It goes and looks. It compares what it can actually use. Then it comes back with one answer.</p><p>That whole decision happens before a human ever sees your landing page.</p><p>And when it looks at you and finds no tools, it does not read that as "beautiful website". It reads it as "no tools".</p><p>For scale, the agent-readiness graders out there put the average site around a third of the way up a hundred point scale, and almost nothing clears seventy. Say it as "most sites score badly and very few score well" if you want to stay safe, because I have not put those two figures in the deck's fact file.</p><ul class="ledger"><li>no visible numbers on screen</li><li>readiness averages are SPOKEN ONLY and not in a FACTS file for this deck: say them qualitatively if unsure</li></ul></aside>
+</section>
+
+<!-- ===== 1-04.html ===== -->
+<!-- I.4 · the thesis: seven layers -->
+<style>
+.anw104 .headline{font-size:60px;max-width:none}
+.anw104 svg.dg{height:510px;margin-top:28px}
+.anw104 .dg .nm{font:700 30px var(--font-mono);fill:var(--paper-dim);letter-spacing:.02em}
+.anw104 .dg .lb{font:700 40px var(--font-head);fill:var(--fg);letter-spacing:-.02em}
+.anw104 .dg .track{fill:var(--panel);stroke:var(--mute);stroke-width:2}
+.anw104 .dg .track.hot{stroke:var(--ember);stroke-width:4}
+.anw104 .dg .nt{font:500 26px var(--font-mono);fill:var(--paper-dim);letter-spacing:.06em}
+.anw104 .dg .nt.hot{fill:var(--ember)}
+.anw104 .close{margin-top:24px;font-size:34px}
+.anw104 .kit{margin-top:18px;text-transform:none;letter-spacing:.03em;font-size:26px}
+</style>
+<section class="slide t-diagram anw104" data-comp="diagram" data-theme="dark" data-transition="fade" data-section="I · What agent-native means" data-cut="keep">
+  <div class="top"><div><p class="kicker"><b>The thesis</b> what Part II walks through</p>
+    <h2 class="headline">The same seven layers. Every time.</h2></div></div>
+  <svg class="dg" viewBox="0 0 1632 510" xmlns="http://www.w3.org/2000/svg">
+    <g data-build data-build-style="fade">
+      <text class="nm" x="16" y="48" data-nonfact>1</text>
+      <text class="lb" x="86" y="52">Discovery</text>
+      <rect class="track" x="470" y="16" width="700" height="48" rx="10"/>
+      <text class="nt" x="1200" y="49">FREE, MINUTES</text>
+    </g>
+    <g data-build data-build-style="fade">
+      <text class="nm" x="16" y="121" data-nonfact>2</text>
+      <text class="lb" x="86" y="125">Readability</text>
+      <rect class="track" x="470" y="89" width="700" height="48" rx="10"/>
+    </g>
+    <g data-build data-build-style="fade">
+      <text class="nm" x="16" y="194" data-nonfact>3</text>
+      <text class="lb" x="86" y="198">Identity</text>
+      <rect class="track" x="470" y="162" width="700" height="48" rx="10"/>
+    </g>
+    <g data-build data-build-style="fade">
+      <text class="nm" x="16" y="267" data-nonfact>4</text>
+      <text class="lb" x="86" y="271">Execution</text>
+      <rect class="track" x="470" y="235" width="700" height="48" rx="10"/>
+    </g>
+    <g data-build data-build-style="fade">
+      <text class="nm" x="16" y="340" data-nonfact>5</text>
+      <text class="lb" x="86" y="344">Multiplayer</text>
+      <rect class="track" x="470" y="308" width="700" height="48" rx="10"/>
+    </g>
+    <g data-build data-build-style="fade">
+      <text class="nm" x="16" y="413" data-nonfact>6</text>
+      <text class="lb" x="86" y="417">API-as-product</text>
+      <rect class="track hot" x="470" y="381" width="700" height="48" rx="10"/>
+      <text class="nt hot" x="1200" y="414">WHERE THE POINTS ARE</text>
+    </g>
+    <g data-build data-build-style="fade">
+      <text class="nm" x="16" y="486" data-nonfact>7</text>
+      <text class="lb" x="86" y="490">Recovery</text>
+      <rect class="track" x="470" y="454" width="700" height="48" rx="10"/>
+    </g>
+  </svg>
+  <p class="body close">The order is load-bearing. Discovery is free and takes minutes. API-as-product is where the points are, and it needs the rest to mean anything.</p>
+  <p class="label kit">Build it once and the agent surface stops being a project. It becomes a floor you build on. That is why it ships as a kit: agent-native-kit.vercel.app, MIT.</p>
+  <aside class="notes"><p>Here is the thesis the rest of the workshop runs on.</p><p>It is the same seven layers every time. Discovery, Readability, Identity, Execution, Multiplayer, API-as-product, Recovery.</p><p>I have audited enough of these now that I stopped treating each one as a new problem.</p><p>The order matters. Discovery is free and takes minutes, so it goes first and you have no excuse.</p><p>API-as-product is where the points are, but it needs everything above it to mean anything. A perfect API nobody can discover or authenticate against is worth nothing.</p><p>Build it correctly once and the agent surface stops being a project. It becomes a floor you build the next thing on.</p><p>That is exactly why we shipped it as a kit instead of a blog post. The kit is at agent-native-kit.vercel.app, MIT licensed, and Part II walks the seven in order.</p><ul class="ledger"><li>numerals one to seven are index counters, marked data-nonfact</li><li>seven layers = the kit's own structure, agent-native-kit.vercel.app</li></ul></aside>
+</section>
+
+<!-- ===== 2-00.html ===== -->
+<!-- II.0 · section opener · seven layers, seven traps -->
+<style>
+.s2-00 .dg .n{font:700 40px var(--font-head);fill:var(--paper-dim)}
+.s2-00 .dg .nm{font:700 34px var(--font-head);fill:var(--paper)}
+.s2-00 .dg .mech{font:400 30px var(--font-body);fill:var(--paper-dim)}
+.s2-00 .dg .trap{font:400 30px var(--font-body);fill:var(--paper)}
+.s2-00 .dg .hd{font:500 24px var(--font-mono);fill:var(--paper-dim);letter-spacing:.1em}
+.s2-00 .dg .hd.em{fill:var(--ember)}
+.s2-00 .dg .sep{stroke:var(--mute);stroke-width:2}
+</style>
+<section class="slide t-diagram s2-00" data-comp="diagram" data-theme="dark" data-transition="ember-wipe" data-section="II · What is actually happening" data-cut="keep">
+  <div class="top">
+    <div>
+      <p class="kicker"><b data-nonfact>Part II</b> seven layers, in order</p>
+      <h2 class="headline">Each layer has one trap that eats a week.</h2>
+    </div>
+  </div>
+  <svg class="dg" viewBox="0 0 1632 690" xmlns="http://www.w3.org/2000/svg" aria-label="Seven layers, each with its mechanism and the trap that costs a week">
+    <text class="hd lbl" x="440" y="22">MECHANISM</text>
+    <text class="hd em lbl" x="1020" y="22">THE TRAP</text>
+    <path class="sep" d="M1006 34 V684"/>
+    <g data-build data-build-style="fade">
+      <rect class="box" x="0" y="34" width="1632" height="86" rx="8"/>
+      <text class="n" x="28" y="90">1</text><text class="nm" x="86" y="88">Discovery</text>
+      <text class="mech" x="440" y="88">eleven documents, one config object</text>
+      <text class="trap" x="1020" y="88">a scope in metadata, not in the token</text>
+
+      <rect class="box" x="0" y="128" width="1632" height="86" rx="8"/>
+      <text class="n" x="28" y="184">2</text><text class="nm" x="86" y="182">Readable</text>
+      <text class="mech" x="440" y="182">server-rendered bytes, not hydration</text>
+      <text class="trap" x="1020" y="182">a tool surface that needs hydration</text>
+
+      <rect class="box" x="0" y="222" width="1632" height="86" rx="8"/>
+      <text class="n" x="28" y="278">3</text><text class="nm" x="86" y="276">Identity</text>
+      <text class="mech" x="440" y="276">RFC 8628: a human approves scopes</text>
+      <text class="trap" x="1020" y="276">a key in the prompt, leaked on ask</text>
+
+      <rect class="box" x="0" y="316" width="1632" height="86" rx="8"/>
+      <text class="n" x="28" y="372">4</text><text class="nm" x="86" y="370">Execution</text>
+      <text class="mech" x="440" y="370">remote MCP, writes gated, list open</text>
+      <text class="trap" x="1020" y="370">gate the catalog, score as no tools</text>
+
+      <rect class="box" x="0" y="410" width="1632" height="86" rx="8"/>
+      <text class="n" x="28" y="466">5</text><text class="nm" x="86" y="464">Multiplayer</text>
+      <text class="mech" x="440" y="464">one address per agent, not one hub</text>
+      <text class="trap" x="1020" y="464">one hub reads as one agent</text>
+
+      <rect class="box" x="0" y="504" width="1632" height="86" rx="8"/>
+      <text class="n" x="28" y="560">6</text><text class="nm" x="86" y="558">API as product</text>
+      <text class="mech" x="440" y="558">RFC 9457, cursors, Idempotency-Key</text>
+      <text class="trap" x="1020" y="558">a strong server on a weak API</text>
+
+      <rect class="box" x="0" y="598" width="1632" height="86" rx="8"/>
+      <text class="n" x="28" y="654">7</text><text class="nm" x="86" y="652">Recovery</text>
+      <text class="mech" x="440" y="652">an open endpoint agents report to</text>
+      <text class="trap" x="1020" y="652">you find out from a score drop</text>
+    </g>
+  </svg>
+  <aside class="notes">
+    <p>Here is the whole second act on one slide. Seven layers, in the order you should build them.</p>
+    <p>Left column is the mechanism. Right column is the trap. Every one of those traps cost me real days, and every one of them is silent. That is the pattern: nothing throws, nothing logs, the number just does not move.</p>
+    <p>Discovery: eleven well-known documents generated from one config object. The trap is drift, a scope your metadata advertises and your tokens do not carry.</p>
+    <p>Readable: if a grader cannot read it in the served bytes, it does not exist. The trap is a tool surface that only appears after hydration.</p>
+    <p>Identity: the device authorization grant, so a human approves the scope list. The trap is an API key in the prompt.</p>
+    <p>Execution: remote MCP, writes gated, catalog open to anyone. The trap is gating the catalog and getting judged as having no tools.</p>
+    <p>Multiplayer: one address per agent. The trap is a shared hub endpoint, which a topology audit reads as a single agent.</p>
+    <p>API as product: proper errors, cursors, idempotency, rate-limit headers. The trap is a good MCP server bolted onto a weak API.</p>
+    <p>Recovery: an open endpoint agents can report failures to. The trap is finding out from a score drop weeks later.</p>
+    <p>We are going to walk all seven. Row numbers are just the running order.</p>
+    <ul class="ledger">
+      <li>8628 = F-51 (RFC 8628, OAuth 2.0 Device Authorization Grant, layer 3)</li>
+      <li>9457 = F-52 (RFC 9457, Problem Details for HTTP APIs, layer 6)</li>
+      <li>row numerals 1 to 7 carry class .n, index counters, exempt</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ===== 2-01.html ===== -->
+<!-- II.1 · layer 1 · discovery · eleven surfaces, one source -->
+<style>
+.s2-01 .headline{margin-top:28px}
+.s2-01 .points li b{white-space:normal}
+.s2-01 .panel{padding:0}
+.s2-01 .fanout{display:block;width:100%;height:100%}
+.s2-01 .fanout .src{fill:none;stroke:var(--ember);stroke-width:4}
+.s2-01 .fanout .ln{stroke:var(--mute);stroke-width:2;fill:none}
+.s2-01 .fanout .srctxt{font:500 32px var(--font-mono);fill:var(--paper)}
+.s2-01 .fanout .srccap{font:500 24px var(--font-mono);fill:var(--paper-dim);letter-spacing:.04em}
+.s2-01 .fanout .pathtxt{font:500 24px var(--font-mono);fill:var(--paper-dim)}
+.s2-01 .fanout .pathtxt.on{fill:var(--paper)}
+.s2-01 .fanout .note{font:500 22px var(--font-mono);fill:var(--paper-dim)}
+</style>
+<section class="slide t-split s2-01" data-comp="split" data-theme="dark" data-transition="fade" data-section="II · What is actually happening" data-cut="skip">
+  <div class="l">
+    <p class="kicker"><b data-nonfact>Layer 1 · Discovery</b> eleven well-known documents</p>
+    <h2 class="headline">The enemy is drift, not typing.</h2>
+    <ul class="points">
+      <li data-build="3"><b>Nothing fails loudly.</b> You add a scope to a token and forget <span class="mono">scopes_supported</span>.</li>
+      <li data-build="3"><b>The 403 has no author.</b> The agent reads your metadata, asks for the scope, gets a token without it.</li>
+      <li data-build="4"><b>One object, many consumers.</b> <span class="mono">agent.config.ts</span> generates all eleven. There is no second place to edit.</li>
+      <li data-build="4"><b>That sixth path is not a duplicate.</b> Ship only the root document and a strict client gets a 404.</li>
+    </ul>
+  </div>
+  <div class="r">
+    <div class="panel">
+      <svg class="fanout" viewBox="0 0 795 856" xmlns="http://www.w3.org/2000/svg" aria-label="One config object generates eleven well-known documents">
+        <rect class="src" x="24" y="18" width="584" height="96" rx="10"/>
+        <text class="srctxt" x="52" y="60">agent.config.ts</text>
+        <text class="srccap lbl" x="52" y="96">one object, eleven surfaces</text>
+        <g data-build="1" data-build-style="fade">
+          <path class="ln" d="M60 114 V820"/>
+          <path class="ln" d="M60 170 h18"/><text class="pathtxt lbl" x="90" y="178">/.well-known/ai-agent.json</text>
+          <path class="ln" d="M60 235 h18"/><text class="pathtxt lbl" x="90" y="243">/.well-known/agent-card.json</text>
+          <path class="ln" d="M60 300 h18"/><text class="pathtxt lbl" x="90" y="308">/.well-known/mcp.json</text>
+          <path class="ln" d="M60 365 h18"/><text class="pathtxt lbl" x="90" y="373">/.well-known/api-catalog</text>
+          <path class="ln" d="M60 430 h18"/><text class="pathtxt lbl" x="90" y="438">/.well-known/oauth-protected-resource</text>
+          <path class="ln" d="M60 495 h18"/><text class="pathtxt on lbl" x="90" y="503">/.well-known/oauth-protected-resource/api/mcp</text>
+          <path class="ln" d="M60 560 h18"/><text class="pathtxt lbl" x="90" y="568">/.well-known/oauth-authorization-server</text>
+          <path class="ln" d="M60 625 h18"/><text class="pathtxt lbl" x="90" y="633">/.well-known/agent-skills/index.json</text>
+          <path class="ln" d="M60 690 h18"/><text class="pathtxt lbl" x="90" y="698">/.well-known/ai-catalog.json</text>
+          <path class="ln" d="M60 755 h18"/><text class="pathtxt lbl" x="90" y="763">/llms.txt</text>
+          <path class="ln" d="M60 820 h18"/><text class="pathtxt lbl" x="90" y="828">/auth.md</text>
+        </g>
+        <g data-build="2" data-build-style="fade">
+          <text class="note lbl" x="104" y="530">derived from a 401, RFC 9728 3.1</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Layer one. Discovery. Eleven well-known documents. Writing them by hand is a boring afternoon. Keeping them agreeing with each other for six months is the hard part.</p>
+    <p>The failure has one shape, and I have hit it. You add a scope to a token and you forget to add it to scopes_supported. Now your metadata advertises a permission vocabulary your tokens do not carry.</p>
+    <p>Nothing fails loudly. An agent reads the metadata, requests the scope, gets a token without it, and the call comes back 403 with no explanation anywhere in the chain. Nobody owns that error.</p>
+    <p>So: one config object, many consumers. In the kit, agent.config.ts generates all eleven surfaces. If you can edit a well-known document in two places, you will.</p>
+    <p>Point at the sixth path. It looks like a duplicate of the fifth and it is not. A strict MCP client that gets a 401 from /api/mcp derives that exact path, per RFC 9728 section 3.1. Ship only the root document and that client gets a 404 and no route to auth at all. It does not fall back.</p>
+    <ul class="ledger">
+      <li>403 = I-31 (the measured drift failure: metadata advertises a scope the minted token lacks; call returns 403, no error anywhere in the chain)</li>
+      <li>404 = I-31 (strict client, root-only PRM, derived path missing)</li>
+      <li>401 = F-50 (RFC 9728, OAuth 2.0 Protected Resource Metadata: the 401 that triggers derivation)</li>
+      <li>9728 = F-50 (RFC 9728) · 3.1 = F-50 (section 3.1, path-insertion rule)</li>
+      <li>"eleven" and "Layer 1" are words / an index counter, not facts (kicker is data-nonfact)</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ===== 2-02.html ===== -->
+<!-- II.2 · layer 2 · readable · the served bytes -->
+<style>
+.s2-02 .statement{font-size:112px;max-width:1480px}
+.s2-02 .proof{display:flex;align-items:flex-end;gap:88px;margin-top:76px}
+.s2-02 .chk{flex:none;display:flex;flex-direction:column;gap:18px}
+.s2-02 .cmd{margin:0;padding:28px 32px;background:var(--ink);box-shadow:inset 0 0 0 2px var(--line);border-radius:10px;
+  font:500 30px/1.5 var(--font-mono);color:var(--paper);white-space:pre}
+.s2-02 .cmd .dim{color:var(--paper-dim)}
+.s2-02 .deltas{flex:1;display:flex;flex-direction:column;gap:30px;min-width:0}
+.s2-02 .d{display:flex;align-items:baseline;gap:30px}
+.s2-02 .d .sc{flex:none;font:700 56px/1 var(--font-head);letter-spacing:-.02em;color:var(--paper);font-variant-numeric:tabular-nums}
+.s2-02 .d .sc i{font-style:normal;font-size:30px;font-weight:500;color:var(--paper-dim)}
+.s2-02 .d .what{margin:0;font:400 30px/1.32 var(--font-body);color:var(--paper-dim)}
+.s2-02 .neg{margin:44px 0 0;font:400 32px/1.35 var(--font-body);color:var(--paper-dim);max-width:1540px}
+</style>
+<section class="slide t-statement s2-02" data-comp="statement" data-theme="dark" data-transition="cut" data-section="II · What is actually happening" data-cut="keep">
+  <p class="kicker"><b data-nonfact>Layer 2 · Readable</b> the sentence to keep</p>
+  <p class="statement"><span class="line">Anything a grader reads</span><span class="line">must be in the</span><span class="line"><em>served bytes.</em></span></p>
+  <div class="proof" data-build data-build-style="fade">
+    <div class="chk">
+      <p class="label">The only check that settles it</p>
+      <pre class="cmd" data-nonfact>curl -s YOUR_URL | grep -c registerTool
+<span class="dim"># must be &gt; 0</span></pre>
+    </div>
+    <div class="deltas">
+      <div class="d"><span class="sc">1/5 <i>to</i> 5/5</span><p class="what">WebMCP tools moved out of a React <span class="mono">useEffect</span> into a server-rendered inline script. Identical code.</p></div>
+      <div class="d"><span class="sc">1/2 <i>to</i> 2/2</span><p class="what">A 61KB app-shell 404 replaced with under 1KB that names the right next URLs.</p></div>
+    </div>
+  </div>
+  <p class="neg" data-build data-build-style="fade">An agent sending <span class="mono">Accept: text/markdown</span> wants substance. Serving it 40KB of HTML is technically valid and practically a refusal.</p>
+  <aside class="notes">
+    <p>If you take one sentence out of tonight, take this one. Anything a grader reads has to be in the served bytes.</p>
+    <p>Here is how I learned it. We registered our WebMCP tools in a React useEffect. Shipped it, deployed it, rescanned, and the score moved nothing. Zero. Because the effect lives in a hashed JS chunk and does not run until hydration, so the HTML that actually comes off the wire contains no tool surface at all.</p>
+    <p>The identical code, moved into a server-rendered inline script, took that check from one out of five to five out of five.</p>
+    <p>So the verification is a curl and a grep. Fetch your own URL, count the matches. If it is zero, the agent sees zero, whatever your browser shows you.</p>
+    <p>Second one. Our 404 was the full app shell, sixty one kilobytes of nothing. We replaced it with under a kilobyte that names the right next URLs in plain text. That check went from one of two to two of two.</p>
+    <p>And content negotiation. If an agent asks for Accept: text/markdown, it is telling you it wants substance. Handing it forty kilobytes of HTML is technically a valid response and practically a refusal.</p>
+    <ul class="ledger">
+      <li>1/5 to 5/5 = I-32 (WebMCP registerTool in a React useEffect scored 1 of 5 on the readable check; the identical code in a server-rendered inline script scored 5 of 5)</li>
+      <li>1/2 to 2/2 = I-33 (agent-friendly 404 check, before and after)</li>
+      <li>61 = I-33 (the 61KB app-shell 404 it replaced, now under 1KB)</li>
+      <li>40 = I-34 (40KB of HTML returned to a request sending Accept: text/markdown)</li>
+      <li>the curl block is data-nonfact: a command literal, not a measured number</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ===== 2-03.html ===== -->
+<!-- II.3 · layer 3 · identity · device code -->
+<style>
+.s2-03 .steps{flex:none;height:480px;margin:48px 0 0}
+.s2-03 .steps .n{font-size:64px}
+.s2-03 .steps h3{font-size:42px}
+.s2-03 .steps p{font-size:28px}
+.s2-03 .eps{display:flex;align-items:baseline;gap:56px;margin-top:40px}
+.s2-03 .eps .ep{font:500 28px/1.2 var(--font-mono);color:var(--paper-dim)}
+.s2-03 .eps .ep b{font-weight:500;color:var(--paper)}
+</style>
+<section class="slide t-flow s2-03" data-comp="flow" data-theme="dark" data-transition="fade" data-section="II · What is actually happening" data-cut="keep">
+  <div class="top">
+    <p class="kicker"><b data-nonfact>Layer 3 · Identity</b> RFC 8628 device authorization grant</p>
+    <h2 class="headline">An agent must not be able to credential itself.</h2>
+  </div>
+  <ol class="steps">
+    <li data-build><span class="n">1</span><h3>It asks.</h3><p>No key in the prompt. It gets a short code and waits.</p></li>
+    <li class="human" data-build><span class="n">2</span><h3>A human approves.</h3><p>On a device they already trust. Every scope in plain language.</p></li>
+    <li data-build><span class="n">3</span><h3>Minted once.</h3><p>Scopes are frozen at mint time. There is no widen-a-token path.</p></li>
+    <li class="hot" data-build><span class="n">4</span><h3>Then it calls.</h3><p>The audit trail reads: a signed-in human approved these five scopes for an agent calling itself X.</p></li>
+  </ol>
+  <div class="eps" data-build data-build-style="fade">
+    <span class="ep"><b>POST</b> /api/agent/signup/start</span>
+    <span class="ep"><b>GET</b> /api/agent/signup/poll?device_code=...</span>
+  </div>
+  <aside class="notes">
+    <p>Layer three. Identity. The rule is one line: an agent must not be able to credential itself.</p>
+    <p>So we use the device authorization grant, RFC 8628. The agent posts to signup slash start and gets a short code. Then it polls. It cannot do anything else.</p>
+    <p>Meanwhile a human opens a URL on a device they already trust, sees the exact scope list in plain language, and approves it or does not.</p>
+    <p>Why is every alternative worse? An API key in the prompt is a key the agent can leak to anyone who asks nicely. A browser OAuth redirect assumes the agent has a browser and a human watching it. Device code assumes neither.</p>
+    <p>And the scopes are frozen at mint time. No widen-a-token path, because widening after approval means the human approved something other than what now exists. If the agent needs more, it goes back and asks a person again.</p>
+    <p>Here is the payoff. Your audit trail now reads: a signed-in human approved these five scopes for an agent calling itself X, at this timestamp. That is a sentence that survives a security review. "The agent had a key" is not.</p>
+    <ul class="ledger">
+      <li>8628 = F-51 (RFC 8628, OAuth 2.0 Device Authorization Grant: the flow this layer implements)</li>
+      <li>step numerals 1 to 4 are .n index counters, exempt; "Layer 3" is data-nonfact</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ===== 2-04.html ===== -->
+<!-- II.4 · layer 4 · execution · the anonymous catalog -->
+<style>
+.s2-04 .headline{margin-top:28px}
+.s2-04 .points li b{white-space:normal}
+.s2-04 .code{font-size:28px;padding:44px 48px}
+.s2-04 .code .dim{color:var(--paper-dim)}
+</style>
+<section class="slide t-split s2-04" data-comp="split" data-theme="dark" data-transition="fade" data-section="II · What is actually happening" data-cut="keep">
+  <div class="l">
+    <p class="kicker"><b data-nonfact>Layer 4 · Execution</b> remote MCP over streamable HTTP</p>
+    <h2 class="headline">Gate the writes. Never gate the <em>catalog.</em></h2>
+    <ul class="points">
+      <li data-build><b>tools/list arrives with no token.</b> Anything evaluating you calls it anonymously.</li>
+      <li data-build><b>Gate every tool and the list comes back empty.</b> You are then judged as having no tools.</li>
+      <li data-build><b>10 tools here, 7 need no token.</b> Including the one that runs live readiness checks against an attendee's own deployed URL.</li>
+      <li data-build><b>Stdio is not an option in production.</b> It is a local-dev transport and a hosted client cannot reach it at all.</li>
+    </ul>
+  </div>
+  <div class="r">
+    <pre class="code" data-nonfact data-build data-build-style="fade">curl -s -X POST YOUR_URL/api/mcp \
+  -H 'content-type: application/json' \
+  -d '{"jsonrpc":"2.0","id":1,
+       "method":"tools/list"}'
+
+<span class="dim"># no token. The catalog still answers.</span></pre>
+  </div>
+  <aside class="notes">
+    <p>Layer four. Execution. One rule: gate the writes, never gate the catalog.</p>
+    <p>Here is the thing people get wrong. Anything evaluating you, a grader, a crawler, somebody's agent deciding whether to bother with you, calls tools slash list with no token. If every tool on your server needs auth, that list comes back empty, and you are judged as having no tools. You built a server and scored zero for it.</p>
+    <p>So ship at least one genuinely useful anonymous tool. Not a stub. A stub is worse, because now you have advertised something that does nothing.</p>
+    <p>This deck's own server exposes ten tools and seven of them need no token at all, including the one that runs live readiness checks against your own deployed URL. You can point it at your site tonight.</p>
+    <p>And the transport. Remote MCP over streamable HTTP. Stdio is not an option in production. It is a local-dev transport and a hosted client cannot reach it at all. If a tutorial handed you a stdio server and told you to deploy it, that tutorial was written for your laptop.</p>
+    <p>Run that curl against your own URL during the break. No Authorization header. If you get an empty array back, that is the bug.</p>
+    <ul class="ledger">
+      <li>10 = I-35 (this workshop kit's MCP server exposes 10 tools)</li>
+      <li>7 = I-35 (7 of the 10 require no token, including the live readiness-check tool)</li>
+      <li>the curl block is data-nonfact: JSON-RPC protocol literals, not measured numbers</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ===== 2-05.html ===== -->
+<!-- II.5 · layer 5 · multiplayer: hub vs mesh -->
+<style>
+.s2-05 .headline{font-size:68px;max-width:none}
+.s2-05 .cardpath{text-transform:none;letter-spacing:.02em;font-size:26px;margin-top:14px;color:var(--paper-dim)}
+.s2-05 .auth{font-size:34px;max-width:15ch;color:var(--paper-dim);text-align:right}
+.s2-05 svg.dg{height:620px;margin-top:28px}
+.s2-05 .dg .ah{fill:var(--mute);stroke:none}
+.s2-05 .dg .ahx{fill:var(--ember);stroke:none}
+.s2-05 .dg .lbl.path{letter-spacing:.02em;fill:var(--ice)}
+</style>
+<section class="slide t-diagram s2-05" data-comp="diagram" data-theme="dark" data-transition="fade" data-section="II · What is actually happening" data-cut="keep">
+  <div class="top">
+    <div>
+      <p class="kicker"><b>Layer 5 · Multiplayer</b> One address per agent</p>
+      <h2 class="headline">The addressable unit is an agent, not a site.</h2>
+      <p class="label mono cardpath">/api/a2a/&lt;agentId&gt;/.well-known/agent-card.json</p>
+    </div>
+    <p class="body auth">Authenticated by default.</p>
+  </div>
+  <svg class="dg" viewBox="0 0 1632 620" width="1632" height="620" xmlns="http://www.w3.org/2000/svg">
+
+    <text class="lbl" x="4" y="26">HUB · ONE SHARED ENDPOINT</text>
+    <rect class="ln" x="0" y="48" width="740" height="490" rx="12"/>
+    <g data-build data-build-style="fade">
+      <use href="#i-agent" x="36" y="114" width="72" height="72" style="color:var(--paper-dim)"/>
+      <use href="#i-agent" x="36" y="254" width="72" height="72" style="color:var(--paper-dim)"/>
+      <use href="#i-agent" x="36" y="394" width="72" height="72" style="color:var(--paper-dim)"/>
+      <path class="ln" d="M108 150 C210 150 230 290 300 290"/>
+      <path class="ln" d="M108 290 H300"/>
+      <path class="ln" d="M108 430 C210 430 230 290 300 290"/>
+      <path class="ah" d="M300 282 l18 8 -18 8z"/>
+      <rect class="box" x="318" y="235" width="150" height="110" rx="10"/>
+      <text class="lbl" x="393" y="298" text-anchor="middle">/api/a2a</text>
+      <path class="ln" d="M468 290 C560 290 580 150 612 150"/>
+      <path class="ln" d="M468 290 H612"/>
+      <path class="ln" d="M468 290 C560 290 580 430 612 430"/>
+      <path class="ah" d="M612 142 l18 8 -18 8z"/>
+      <path class="ah" d="M612 282 l18 8 -18 8z"/>
+      <path class="ah" d="M612 422 l18 8 -18 8z"/>
+      <use href="#i-agent" x="632" y="114" width="72" height="72" style="color:var(--paper-dim)"/>
+      <use href="#i-agent" x="632" y="254" width="72" height="72" style="color:var(--paper-dim)"/>
+      <use href="#i-agent" x="632" y="394" width="72" height="72" style="color:var(--paper-dim)"/>
+      <text class="txt" x="4" y="578">Callers pass the recipient in the payload.</text>
+      <text class="txt" x="4" y="612">A topology audit reads one hub.</text>
+    </g>
+
+    <text class="lbl" x="896" y="26">MESH · ONE ADDRESS EACH</text>
+    <rect class="hot" x="892" y="48" width="740" height="490" rx="12"/>
+    <g data-build data-build-style="fade">
+      <use href="#i-agent" x="922" y="114" width="72" height="72" style="color:var(--ice)"/>
+      <use href="#i-agent" x="922" y="254" width="72" height="72" style="color:var(--ice)"/>
+      <use href="#i-agent" x="922" y="394" width="72" height="72" style="color:var(--ice)"/>
+      <text class="lbl path" x="1004" y="130">/api/a2a/scanner</text>
+      <text class="lbl path" x="1004" y="270">/api/a2a/concierge</text>
+      <text class="lbl path" x="1004" y="410">/api/a2a/auditor</text>
+      <path class="ln" d="M1000 150 H1486"/>
+      <path class="ln" d="M1000 290 H1486"/>
+      <path class="ln" d="M1000 430 H1486"/>
+      <path class="ahx" d="M1486 142 l18 8 -18 8z"/>
+      <path class="ahx" d="M1486 282 l18 8 -18 8z"/>
+      <path class="ahx" d="M1486 422 l18 8 -18 8z"/>
+      <use href="#i-agent" x="1524" y="114" width="72" height="72" style="color:var(--ice)"/>
+      <use href="#i-agent" x="1524" y="254" width="72" height="72" style="color:var(--ice)"/>
+      <use href="#i-agent" x="1524" y="394" width="72" height="72" style="color:var(--ice)"/>
+      <text class="txt" x="896" y="578">Every agent is a real peer.</text>
+      <text class="txt" x="896" y="612">The cost is one dynamic segment.</text>
+    </g>
+  </svg>
+  <aside class="notes">
+    <p>Layer five. Multiplayer. The thing that changes here is what you address.</p>
+    <p>Every agent gets its own endpoint, slash api slash a2a slash agent id. And its own card, at that path plus dot well-known slash agent-card dot json.</p>
+    <p>You could do this with one shared endpoint instead. Left side. It works. But it forces every caller to pass a recipient in the payload, and once that is true, a topology audit reads your whole product as a single hub. The multi-agent claim becomes cosmetic.</p>
+    <p>Routing by path makes each agent a real peer. The entire cost of that is one dynamic segment.</p>
+    <p>Second thing, and this one matters more than it looks. Authenticated by default. Open A2A makes you publicly callable, and that is irreversible once registries cache you. Flip it on purpose or do not flip it at all.</p>
+    <p>One gotcha if you build this tonight. supportedInterfaces is required at the card level, not only per skill. I had it on every skill and not on the card, and validation failed with a message that reads like the skills are wrong.</p>
+    <ul class="ledger">
+      <li>5 = I-60 (layer 5 of the kit's seven layers)</li>
+      <li>2 = I-61 (the "2" in the a2a path segment, A2A protocol name)</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ===== 2-06.html ===== -->
+<!-- II.6 · layer 6 · API as product (where the points are) -->
+<style>
+.s2-06 .headline{font-size:72px;max-width:14ch}
+.s2-06 .points li b{white-space:normal}
+.s2-06 .points{gap:26px}
+.s2-06 .chart{display:flex;flex-direction:column;justify-content:center;gap:34px;padding:52px 40px}
+.s2-06 .ch-head{text-transform:none;letter-spacing:.02em;font-size:26px;color:var(--paper-dim);margin:0}
+.s2-06 .bar-row{display:flex;align-items:flex-end;gap:28px}
+.s2-06 .bar-row .bl{flex:1;min-width:0;display:flex;flex-direction:column;gap:14px}
+.s2-06 .ch-lbl{margin:0;font:400 30px/1.2 var(--font-body);color:var(--paper)}
+.s2-06 .ch-track{height:34px;background:var(--line);border-radius:3px;overflow:hidden}
+.s2-06 .ch-track i{display:block;height:34px;background:var(--ice)}
+.s2-06 .ch-val{flex:none;width:190px;text-align:right;margin:0;
+  font:700 64px/1 var(--font-mono);letter-spacing:-.03em;color:var(--ice)}
+.s2-06 .ch-val.sm{font-size:44px}
+.s2-06 .ch-foot{margin:10px 0 0;font-size:26px;text-transform:none;letter-spacing:.02em;color:var(--paper-dim)}
+</style>
+<section class="slide t-split s2-06" data-comp="split" data-theme="dark" data-transition="fade" data-section="II · What is actually happening" data-cut="keep">
+  <div class="l">
+    <p class="kicker"><b>Layer 6 · API as product</b> Where the points are</p>
+    <h2 class="headline">Being agent-ready is mostly a good <em>API product.</em></h2>
+    <ul class="points">
+      <li data-build><b>An MCP server on a weak API scores badly.</b> The MCP server is not the problem.</li>
+      <li data-build><b>A spec activates dormant checks.</b> On one target the usability denominator grew from 81 to 150.</li>
+      <li data-build><b>RFC 9457 errors, cursors, Idempotency-Key.</b> Honest only because the routes do them.</li>
+      <li data-build><b>RateLimit headers are graded on live responses.</b> Documentation earns none of them.</li>
+    </ul>
+  </div>
+  <div class="r">
+    <div class="panel chart">
+      <p class="label ch-head">ora.ai grader, points available per item</p>
+      <div class="bar-row" data-build data-build-style="fade">
+        <div class="bl"><p class="ch-lbl">OpenAPI spec</p><div class="ch-track"><i style="width:100%"></i></div></div>
+        <p class="ch-val">7</p>
+      </div>
+      <div class="bar-row" data-build data-build-style="fade">
+        <div class="bl"><p class="ch-lbl">Public API</p><div class="ch-track"><i style="width:100%"></i></div></div>
+        <p class="ch-val">7</p>
+      </div>
+      <div class="bar-row" data-build data-build-style="fade">
+        <div class="bl"><p class="ch-lbl">Developer portal</p><div class="ch-track"><i style="width:86%"></i></div></div>
+        <p class="ch-val">6</p>
+      </div>
+      <div class="bar-row" data-build data-build-style="fade">
+        <div class="bl"><p class="ch-lbl">Any shiny well-known file</p><div class="ch-track"><i style="width:22%"></i></div></div>
+        <p class="ch-val sm">1 to 2</p>
+      </div>
+      <p class="label ch-foot">The well-known files are the cheap part. They are also the small part.</p>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Layer six. This is the one I would spend your evening on, because this is where the points actually are.</p>
+    <p>The claim is simple. Being agent-ready is mostly being a good API product.</p>
+    <p>Look at the real weights on the ora grader. An OpenAPI spec is seven points. A public API is seven points. A developer portal is six. Every shiny well-known file you can add tonight is worth one to two.</p>
+    <p>So read the chart the other way round. An MCP server bolted onto a weak REST API scores badly, and the MCP server is not the problem.</p>
+    <p>Now the second-order effect, because it surprised me. Publishing a spec activates dormant checks. On one real target the usability denominator grew from eighty one to one hundred and fifty behind a single spec. So expect more movement than seven points, and expect new red checks to appear. Both of those are correct. You did not break anything. You became legible enough to be graded properly.</p>
+    <p>The contracts that each carry their own points: RFC nine four five seven problem plus json errors, each one carrying a remedy field. Cursor pagination. Idempotency-Key on POSTs. IETF RateLimit-Limit, RateLimit-Remaining and RateLimit-Reset headers. Those are only honest because the routes actually do them.</p>
+    <p>One warning on the last one. The rate-limit headers are graded on live responses. No amount of documentation earns them.</p>
+    <ul class="ledger">
+      <li>6 = I-62 (layer 6 of the kit's seven layers)</li>
+      <li>7 = F-60 (ora.ai grader weight: OpenAPI spec, and separately a public API)</li>
+      <li>6 = F-61 (ora.ai grader weight: developer portal)</li>
+      <li>1 = F-62 (ora.ai grader weight floor for a well-known file)</li>
+      <li>2 = F-62 (ora.ai grader weight ceiling for a well-known file)</li>
+      <li>81 = I-63 (usability denominator before the spec was published, one target)</li>
+      <li>150 = I-63 (same denominator after the spec was published)</li>
+      <li>9457 = F-63 (RFC 9457, application/problem+json error format)</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ===== 2-07.html ===== -->
+<!-- II.7 · layer 7 · recovery (the layer nobody builds) -->
+<style>
+.s2-07 .headline{max-width:24ch}
+.s2-07 .steps.three li{justify-content:flex-start;padding:40px 36px}
+.s2-07 .steps.three .ico{width:120px;height:120px;flex:none}
+.s2-07 .steps.three h3{margin-top:26px;font-size:52px}
+.s2-07 .steps.three p{font-size:32px}
+.s2-07 .steps .ep{margin:18px 0 0;font-family:var(--font-mono);font-size:26px;
+  text-transform:none;letter-spacing:.02em;color:var(--paper)}
+.s2-07 .loopback{margin:36px 0 0;font-size:32px;max-width:60ch}
+.s2-07 .loopback b{color:var(--paper);font-weight:700}
+</style>
+<section class="slide t-flow s2-07" data-comp="flow" data-theme="dark" data-transition="fade" data-section="II · What is actually happening" data-cut="skip">
+  <div class="top">
+    <p class="kicker"><b>Layer 7 · Recovery</b> The layer nobody builds</p>
+    <h2 class="headline">Your discovery surface will drift.</h2>
+  </div>
+  <ol class="steps three">
+    <li data-build>
+      <svg class="ico dim" aria-hidden="true"><use href="#i-link"/></svg>
+      <h3>The surface drifts.</h3>
+      <p>A URL moves. A scope gets renamed. A grader changes what it reads.</p>
+    </li>
+    <li data-build>
+      <svg class="ico ice" aria-hidden="true"><use href="#i-agent"/></svg>
+      <h3>The agent fails.</h3>
+      <p>Quietly, and it is your only witness. It stops coming back.</p>
+    </li>
+    <li class="hot" data-build>
+      <svg class="ico ember" aria-hidden="true"><use href="#i-message"/></svg>
+      <h3>It tells you.</h3>
+      <p>Anonymous and unauthenticated on purpose.</p>
+      <p class="ep">POST /api/agent/feedback</p>
+    </li>
+  </ol>
+  <p class="body loopback" data-build data-build-style="fade">The agent that cannot authenticate is exactly the one with something to report. <b>Without this you find out from a score drop, weeks later.</b></p>
+  <aside class="notes">
+    <p>Last layer. Recovery. Nobody builds this one, and it is the cheapest slide in the deck.</p>
+    <p>Start from the assumption that your discovery surface will drift. A URL moves. A scope gets renamed. A grader changes what it reads. That is not a hypothetical, that is a Tuesday.</p>
+    <p>Now, who sees it break? Not you. The agents hitting you. They are the only witnesses.</p>
+    <p>And without a feedback endpoint they have no way to tell you. So they fail quietly, they stop coming back, and you find out from a score drop weeks later.</p>
+    <p>So: POST slash api slash agent slash feedback. Anonymous. Unauthenticated. And that is deliberate, not laziness. The agent that cannot authenticate against you is exactly the one with something to report.</p>
+    <p>Cheap slide. Important point. Add the route tonight.</p>
+    <ul class="ledger">
+      <li>7 = I-64 (layer 7 of the kit's seven layers)</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ===== 2-08.html ===== -->
+<!-- II.8 · the scoreboard, read honestly -->
+<style>
+.s2-08 .headline{font-size:72px;max-width:14ch}
+.s2-08 .points li b{white-space:normal}
+.s2-08 .points{gap:26px}
+.s2-08 .cmp{display:flex;flex-direction:column;justify-content:center;gap:28px;padding:52px 44px}
+.s2-08 .cmp-head{text-transform:none;letter-spacing:.02em;font-size:26px;color:var(--paper-dim);margin:0}
+.s2-08 .cmp-row{display:flex;align-items:flex-end;gap:36px;padding-top:26px;border-top:3px solid var(--line)}
+.s2-08 .cmp-k{flex:none;width:170px;margin:0;font:500 24px/1 var(--font-mono);
+  letter-spacing:.1em;text-transform:uppercase;color:var(--paper-dim)}
+.s2-08 .cmp-n{display:flex;flex-direction:column;gap:8px;min-width:150px}
+.s2-08 .cmp-n b{font:700 96px/.92 var(--font-head);letter-spacing:-.04em;color:var(--ice)}
+.s2-08 .cmp-n span{font:500 24px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--paper-dim)}
+.s2-08 .cmp-n.bad b{color:var(--paper-dim)}
+.s2-08 .cmp-foot{margin:18px 0 0;font-size:30px}
+.s2-08 .cmp-note{margin:0;text-transform:none;letter-spacing:.02em;font-size:26px;color:var(--paper-dim)}
+</style>
+<section class="slide t-split s2-08" data-comp="split" data-theme="dark" data-transition="cut" data-section="II · What is actually happening" data-cut="keep">
+  <div class="l">
+    <p class="kicker"><b>The scoreboard</b> Two graders, two questions</p>
+    <h2 class="headline">Decide which number you are <em>chasing.</em></h2>
+    <ul class="points">
+      <li data-build><b>ora.ai: 100 points, about 125 checks, 6 fresh scans a day.</b> Batch the fixes, then scan once.</li>
+      <li data-build><b>Cloudflare: Level 1 to 5 over 22 checks, no observed rate limit.</b> It reveals sub-checks one at a time, so rescan after every single fix.</li>
+      <li data-build><b>They disagree.</b> One real property held Cloudflare Level 5 and scored 52 on ora at the same time, for six weeks.</li>
+      <li data-build><b>Rank by what a fix is worth.</b> Never walk the red list top to bottom. On a saturated site it is mostly noise.</li>
+    </ul>
+  </div>
+  <div class="r">
+    <div class="panel cmp">
+      <p class="label cmp-head">isitagentready.com, measured on the kit</p>
+      <div class="cmp-row" data-build data-build-style="fade">
+        <p class="cmp-k">Before</p>
+        <div class="cmp-n"><b>6</b><span>passing</span></div>
+        <div class="cmp-n bad"><b>10</b><span>failing</span></div>
+      </div>
+      <div class="cmp-row" data-build data-build-style="fade">
+        <p class="cmp-k">After</p>
+        <div class="cmp-n"><b>14</b><span>passing</span></div>
+        <div class="cmp-n bad"><b>2</b><span>failing</span></div>
+      </div>
+      <p class="body cmp-foot" data-build data-build-style="fade">Three separate checks revealed a brand new sub-check the moment they went green. One remaining failure needs DNS records a vercel.app subdomain cannot have.</p>
+      <p class="label cmp-note" data-build data-build-style="fade">Watch the cache between you and the grader.</p>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>So, the scoreboard. Two graders, and they do not measure the same thing.</p>
+    <p>ora.ai reports out of one hundred, about one hundred and twenty five checks over four weighted layers. Six fresh scans per day. So batch your fixes and scan once, or you will burn the quota on noise.</p>
+    <p>Cloudflare's isitagentready reports Level one to five over twenty two checks. No rate limit I could find. But it reveals sub-checks one at a time, so the loop there is the opposite: rescan after every single fix.</p>
+    <p>Here is the fact that reframes all of it. One real property held Cloudflare Level five and scored fifty two on ora at the same time. For six weeks. Those are not the same question. Decide which number you are chasing before you start, because the work is different.</p>
+    <p>Right side is this kit, measured while building this deck. Six passing and ten failing, to fourteen passing and two failing on the Cloudflare grader.</p>
+    <p>Two things in that number. Three separate checks revealed a brand new sub-check the moment they went green, which is why the denominator moves under you. And the one remaining failure needs DNS records a vercel dot app subdomain cannot have, so it is not fixable from the code.</p>
+    <p>Two traps worth naming out loud. Rank work by what a fix is worth, never by walking the red list top to bottom, because on a saturated site the red list is mostly noise. And watch the cache between you and the grader. A document a grader reads to decide your score should not be cached for an hour.</p>
+    <ul class="ledger">
+      <li>100 = F-64 (ora.ai reports out of 100)</li>
+      <li>125 = F-65 (ora.ai, about 125 checks over 4 weighted layers)</li>
+      <li>6 = F-66 (ora.ai, 6 fresh scans per day)</li>
+      <li>1 = F-67 (Cloudflare isitagentready.com, bottom of the Level 1 to 5 scale)</li>
+      <li>5 = F-67 (Cloudflare isitagentready.com, top of the Level 1 to 5 scale)</li>
+      <li>22 = F-68 (Cloudflare isitagentready.com, 22 checks)</li>
+      <li>52 = F-69 (one real property: ora score 52 while holding Cloudflare Level 5, six weeks)</li>
+      <li>6 = I-65 (the kit, Cloudflare grader: 6 passing before)</li>
+      <li>10 = I-65 (the kit, Cloudflare grader: 10 failing before)</li>
+      <li>14 = I-66 (the kit, Cloudflare grader: 14 passing after)</li>
+      <li>2 = I-66 (the kit, Cloudflare grader: 2 failing after)</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ===== 3-00.html ===== -->
+<!-- III.0 · section opener -->
+<style>
+.s3-00 .sub{margin-top:48px}
+.s3-00 .sym.kit{display:flex;flex-direction:row;align-items:flex-start;gap:96px;margin-top:72px}
+.s3-00 .sym.kit figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:16px}
+.s3-00 .sym.kit .ico{width:112px;height:112px}
+.s3-00 .sym.kit figcaption{font:500 28px/1.2 var(--font-mono);letter-spacing:.08em;text-transform:uppercase}
+</style>
+<section class="slide t-statement s3-00" data-comp="statement" data-theme="light" data-transition="ember-wipe" data-section="III · What you need to build it" data-cut="keep">
+  <p class="kicker"><b>III</b> · What you need to build it</p>
+  <p class="statement"><span class="line">This needs less setup</span><span class="line">than you <em>think.</em></span></p>
+  <p class="lede sub" data-build data-build-style="fade">Accounts, dependencies, hosting. The honest list, before a single slide of code.</p>
+  <div class="sym kit" data-build data-build-style="fade" aria-label="Three things to sort out: accounts, dependencies, hosting">
+    <figure><svg class="ico" aria-hidden="true"><use href="#i-key"/></svg><figcaption>Accounts</figcaption></figure>
+    <figure><svg class="ico" aria-hidden="true"><use href="#i-code"/></svg><figcaption>Dependencies</figcaption></figure>
+    <figure><svg class="ico" aria-hidden="true"><use href="#i-globe"/></svg><figcaption>Hosting</figcaption></figure>
+  </div>
+  <aside class="notes"><p>Quick change of gear. Every talk like this skips the part you actually need, which is what you have to have in front of you before you can build any of it.</p>
+  <p>So: accounts, dependencies, hosting. Three slides.</p>
+  <p>The short version is that the agent surface is less work than people assume. Two accounts get you live. Three runtime dependencies. And one hosting gotcha that will quietly eat your data if nobody warns you about it.</p>
+  <p>I am going to be specific, because this is the part you can act on tomorrow morning.</p>
+  <ul class="ledger"><li>no visible numbers</li><li>section framing = Ray's own, from the real build of the demo app</li></ul></aside>
+</section>
+
+<!-- ===== 3-01.html ===== -->
+<!-- III.1 · the accounts -->
+<style>
+.s3-01 .s301-two{display:flex;align-items:center;gap:36px;margin-top:auto}
+.s3-01 .s301-two figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:14px}
+.s3-01 .s301-two .ico{width:96px;height:96px}
+.s3-01 .s301-two figcaption{font:500 28px/1.2 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.s3-01 .s301-two .plus{font:700 64px/1 var(--font-head);color:var(--mute);margin-bottom:38px}
+.s3-01 .points{margin-top:36px}
+.s3-01 .acct{display:flex;flex-direction:column;justify-content:center;padding:36px 40px}
+.s3-01 .ahead{font:500 24px/1.25 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  padding-bottom:14px;border-bottom:2px solid var(--line)}
+.s3-01 .grp{margin-top:18px}
+.s3-01 .gk{margin:0 0 10px;font:500 24px/1.25 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.s3-01 .arow{display:grid;grid-template-columns:1fr auto;column-gap:28px;align-items:baseline;
+  padding:14px 0;border-top:2px solid var(--line)}
+.s3-01 .aname{font:500 30px/1.25 var(--font-mono);color:var(--fg)}
+.s3-01 .acost{font:500 24px/1.25 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--paper-dim);text-align:right}
+.s3-01 .awhy{grid-column:1 / -1;margin:4px 0 0;font:400 28px/1.25 var(--font-body);color:var(--muted)}
+</style>
+<section class="slide t-split s3-01" data-comp="split" data-theme="dark" data-transition="fade" data-section="III · What you need to build it" data-cut="skip">
+  <div class="l">
+    <p class="kicker"><b>Accounts</b> · what you sign up for</p>
+    <h2 class="headline">Two accounts get you <em>live.</em></h2>
+    <div class="s301-two" aria-hidden="true">
+      <figure><svg class="ico" aria-hidden="true"><use href="#i-code"/></svg><figcaption>GitHub</figcaption></figure>
+      <span class="plus">+</span>
+      <figure><svg class="ico" aria-hidden="true"><use href="#i-globe"/></svg><figcaption>Vercel</figcaption></figure>
+    </div>
+    <ul class="points">
+      <li data-build><span><b>GitHub plus Vercel</b> gets the first four layers live.</span></li>
+      <li data-build><span><b>Nothing else</b> is needed before step four.</span></li>
+      <li data-build><span><b>Add an account</b> when the step needs it, not before.</span></li>
+    </ul>
+  </div>
+  <div class="r">
+    <div class="panel acct">
+      <div class="ahead">Accounts, in the order you need them</div>
+      <div class="grp">
+        <p class="gk">Now</p>
+        <div class="arow"><span class="aname">GitHub</span><span class="acost">free</span><p class="awhy">the repo you clone, and CI later</p></div>
+        <div class="arow"><span class="aname">Vercel or Cloudflare</span><span class="acost">free tier</span><p class="awhy">hosting for the Next.js app</p></div>
+      </div>
+      <div class="grp">
+        <p class="gk">Before you demo to anyone</p>
+        <div class="arow"><span class="aname">A KV store</span><span class="acost">free tier</span><p class="awhy">durable state. Any Upstash protocol KV works.</p></div>
+      </div>
+      <div class="grp">
+        <p class="gk">Step four, or never</p>
+        <div class="arow"><span class="aname">Clerk, or any auth</span><span class="acost">free tier</span><p class="awhy">names the human who approves a token</p></div>
+        <div class="arow"><span class="aname">A domain registrar</span><span class="acost">you have one</span><p class="awhy">DNS for the last discovery check, and DNSSEC</p></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes"><p>Here is the whole account list. Five rows, and only two of them block you today.</p>
+  <p>GitHub, because you clone the repo, and because CI lands there later. Free.</p>
+  <p>Vercel or Cloudflare, to host the Next.js app. The free tier is genuinely enough for this.</p>
+  <p>Then a KV store, for durable state. Any Upstash protocol KV works: Vercel KV, Upstash itself, or self hosted serverless-redis-http. Get it before you demo to anyone, and the slide after next is why.</p>
+  <p>Clerk, or any auth provider you like. That one exists to identify the HUMAN who approves an agent token. It is step four. Not before.</p>
+  <p>A domain registrar for DNS records on the last discovery check, and for DNSSEC. Last, or never. You probably already have one.</p>
+  <p>The honest headline is the left side. GitHub plus Vercel and nothing else gets the first four layers live. Do not let an account list stop you starting tonight.</p>
+  <ul class="ledger"><li>no visible numbers</li><li>account list, costs and ordering = the real build of the demo app (its README and vercel project), not a vendor claim</li></ul></aside>
+</section>
+
+<!-- ===== 3-02.html ===== -->
+<!-- III.2 · the dependency tree -->
+<style>
+.s3-02 .code{font-size:34px;line-height:1.7;padding:48px 52px;box-shadow:inset 0 0 0 2px var(--line)}
+.s3-02 .points{margin-top:36px}
+.s3-02 .points li b{white-space:normal}
+</style>
+<section class="slide t-split s3-02" data-comp="split" data-theme="dark" data-transition="fade" data-section="III · What you need to build it" data-cut="keep">
+  <div class="l">
+    <p class="kicker"><b>Dependencies</b> · the whole tree</p>
+    <h2 class="headline"><em>Three</em> runtime dependencies.</h2>
+    <ul class="points">
+      <li data-build><span><b>No MCP SDK here.</b> Streamable HTTP is one JSON-RPC route handler. A2A is another.</span></li>
+      <li data-build><span><b>The well known documents</b> are route handlers that return JSON.</span></li>
+      <li data-build><span><b>Pin deliberately.</b> A CVE in the version we first pinned forced an upgrade mid build. Run npm audit before you ship.</span></li>
+    </ul>
+  </div>
+  <div class="r">
+<pre class="code" data-nonfact>"dependencies": {
+  <span class="k">"next"</span>: "16.4.0",
+  <span class="k">"react"</span>: "19.2.0",
+  <span class="k">"react-dom"</span>: "19.2.0"
+}
+
+npm install   28 packages
+npm audit     0 vulnerabilities</pre>
+  </div>
+  <aside class="notes"><p>This is the entire runtime dependency tree of a complete agent native app. Next, React, React DOM. That is the list.</p>
+  <p>Plus typescript and two at-types packages in devDependencies. Nothing else.</p>
+  <p>npm install reports twenty eight packages. npm audit reports zero vulnerabilities.</p>
+  <p>Here is the point I want to land. There is no MCP SDK in here. MCP over Streamable HTTP is one JSON-RPC route handler, about a hundred and fifty lines. A2A is another one. The well known documents are route handlers that return JSON.</p>
+  <p>You are not adopting a framework. You are writing ordinary HTTP handlers.</p>
+  <p>One caution, so this stays honest. A known CVE in the Next version we first pinned forced an upgrade mid build, and getting to zero vulnerabilities took moving to the current major. So pin deliberately, and run npm audit before you ship.</p>
+  <ul class="ledger"><li>the code block is a verbatim readout of package.json and the npm install / npm audit output from the real build, marked data-nonfact</li><li>no other visible numbers</li><li>roughly 150 lines for the MCP route handler, and the devDependencies count, are spoken only</li></ul></aside>
+</section>
+
+<!-- ===== 3-03.html ===== -->
+<!-- III.3 · hosting, the serverless state trap, and cost -->
+<style>
+.s3-03 .dg .dash{stroke-dasharray:11 9}
+.s3-03 .dg .ah{fill:var(--mute);stroke:none}
+.s3-03 .dg .jl{font:500 26px var(--font-mono);fill:var(--paper);letter-spacing:0;text-transform:none}
+.s3-03 .dg .lbl{font-size:24px}
+</style>
+<section class="slide t-diagram s3-03" data-comp="diagram" data-theme="dark" data-transition="fade" data-section="III · What you need to build it" data-cut="keep">
+  <div class="top"><div><p class="kicker"><b>Hosting</b> · the trap that loses data quietly</p>
+    <h2 class="headline">Writes succeed. Then they are <em>gone.</em></h2></div></div>
+  <svg class="dg" viewBox="0 0 1632 690" width="1632" height="690" xmlns="http://www.w3.org/2000/svg">
+    <g data-build data-build-style="fade">
+      <text class="lbl" x="0" y="20">WITHOUT A KV STORE, NOTHING ERRORS</text>
+      <rect class="box" x="0" y="44" width="440" height="116" rx="12"/>
+      <text class="big" x="28" y="112">POST a record</text>
+      <path class="ln" d="M452 102 H506"/><path class="ah" d="M506 94 l20 8 -20 8 z"/>
+      <rect class="box" x="532" y="44" width="470" height="116" rx="12"/>
+      <text class="big" x="560" y="92">Instance A</text>
+      <text class="txt" x="560" y="136">holds it in a Map</text>
+      <path class="ln" d="M1014 102 H1068"/><path class="ah" d="M1068 94 l20 8 -20 8 z"/>
+      <text class="big" x="1104" y="92">Returns OK.</text>
+      <text class="lbl" x="1104" y="132">WRITE SUCCEEDED</text>
+    </g>
+    <g data-build data-build-style="fade">
+      <rect class="box" x="0" y="190" width="440" height="116" rx="12"/>
+      <text class="big" x="28" y="258">GET it back</text>
+      <path class="ln" d="M452 248 H506"/><path class="ah" d="M506 240 l20 8 -20 8 z"/>
+      <rect class="box dash" x="532" y="190" width="470" height="116" rx="12"/>
+      <text class="big" x="560" y="238">Instance B</text>
+      <text class="txt" x="560" y="282">fresh. nothing there.</text>
+      <path class="ln" d="M1014 248 H1068"/><path class="ah" d="M1068 240 l20 8 -20 8 z"/>
+      <text class="big" x="1104" y="238">Returns OK.</text>
+      <text class="lbl" x="1104" y="278">AND EMPTY</text>
+    </g>
+    <g data-build data-build-style="fade">
+      <text class="lbl" x="0" y="356">THE FIX: MAKE THE APP SAY SO</text>
+      <rect class="box" x="0" y="376" width="1632" height="160" rx="12"/>
+      <text class="lbl jl" x="28" y="424">GET /api/v1/health</text>
+      <text class="lbl jl" x="28" y="464">{"status":"degraded","storage":"in-process-memory",</text>
+      <text class="lbl jl" x="28" y="504"> "warning":"writes will not persist across invocations"}</text>
+      <path class="ln" d="M1006 396 V516"/>
+      <text class="lbl jl" x="1030" y="424">KV_REST_API_URL=https://your-kv-host</text>
+      <text class="lbl jl" x="1030" y="464">KV_REST_API_TOKEN=...</text>
+      <text class="lbl" x="1030" y="504">TWO ENV VARS. THAT IS ALL.</text>
+    </g>
+    <g data-build data-build-style="fade">
+      <rect class="box" x="0" y="560" width="900" height="120" rx="12"/>
+      <text class="big" x="28" y="612">Namespace your keys.</text>
+      <text class="txt" x="28" y="656">Two apps writing posts overwrite each other.</text>
+      <rect class="box" x="932" y="560" width="700" height="120" rx="12"/>
+      <text class="big" x="960" y="612">Free to start.</text>
+      <text class="txt" x="960" y="656">Free tier, plus a free KV.</text>
+    </g>
+  </svg>
+  <aside class="notes"><p>Serverless hosting is the right default for this, and it has one sharp edge that is worth a whole slide.</p>
+  <p>Without a KV, state in an in-process Map appears to work. You POST a record, the instance holds it in memory, you get a success back. Then the next request lands on a fresh instance, and the record is gone.</p>
+  <p>The write succeeded. The read succeeded. Nothing errored. That silent version is far worse than an outright failure, because you only find it when someone else is looking.</p>
+  <p>So the pattern worth copying is: make the app say so. Health returns degraded, with the storage it is actually using and a warning that writes will not persist. The homepage shows a banner until durable storage is configured.</p>
+  <p>Then two env vars, and that is the whole configuration. KV_REST_API_URL and KV_REST_API_TOKEN.</p>
+  <p>One more real gotcha. On a shared KV, namespace your keys. Two products both writing an unprefixed posts key silently overwrite each other, and the symptom is missing data, not an error.</p>
+  <p>Cost: zero to start, genuinely. Vercel free tier plus a free KV tier, or self host the KV for nothing.</p>
+  <ul class="ledger"><li>no visible numbers</li><li>health response, env var names and the namespacing failure = the real build, observed; the degraded banner is in the app</li></ul></aside>
+</section>
+
+<!-- ===== 4-00.html ===== -->
+<!-- IV.0 · section opener: how the build runs -->
+<style>
+.s4-00 .statement{font-size:100px;max-width:1560px}
+.s4-00 .chain{margin:72px 0 0;gap:28px}
+.s4-00 .chain .ico{width:112px;height:112px}
+.s4-00 .chain .sym-arrow{width:56px;height:56px;color:var(--mute)}
+.s4-00 .chain figcaption{font:500 28px/1.2 var(--font-mono);color:var(--paper-dim);letter-spacing:.02em;text-transform:none}
+.s4-00 .sub{margin-top:48px;max-width:42ch;font-size:40px}
+.s4-00 .sub b{color:var(--paper);font-weight:700}
+</style>
+<section class="slide t-statement s4-00" data-comp="statement" data-theme="dark" data-transition="ember-wipe" data-section="IV · Build it" data-cut="keep">
+  <p class="kicker"><b>IV · Build it</b> Seven steps, your laptop, your agent</p>
+  <p class="statement"><span class="line">A step you have not verified</span><span class="line" data-build data-build-style="fade">on the wire is <em>not done.</em></span></p>
+  <div class="sym-chain chain" data-build data-build-style="fade" aria-label="Your agent loads the workshop skill, takes one step, then checks your deployment">
+    <figure><svg class="ico ice" aria-hidden="true"><use href="#i-agent"/></svg><figcaption>Your agent</figcaption></figure>
+    <svg class="ico sym-arrow" aria-hidden="true"><use href="#i-arrow"/></svg>
+    <figure><svg class="ico" aria-hidden="true"><use href="#i-page"/></svg><figcaption>The SKILL file</figcaption></figure>
+    <svg class="ico sym-arrow" aria-hidden="true"><use href="#i-arrow"/></svg>
+    <figure><svg class="ico" aria-hidden="true"><use href="#i-arrow-loop"/></svg><figcaption>One step at a time</figcaption></figure>
+    <svg class="ico sym-arrow" aria-hidden="true"><use href="#i-arrow"/></svg>
+    <figure><svg class="ico" aria-hidden="true"><use href="#i-scan"/></svg><figcaption>workshop_check_target</figcaption></figure>
+  </div>
+  <p class="sub lede" data-build data-build-style="fade">Every done condition is checked against <b>your deployment</b>, never against your config file.</p>
+  <aside class="notes"><p>Here is how the next stretch runs. You are going to build, not watch.</p><p>Point your own agent at agent-native-workshop dot vercel dot app. It loads the SKILL file from that site and hands you one step at a time. You do not get the whole plan at once, on purpose.</p><p>When you think a step is done, your agent calls a tool on that site named workshop underscore check underscore target, with your deployed URL. The site runs the readiness checks against your live deploy and returns which failure to fix first. The workshop is itself agent native, which is the shortest proof I can offer that any of this works.</p><p>And the rule for the whole hour, the one I want you to say back to me: a step you have not verified on the wire is not done. That is the entire subject of Part II. Surfaces that pass inspection in your editor and fail on the wire.</p><p>Seven steps. Each one has a done condition, and the done condition is checked against the deployment, never against your config file.</p><ul class="ledger"><li>no visible numbers</li></ul></aside>
+</section>
+
+<!-- ===== 4-01.html ===== -->
+<!-- IV.1 · steps 1 and 2 -->
+<style>
+.s4-01 .top{gap:18px}
+.s4-01 .headline{max-width:none;font-size:72px}
+.s4-01 .steps{margin-top:36px;gap:36px}
+.s4-01 .steps li{padding:30px 32px;gap:16px}
+.s4-01 .steps li:not(:last-child)::after{right:-36px;width:36px}
+.s4-01 .steps .n{font-size:64px}
+.s4-01 .steps h3{margin-top:0;font-size:44px;line-height:1.05}
+.s4-01 pre.code{margin:0;padding:22px 24px;font-size:28px;line-height:1.5;white-space:pre-wrap;border-radius:8px}
+.s4-01 .steps p{font-size:30px;line-height:1.34}
+.s4-01 .steps p b{color:var(--paper);font-weight:700}
+.s4-01 .pathline{font:500 34px/1.3 var(--font-mono);color:var(--paper);margin:0;letter-spacing:.01em;text-transform:none;overflow-wrap:anywhere}
+</style>
+<section class="slide t-flow s4-01" data-comp="flow" data-theme="dark" data-transition="fade" data-section="IV · Build it" data-cut="keep">
+  <div class="top"><p class="kicker"><b>Steps one and two</b> The floor, then the host</p>
+    <h2 class="headline">Deploy first. Then <em>customise.</em></h2></div>
+  <ol class="steps">
+    <li data-build>
+      <span class="n">1</span>
+      <h3>Deploy the kit unchanged.</h3>
+      <pre class="code">git clone &lt;kit&gt; my-product
+cd my-product
+npm install
+npx vercel deploy --prod</pre>
+      <p data-nonfact><b>Done when:</b> your URL returns 200 for <span class="mono">/.well-known/ai-agent.json</span></p>
+      <p><b>Trap:</b> no custom domain yet. That is step two.</p>
+    </li>
+    <li data-build>
+      <span class="n">2</span>
+      <h3>Edit one file. Nothing else.</h3>
+      <p class="pathline">agent.config.ts</p>
+      <p>Every discovery surface reads from here. The canonical host you set is what makes eleven documents agree with each other.</p>
+      <p><b>Done when:</b> your manifest homepage equals your real origin, and the PRM lists your scopes.</p>
+      <p><b>Trap:</b> put apex and www in <span class="mono">hosts.allowed</span> if you serve both.</p>
+    </li>
+  </ol>
+  <aside class="notes"><p>Step one. Deploy the kit with nothing changed. Clone, install, deploy to production.</p><p>People resist this order, so here is why it matters. If you customise first and it breaks, you are now debugging your product and the kit and your deploy pipeline all at once. Deploy the known good thing first, and every failure after that has exactly one cause: the thing you just changed.</p><p>It is done when your URL returns a 200 for slash dot well-known slash ai-agent dot json. Not when the deploy log is green. Hit the URL.</p><p>Do not set a custom domain yet. That is step two, and doing it here will cost you twenty minutes.</p><p>Step two. Open agent dot config dot ts, and edit only that. Every discovery surface in the kit reads from this one file, so setting the canonical host here is what makes eleven separate documents self consistent.</p><p>Done when your manifest homepage equals your real origin, and the protected resource metadata lists your scopes.</p><p>The trap here is the expensive one. If you serve both the apex and www, put both in hosts dot allowed. A document that self references the wrong host breaks the discovery chain one link from the end, and it fails looking exactly like an auth bug. You will spend an hour on your token and the problem will be a hostname.</p><ul class="ledger"><li>1, 2 = step index (.n counters, not facts)</li><li>200 = HTTP status required by the kit done condition, scripts/verify.sh assertion on /.well-known/ai-agent.json</li></ul></aside>
+</section>
+
+<!-- ===== 4-02.html ===== -->
+<!-- IV.2 · steps 3 and 4 -->
+<style>
+.s4-02{gap:28px}
+.s4-02 .headline{max-width:none;font-size:72px;margin-top:10px}
+.s4-02 .pair{gap:48px}
+.s4-02 .half{background:var(--panel);border-top:8px solid var(--mute);padding:30px 34px;gap:14px}
+.s4-02 .half h3{font-size:44px;line-height:1.05}
+.s4-02 .half p{margin:0;font:400 30px/1.34 var(--font-body);color:var(--paper-dim)}
+.s4-02 .half p b{color:var(--paper);font-weight:700}
+.s4-02 .pathline{font:500 30px/1.35 var(--font-mono);color:var(--paper);letter-spacing:.01em;overflow-wrap:anywhere}
+.s4-02 .hard{font:700 34px/1.24 var(--font-head);color:var(--paper);letter-spacing:-.01em}
+.s4-02 .hard em{font-style:normal;color:var(--ember)}
+.s4-02 .spacer{flex:1;min-height:0}
+</style>
+<section class="slide t-split halves s4-02" data-comp="split" data-theme="dark" data-transition="fade" data-section="IV · Build it" data-cut="keep">
+  <p class="kicker"><b>Steps three and four</b> Your product, then your front door</p>
+  <h2 class="headline">One step is about your product. This is it.</h2>
+  <div class="pair">
+    <div class="half" data-build>
+      <p class="label">Step three</p>
+      <h3>Delete the demo domain. Put yours there.</h3>
+      <p class="pathline">lib/ &middot; lib/mcp/tools.ts</p>
+      <p>Your nouns, your tools. Everything else in these seven steps is the floor.</p>
+      <div class="spacer"></div>
+      <p><b>Done when:</b> an anonymous <span class="mono">tools/list</span> returns your tools, and one of them executes with no token.</p>
+      <p><b>Trap:</b> keep a tool at <span class="mono">scope: null</span>. A description is read by an agent deciding whether to call it, so say what it returns.</p>
+    </div>
+    <div class="half" data-build>
+      <p class="label">Step four</p>
+      <h3>Wire your identity provider in.</h3>
+      <p class="pathline">app/api/agent/signup/complete/route.ts</p>
+      <p class="hard">As shipped, anyone who knows a <em>user_code</em> can approve it.</p>
+      <div class="spacer"></div>
+      <p><b>Done when:</b> an unauthenticated POST to the complete endpoint is refused, and an approval records a real user id from the session.</p>
+      <p><b>Trap:</b> pass the approving user's real tier, so the scope ceiling is enforced against who they actually are.</p>
+    </div>
+  </div>
+  <aside class="notes"><p>Step three. Delete the demo domain and put your product in its place. Your nouns in lib, your tools in lib slash mcp slash tools dot ts. This is the only step in the seven that is actually about your product. Everything else is the floor.</p><p>Done when an anonymous tools slash list returns your tools, and at least one of them executes with no token at all.</p><p>Keep one tool with scope null. And write the description for the reader it actually has: an agent deciding whether to call this thing. Say what it returns and when to reach for it. Not what it is called.</p><p>Step four, and this is the one I will not soften. As shipped, anyone who knows a user code can approve it. The kit leaves that seam open deliberately, because it has no opinion about your auth. You are the one who has an identity provider.</p><p>The entire value of the device code flow is that a known human approved a specific grant. An identity supplied in the request body throws that away. So wire your provider into that route, in app slash api slash agent slash signup slash complete slash route dot ts.</p><p>Done when an unauthenticated POST to the complete endpoint is refused, and an approval records a real user id taken from the session.</p><p>And pass the approving user's real tier through, so the scope ceiling is enforced against who they actually are, not against a default.</p><ul class="ledger"><li>no visible numbers</li></ul></aside>
+</section>
+
+<!-- ===== 4-03.html ===== -->
+<!-- IV.3 · steps 5 and 6 -->
+<style>
+.s4-03 .top{gap:18px}
+.s4-03 .headline{max-width:none;font-size:72px}
+.s4-03 .steps{margin-top:36px;gap:36px}
+.s4-03 .steps li{padding:30px 32px;gap:16px}
+.s4-03 .steps li:not(:last-child)::after{right:-36px;width:36px}
+.s4-03 .steps .n{font-size:64px}
+.s4-03 .steps h3{margin-top:0;font-size:44px;line-height:1.05}
+.s4-03 pre.code{margin:0;padding:22px 24px;font-size:28px;line-height:1.5;white-space:pre-wrap;border-radius:8px}
+.s4-03 .steps p{font-size:30px;line-height:1.34}
+.s4-03 .steps p b{color:var(--paper);font-weight:700}
+.s4-03 .shiplist{font:500 30px/1.4 var(--font-mono);color:var(--paper);margin:0;overflow-wrap:anywhere}
+</style>
+<section class="slide t-flow s4-03" data-comp="flow" data-theme="dark" data-transition="fade" data-section="IV · Build it" data-cut="keep">
+  <div class="top"><p class="kicker"><b>Steps five and six</b> Durable, then sellable</p>
+    <h2 class="headline">Make it durable. Then make it a <em>product.</em></h2></div>
+  <ol class="steps">
+    <li data-build>
+      <span class="n">5</span>
+      <h3>Add storage before you demo.</h3>
+      <pre class="code">npx vercel env add KV_REST_API_URL production
+npx vercel env add KV_REST_API_TOKEN production</pre>
+      <p><b>Done when:</b> <span class="mono">/api/v1/health</span> returns status ok with storage kv, not degraded.</p>
+      <p><b>Trap:</b> set <span class="mono">kvNamespace</span> if you share a KV. Two products writing one unprefixed key overwrite each other, and the symptom is missing data, not an error.</p>
+    </li>
+    <li data-build>
+      <span class="n">6</span>
+      <h3>Ship the API as the product.</h3>
+      <p class="shiplist">OpenAPI spec &middot; tokenless read &middot; typed errors &middot; live rate-limit headers</p>
+      <p>This is where the points are. A spec and a public API are worth seven each, against one or two for a well-known file.</p>
+      <p><b>Done when:</b> a write with no token returns <span class="mono">problem+json</span> carrying a remedy field, and an authenticated write carries RateLimit headers.</p>
+      <p><b>Trap:</b> derive the portal's counts from the tool catalog.</p>
+    </li>
+  </ol>
+  <aside class="notes"><p>Step five. Add durable storage before you demo to anybody. Two environment variables on production, and the kit picks them up.</p><p>Done when slash api slash v1 slash health returns status ok with storage kv. If it says degraded, you are running on memory and your demo will lose state in front of people.</p><p>If you share a KV with another project, set kvNamespace. Two products writing the same unprefixed key silently overwrite each other, and the symptom is missing data, not an error. Nothing in your logs will tell you.</p><p>Step six is where the score actually moves. An OpenAPI spec, one read that works with no token, a typed error contract, and live rate limit headers. A spec and a public API are worth seven points each. A well known file is worth one or two. So if you want the number to move, this is the step, not another metadata file.</p><p>Done when your spec lists your real paths, a write with no token comes back as problem plus json carrying a remedy field, and an authenticated write carries RateLimit headers you can read.</p><p>Derive the developer portal's counts from the tool catalog. A portal claiming twelve tools next to a server exposing seven is worse than no portal at all, and hand maintained numbers always end up there.</p><ul class="ledger"><li>5, 6 = step index (.n counters, not facts)</li><li>v1 = path name in /api/v1/health, not a quantity</li><li>seven, one, two = grader point weights for spec / public API / well-known file, spoken in words; source: the two live graders cited in Part III</li></ul></aside>
+</section>
+
+<!-- ===== 4-04.html ===== -->
+<!-- IV.4 · step 7, the gates -->
+<style>
+.s4-04 .l{flex:1}
+.s4-04 .headline{font-size:72px;max-width:18ch}
+.s4-04 .points{gap:26px}
+.s4-04 .points li{align-items:flex-start}
+.s4-04 .points li b{white-space:normal}
+.s4-04 .r{flex:1.05;flex-direction:column;gap:28px}
+.s4-04 .r > *{flex:none;width:100%}
+.s4-04 pre.code{flex:1;margin:0;padding:40px 36px;font-size:32px;line-height:1.6;white-space:pre-wrap;border-radius:10px;box-shadow:inset 0 0 0 2px var(--line)}
+.s4-04 pre.code .c{color:var(--paper-dim)}
+.s4-04 .trap{margin:0;font:400 30px/1.34 var(--font-body);color:var(--paper-dim)}
+.s4-04 .trap b{color:var(--paper);font-weight:700}
+</style>
+<section class="slide t-split s4-04" data-comp="split" data-theme="dark" data-transition="fade" data-section="IV · Build it" data-cut="keep">
+  <div class="l">
+    <p class="kicker"><b>Step seven</b> The gates</p>
+    <h2 class="headline">Three checks, in order. None of them an <em>opinion.</em></h2>
+    <ul class="points">
+      <li data-build><b>The build</b> proves it compiles.</li>
+      <li data-build><b>verify.sh</b> proves it is true on the wire.</li>
+      <li data-build><b>The graders</b> tell you where you stand.</li>
+      <li data-build><b>Shipping today?</b> Stop after the second one.</li>
+    </ul>
+  </div>
+  <div class="r">
+    <pre class="code" data-nonfact>npm run build
+<span class="c"># typechecks every route</span>
+
+bash scripts/verify.sh YOUR_URL
+<span class="c"># 18 assertions on the LIVE deploy</span></pre>
+    <p class="trap" data-build><b>Trap:</b> on the Cloudflare grader, rescan after every single fix. It reveals sub-checks one at a time, so a check that just went green can be hiding the next one.</p>
+  </div>
+  <aside class="notes"><p>Step seven. Three checks, in this order, and none of them is a matter of taste.</p><p>First, npm run build. It typechecks every route. That is all it tells you. It tells you the thing compiles.</p><p>Second, bash scripts slash verify dot sh with your URL. Eighteen assertions, run against your live deployment. This is the one that is about correctness. The build proves it compiles. This proves it is true on the wire. Only the middle one is about correctness.</p><p>Third, the graders. They are the acceptance test, not the build plan. Do not work down a grader's checklist as if it were a roadmap. Run it to find out where you stand.</p><p>Say this out loud, because the room needs permission: if you are shipping something at the end of today, stop after the second gate. A product that passes verify dot sh is already further than almost anything on the web.</p><p>One trap on the graders. On the Cloudflare one, rescan after every single fix. It reveals sub checks one at a time, so a check that just went green can be hiding the next one underneath it. Three of ours took two or three passes each before they stayed green.</p><ul class="ledger"><li>18 = assertion count in scripts/verify.sh, the kit's live-deploy verifier (marked data-nonfact: it is the command's own output count, not a sourced claim)</li></ul></aside>
+</section>
+
+<!-- ===== 4-05.html ===== -->
+<!-- IV.5 · closing: what to keep, what to skip -->
+<style>
+.s4-05 .l{flex:1.25}
+.s4-05 .statement{font-size:104px;max-width:none}
+.s4-05 .served{margin-top:40px;max-width:30ch;font-size:40px;color:var(--paper-dim)}
+.s4-05 .mono-lines{font:500 42px/1.5 var(--font-mono);margin:36px 0 0;color:var(--paper);overflow-wrap:anywhere}
+.s4-05 .mit{margin-top:24px;font-size:30px}
+.s4-05 .r{flex:1;justify-content:center;gap:52px}
+.s4-05 .block{display:flex;flex-direction:column;gap:18px}
+.s4-05 .kl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px}
+.s4-05 .kl li{font:400 32px/1.32 var(--font-body);color:var(--paper-dim);display:flex;gap:20px;align-items:baseline}
+.s4-05 .kl li b{color:var(--paper);font-weight:700}
+.s4-05 .kl li::before{content:'';flex:none;width:14px;height:14px;background:var(--mute);transform:translateY(-2px)}
+</style>
+<section class="slide t-close fin s4-05" data-comp="close" data-theme="dark" data-transition="lift" data-section="IV · Build it" data-cut="keep">
+  <div class="l">
+    <p class="kicker"><b>Take this with you</b> One sentence</p>
+    <p class="statement">Verify on the wire. <em>Every time.</em></p>
+    <p class="served lede">Anything a grader or an agent reads from your site has to be in the served bytes.</p>
+    <div class="mute-rule"></div>
+    <p class="mono-lines">agent-native-kit.vercel.app<br>agent-native-workshop.vercel.app</p>
+    <p class="body mit">The kit is MIT. The workshop is itself agent native, so point your agent at it.</p>
+  </div>
+  <div class="r">
+    <div class="block">
+      <p class="label">Keep</p>
+      <ul class="kl">
+        <li data-build><span><b>Layers one to four.</b> Discoverable, readable, authenticated, callable. The smallest genuinely useful thing.</span></li>
+        <li data-build><span><b>Add six</b> when you want the number to move.</span></li>
+        <li data-build><span><b>Add five</b> when there is a second agent worth talking to.</span></li>
+        <li data-build><span><b>Add seven</b> the day you ship. It costs nothing and it is how you find out you broke something.</span></li>
+      </ul>
+    </div>
+    <div class="block">
+      <p class="label">Skip</p>
+      <ul class="kl">
+        <li data-build><span><b>No paywall to chase a score.</b> The commerce checks are neutral and do not count.</span></li>
+        <li data-build><span><b>DNS records last,</b> or never.</span></li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes"><p>What to keep from today, and what to put down.</p><p>Keep layers one through four. Discoverable, readable, authenticated, agent callable. That is a product an agent can actually use, and it is the smallest genuinely useful thing you can own. If you only ever do that, you are fine.</p><p>Add six when you want the number to move, because that is where the points are. Add five when there is a second agent worth talking to, and not before. Add seven on the day you ship, because it costs nothing and it is how you find out you broke something.</p><p>And put two things down. Do not build a paywall to chase a score. The commerce checks are neutral, they do not count, and you will spend a week on them. Do DNS records last, or never.</p><p>One sentence to leave with. Anything a grader or an agent reads from your site has to be in the served bytes. Not in your config, not in your editor, not in your head. In the bytes you serve. So verify on the wire, every time.</p><p>Both links are on screen. The kit is MIT, take it. The workshop is itself agent native, so you can point your agent at it tonight and it will walk you through the whole thing again.</p><ul class="ledger"><li>no visible numbers</li></ul></aside>
+</section>
+
+
+
+  <div id="hud"><span class="count"><span id="hud-n">01</span> / <span id="hud-t">21</span></span><span class="bar"><i id="hud-bar"></i></span></div>
+  <div id="cutflag">5 min cut</div>
+  <div id="ov-label">Overview · click a slide · Esc to close</div>
+  <div id="wipe"></div>
+  <div id="flash"></div>
+  <div id="blackout"></div>
+</div>
+</div>
+
+<div id="presenter" aria-hidden="true">
+  <div class="p-top"><span id="p-pos">Slide 1 / 21</span><span class="timer" id="p-timer">00:00</span><span id="p-clock">--:--</span></div>
+  <div><div class="p-cap" style="margin-bottom:12px">Now</div><div class="p-frame" id="p-cur"></div></div>
+  <div class="p-right">
+    <div class="p-cap">Next</div><div class="p-frame" id="p-next"></div>
+    <div class="p-cap">Notes</div><div class="p-notes" id="p-notes"></div>
+  </div>
+  <div class="p-bottom"><span id="p-build" class="bld"></span><span id="p-cut" class="p-cutnote"></span><span>Arrows / space: advance · C: 5 min cut · T: reset timer · this window drives the deck</span></div>
+</div>
+
+<script>
+/* =====================================================================
+   BUILDING AGENT ECONOMIES · deck engine (Immersive Commons)
+   Single file, no build step, no network. WAAPI + canvas.
+   Cloned from the Builder Series kickoff engine (builds never flash, transition
+   audit, presenter view, overview, blackout, deep links, reduced motion);
+   Kickoff-specific templates removed, templates + type scale rebuilt for IC.
+   ===================================================================== */
+(() => {
+'use strict';
+const W = 1920, H = 1080;
+const INK = '#0a0806', PAPER = '#f2ede3';
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const qs = (s, r = document) => r.querySelector(s);
+const qsa = (s, r = document) => [...r.querySelectorAll(s)];
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const easeIO = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+const easeOut = t => 1 - Math.pow(1 - t, 3);
+const SVGNS = 'http://www.w3.org/2000/svg';
+const svgEl = (tag, attrs = {}, parent) => {
+  const e = document.createElementNS(SVGNS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+};
+const anim = (el, kf, opts) => el.animate(kf, Object.assign({ fill: 'both', easing: 'cubic-bezier(.2,.7,.2,1)' }, opts)).finished.catch(() => {});
+
+const params = new URLSearchParams(location.search);
+const VIEW = params.get('view') || 'main';        // main | presenter
+const stage = qs('#stage');
+const slides = qsa('#stage > section.slide');
+const N = slides.length;
+let scale = 1;
+
+/* ---------- builds ---------- */
+function buildGroups(slide) {
+  const els = qsa('[data-build]', slide);
+  let auto = 0; const map = new Map();
+  els.forEach(el => {
+    const v = el.getAttribute('data-build');
+    const k = v !== '' && !isNaN(+v) ? +v : (auto += 1, 1000 + auto);
+    if (!map.has(k)) map.set(k, []);
+    map.get(k).push(el);
+  });
+  return [...map.keys()].sort((a, b) => a - b).map(k => map.get(k));
+}
+function applyStep(slide, step, instant) {
+  if (instant) { slide.classList.add('instant'); requestAnimationFrame(() => requestAnimationFrame(() => slide.classList.remove('instant'))); }
+  slide._groups.forEach((g, i) => g.forEach(el => {
+    if (instant) { el.style.transition = 'none'; }
+    el.classList.toggle('built', i < step);
+    if (instant) { el.offsetWidth; el.style.transition = ''; }
+  }));
+}
+
+/* media: a missing file never shows a broken icon */
+function prepareMedia() {
+  qsa('.media').forEach(fig => {
+    const has = fig.querySelector('video,img,iframe,canvas') || fig.dataset.playlist;
+    if (!has) fig.classList.add('is-empty', 'ph');
+    if (!fig.querySelector('.ph-label')) {
+      const l = document.createElement('div'); l.className = 'ph-label';
+      l.innerHTML = '<span class="id"></span><span class="what"></span>';
+      l.querySelector('.id').textContent = fig.dataset.id ? `[${fig.dataset.id}]` : '';
+      l.querySelector('.what').textContent = fig.dataset.label || 'awaiting asset';
+      fig.prepend(l);
+    }
+    const fail = () => fig.classList.add('is-empty', 'ph');
+    qsa('video,img', fig).forEach(m => {
+      m.addEventListener('error', fail, true);
+      if (m.tagName === 'IMG' && m.complete && !m.naturalWidth) fail();   // failed before this script ran
+    });
+  });
+  qsa('img').forEach(img => {
+    if (img.closest('.media')) return;
+    const miss = () => img.classList.add('is-missing');
+    img.addEventListener('error', miss);
+    if (img.complete && !img.naturalWidth) miss();
+  });
+}
+
+/* ---------- media lifecycle ---------- */
+function mediaOn(slide) {
+  qsa('video', slide).forEach(v => {
+    if (v.dataset.src && !v.getAttribute('src')) { v.src = v.dataset.src; if (v.dataset.poster) v.poster = v.dataset.poster; }
+    v.muted = v.hasAttribute('data-sound') ? false : true;
+    // a demo that is showing its live iframe keeps the recorded fallback paused
+    if (slide.classList.contains('use-fallback') || !qs('iframe[data-src]', slide)) { const p = v.play(); if (p) p.catch(() => {}); }
+  });
+  qsa('iframe[data-src]', slide).forEach(f => {
+    if (!f.getAttribute('src')) f.src = f.dataset.src;
+    armFallbackTimer(slide, f);
+  });
+}
+function mediaOff(slide) {
+  qsa('video', slide).forEach(v => { try { v.pause(); } catch (e) {} });
+}
+
+/* ---------- demo slide: live iframe with a recorded fallback ---------- */
+const fbTimers = new Map();
+function armFallbackTimer(slide, f) {
+  clearTimeout(fbTimers.get(slide));
+  if (f.dataset.loaded) return;
+  f.addEventListener('load', () => { f.dataset.loaded = '1'; clearTimeout(fbTimers.get(slide)); }, { once: true });
+  // no load event within 8 s (venue Wi-Fi): fall back by itself rather than show a blank
+  fbTimers.set(slide, setTimeout(() => { if (!f.dataset.loaded) setFallback(slide, true); }, 8000));
+}
+function setFallback(slide, on) {
+  if (!slide.classList.contains('t-demo')) return;
+  slide.classList.toggle('use-fallback', on);
+  qsa('video', slide).forEach(v => { if (on) { const p = v.play(); if (p) p.catch(() => {}); } else { try { v.pause(); } catch (e) {} } });
+}
+
+/* =====================================================================
+   AMBIENT DEPTH FIELD · three dot layers at different depths drift at
+   different speeds and parallax with the pointer; a slide change sends a
+   lift pulse through them (dots near the band grow toward the viewer).
+   ===================================================================== */
+const Ambient = (() => {
+  const cv = qs('#ambient'), ctx = cv.getContext('2d');
+  const LAYERS = [                       // far -> near
+    { g: 104, s: 1.3, a: .05,  vx: 3,  vy: 1.5, par: 6 },
+    { g: 68,  s: 1.9, a: .075, vx: 7,  vy: 3,   par: 14 },
+    { g: 46,  s: 2.6, a: .095, vx: 13, vy: 6,   par: 26 },
+  ];
+  const ripples = []; let running = false, last = 0, t0 = performance.now();
+  let px = 0, py = 0, tx = 0, ty = 0;
+  function ripple(x = W / 2, y = H / 2, strength = 1) { ripples.push({ x, y, t: performance.now(), s: strength }); }
+  function pointer(nx, ny) { tx = nx; ty = ny; }
+  function frame(now) {
+    if (!running) return;
+    requestAnimationFrame(frame);
+    if (now - last < 33) return;             // ~30 fps is plenty for ambience
+    last = now;
+    const t = (now - t0) / 1000;
+    px += (tx - px) * .06; py += (ty - py) * .06;
+    stage.style.setProperty('--px', px.toFixed(3)); stage.style.setProperty('--py', py.toFixed(3));
+    ctx.clearRect(0, 0, W, H);
+    for (let i = ripples.length - 1; i >= 0; i--) if (now - ripples[i].t > 3200) ripples.splice(i, 1);
+    for (const L of LAYERS) {
+      const ox = ((t * L.vx - px * L.par) % L.g + L.g) % L.g, oy = ((t * L.vy - py * L.par) % L.g + L.g) % L.g;
+      const cols = Math.ceil(W / L.g) + 2, rows = Math.ceil(H / L.g) + 2;
+      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+        const x = c * L.g + (r % 2 ? L.g / 2 : 0) - L.g + ox, y = r * L.g - L.g + oy;
+        let a = L.a + L.a * .6 * Math.sin(x * 0.004 + t * 0.3) * Math.cos(y * 0.005 - t * 0.2);
+        let s = L.s;
+        for (const rp of ripples) {
+          const age = (now - rp.t) / 1000, rad = age * 820, d = Math.hypot(x - rp.x, y - rp.y);
+          const band = Math.exp(-Math.pow((d - rad) / 80, 2)) * Math.max(0, 1 - age / 3.2) * rp.s;
+          a += band * .3; s += band * L.s * 1.2;
+        }
+        if (a <= 0.01) continue;
+        ctx.fillStyle = `rgba(242,237,227,${Math.min(a, .5).toFixed(3)})`;
+        ctx.fillRect(x - s / 2, y - s / 2, s, s);
+      }
+    }
+  }
+  function start() { if (running) return; running = true; requestAnimationFrame(frame); }
+  function stop() { running = false; }
+  function staticDraw() { running = true; frame(performance.now() + 100); running = false; }
+  document.addEventListener('visibilitychange', () => document.hidden ? stop() : (RM ? staticDraw() : start()));
+  return { start, stop, ripple, staticDraw, pointer, cv };
+})();
+
+function enterStat(slide, instant) { qsa('[data-count]', slide).forEach(el => countUp(el, instant)); }
+function countUp(el, instant) {
+  const target = parseFloat(el.dataset.count); if (!isFinite(target)) return;
+  const dec = (el.dataset.count.split('.')[1] || '').length;
+  const pre = el.dataset.prefix || '', suf = el.dataset.suffix || '';
+  const fmt = v => pre + v.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec }) + suf;
+  if (instant || RM) { el.textContent = fmt(target); return; }
+  const t0 = performance.now(), dur = 1400;
+  const f = now => { const p = clamp((now - t0) / dur, 0, 1); el.textContent = fmt(target * easeOut(p)); if (p < 1) requestAnimationFrame(f); };
+  requestAnimationFrame(f);
+}
+
+function onEnter(slide, from, dir, instant) {
+  mediaOn(slide);
+  enterStat(slide, instant);
+  const enter = () => { if (slides[cur] !== slide) return; slide.classList.add('entered'); };
+  if (instant || RM) { slide.classList.add('instant'); enter(); requestAnimationFrame(() => requestAnimationFrame(() => slide.classList.remove('instant'))); }
+  else setTimeout(enter, slide.dataset.transition === 'lift' ? 700 : 220);
+}
+function onLeave(slide) {
+  mediaOff(slide);
+}
+function settle(slide) { slide.classList.remove('entered'); }
+
+/* =====================================================================
+   TRANSITIONS  ·  fn(from, to, dir) -> Promise
+   ===================================================================== */
+const wipe = qs('#wipe'), flash = qs('#flash');
+
+function stageRect(el) {
+  const s = stage.getBoundingClientRect(), r = el.getBoundingClientRect();
+  return { x: (r.left - s.left) / scale, y: (r.top - s.top) / scale, w: r.width / scale, h: r.height / scale };
+}
+function show(slide) { slide.classList.add('is-active'); slide.style.opacity = ''; }
+function hide(slide) { slide.getAnimations().forEach(a => a.cancel()); slide.classList.remove('is-active', 'is-leaving'); slide.style.opacity = ''; slide.style.clipPath = ''; }
+function contentOf(slide) { return [...slide.children].filter(c => !c.matches('aside.notes')).filter(revealable); }
+// a transition may animate an element only if it is not a build still waiting for its click:
+// an opacity keyframe overrides the build's CSS opacity:0, so the text flashes, then hides.
+function revealable(el) { return !el.matches('[data-build]:not(.built)'); }
+// every element of root that neither is nor contains one of keep
+function restOf(root, keep) {
+  const out = [];
+  const walk = el => [...el.children].forEach(k => {
+    if (k.matches('aside.notes') || keep(k)) return;
+    if ([...k.querySelectorAll('*')].some(keep)) walk(k); else out.push(k);
+  });
+  walk(root); return out;
+}
+
+const T = {};
+
+T.fade = async (from, to) => {
+  from.classList.add('is-leaving'); show(to);
+  const rise = contentOf(to);
+  await Promise.all([
+    anim(to, [{ opacity: 0 }, { opacity: 1 }], { duration: 650, fill: 'none' }),
+    ...rise.map((c, i) => anim(c, [{ transform: 'translateY(18px)' }, { transform: 'none' }], { duration: 900, delay: 40 * i, fill: 'backwards' })),
+    anim(from, [{ opacity: 1 }, { opacity: 0 }], { duration: 450, fill: 'forwards' }),
+  ]);
+  hide(from);
+};
+
+T.crossfade = async (from, to) => {           // reduced-motion + backwards default
+  from.classList.add('is-leaving'); show(to);
+  await Promise.all([anim(to, [{ opacity: 0 }, { opacity: 1 }], { duration: 320, easing: 'linear', fill: 'none' }),
+                     anim(from, [{ opacity: 1 }, { opacity: 0 }], { duration: 320, easing: 'linear', fill: 'forwards' })]);
+  hide(from);
+};
+
+T.cut = async (from, to) => {
+  hide(from); show(to);
+  if (to.hasAttribute('data-flash') && !RM) {
+    flash.style.opacity = 1;
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));   // one painted frame
+    await sleep(34);
+    flash.style.opacity = 0;
+  }
+};
+
+T['ember-wipe'] = (from, to) => new Promise(resolve => {
+  const BW = 200, dur = 760, t0 = performance.now();
+  from.classList.add('is-leaving'); show(to);
+  to.style.clipPath = 'inset(0 100% 0 0)';
+  wipe.style.transform = `translateX(${-BW}px)`;
+  const heads = qsa('h1,h2,.statement,.kicker,.sec-num', to).filter(revealable);
+  let risen = false;
+  const f = now => {
+    const p = clamp((now - t0) / dur, 0, 1), e = easeIO(p);
+    const x = -BW + e * (W + BW);                 // bar's left edge
+    wipe.style.transform = `translateX(${x}px)`;
+    to.style.clipPath = `inset(0 ${Math.max(0, W - x).toFixed(1)}px 0 0)`;
+    if (!risen && p > .35) {
+      risen = true;
+      heads.forEach((h, i) => anim(h, [{ transform: 'translateX(-60px)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 900, delay: i * 70, fill: 'backwards', easing: 'cubic-bezier(.16,1,.3,1)' }));
+    }
+    if (p < 1) return requestAnimationFrame(f);
+    to.style.clipPath = ''; wipe.style.transform = `translateX(${-BW - 20}px)`;
+    hide(from); resolve();
+  };
+  requestAnimationFrame(f);
+});
+
+T.morph = async (from, to, dir) => {
+  const pairs = qsa('[data-morph-id]', to).map(t => [qs(`[data-morph-id="${t.dataset.morphId}"]`, from), t]).filter(p => p[0]);
+  if (!pairs.length) return T.fade(from, to);
+  const first = pairs.map(([f]) => stageRect(f));
+  const fromColors = pairs.map(([f]) => getComputedStyle(f).color);
+  from.classList.add('is-leaving'); show(to);
+  const jobs = [], held = [];                  // held: forwards-filled anims cancelled only after the swap
+  const toBg = getComputedStyle(to).backgroundColor, fromBg = getComputedStyle(from).backgroundColor;
+  if (toBg !== fromBg) jobs.push(anim(to, [{ backgroundColor: fromBg }, { backgroundColor: toBg }], { duration: 700, fill: 'none' }));
+  pairs.forEach(([f, t], i) => {
+    const a = first[i], b = stageRect(t);
+    const sx = a.w / Math.max(b.w, 1), sy = a.h / Math.max(b.h, 1);
+    const textish = !t.querySelector('svg,img,video,canvas,.sh-rig') && t.tagName.toLowerCase() !== 'svg';
+    const same = t.hasAttribute('data-morph-same') || f.innerHTML.trim() === t.innerHTML.trim();
+    t.style.transformOrigin = '0 0';
+    const kf = [{ transform: `translate(${a.x - b.x}px,${a.y - b.y}px) ${textish ? `scale(${sx})` : `scale(${sx},${sy})`}` }, { transform: 'none' }];
+    const tc = getComputedStyle(t).color;
+    if (textish && fromColors[i] !== tc) { kf[0].color = fromColors[i]; kf[1].color = tc; }
+    if (!same) {        // different content in the same slot: a fast handover early in the flight
+      jobs.push(anim(t, [{ opacity: 0 }, { opacity: 1 }], { duration: 240, easing: 'linear', fill: 'backwards' }));
+      jobs.push(anim(f, [{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: 'forwards', easing: 'linear' })); held.push(f);
+    } else f.style.visibility = 'hidden';
+    jobs.push(anim(t, kf, { duration: 850, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'none' }));
+  });
+  const isMorph = k => k.hasAttribute('data-morph-id');
+  restOf(from, isMorph).forEach(el => { jobs.push(anim(el, [{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: 'forwards' })); held.push(el); });
+  restOf(to, isMorph).filter(revealable).forEach((el, i) => jobs.push(anim(el, [{ opacity: 0, transform: 'translateY(20px)' }, { opacity: 1, transform: 'none' }], { duration: 700, delay: 320 + i * 50, fill: 'backwards' })));
+  await Promise.all(jobs);
+  hide(from);
+  held.forEach(el => el.getAnimations().forEach(x => x.cancel()));
+  pairs.forEach(([f, t]) => { f.style.visibility = ''; t.style.transformOrigin = ''; });
+};
+
+/* ---- lift: the outgoing key card rises toward the viewer, then grows into the next slide's ground ---- */
+T.lift = async (from, to) => {
+  const key = qs('[data-lift-key]', from) || qs('h1,h2,.statement', from);
+  if (!key) return T.fade(from, to);
+  const face = null;
+  const ground = to.dataset.theme === 'light' ? PAPER : INK;
+  const cardBg = face ? getComputedStyle(face).backgroundColor : ground;
+  const rad = face ? getComputedStyle(face).borderTopLeftRadius : '6px';
+  from.classList.add('is-leaving');
+  const held = [key];
+  // 1 · everything else falls back while the key rises toward the room
+  const rest = restOf(from, k => k === key);
+  rest.forEach(el => { held.push(el); anim(el, [{ opacity: 1, filter: 'blur(0px)' }, { opacity: 0, filter: 'blur(6px)' }], { duration: 520, fill: 'forwards' }); });
+  const r0 = stageRect(key);
+  Ambient.ripple(r0.x + r0.w / 2, r0.y + r0.h / 2, 1.1);
+  key.style.transformOrigin = '50% 50%';
+  const kt = getComputedStyle(key).transform, base = kt && kt !== 'none' ? kt + ' ' : '';
+  await anim(key, [
+    { transform: base + 'perspective(1400px) translateZ(0px)', filter: 'drop-shadow(0 0 0 rgba(0,0,0,0))' },
+    { transform: base + 'perspective(1400px) translateZ(170px) rotateX(4deg)', filter: 'drop-shadow(0 48px 56px rgba(0,0,0,.5))' }],
+    { duration: 520, easing: 'cubic-bezier(.3,0,.15,1)', fill: 'forwards' });
+  // 2 · a plain card of the ground colour takes over at the peak and grows to fill the stage
+  const r = stageRect(key);
+  const ghost = document.createElement('div'); ghost.className = 'lift-ghost';
+  Object.assign(ghost.style, { left: r.x + 'px', top: r.y + 'px', width: r.w + 'px', height: r.h + 'px', background: cardBg, borderRadius: rad });
+  stage.appendChild(ghost);
+  anim(key, [{ opacity: 1 }, { opacity: 0 }], { duration: 240, fill: 'forwards' });
+  const grow = anim(ghost, [
+    { left: r.x + 'px', top: r.y + 'px', width: r.w + 'px', height: r.h + 'px', borderRadius: rad, backgroundColor: cardBg, boxShadow: '0 60px 120px rgba(0,0,0,.5)' },
+    { left: '0px', top: '0px', width: W + 'px', height: H + 'px', borderRadius: '0px', backgroundColor: ground, boxShadow: '0 0 0 rgba(0,0,0,0)' }],
+    { duration: 760, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' });
+  // 3 · the incoming slide arrives on top of its new ground
+  to.style.zIndex = 4; show(to); to.style.opacity = 0;
+  const arrive = (async () => {
+    await sleep(420);
+    await Promise.all([
+      anim(to, [{ opacity: 0 }, { opacity: 1 }], { duration: 480, fill: 'forwards' }),
+      ...contentOf(to).map((c, i) => anim(c, [{ transform: 'translateY(28px)' }, { transform: 'none' }], { duration: 900, delay: 40 * i, fill: 'backwards' })),
+    ]);
+  })();
+  await grow; await arrive;
+  hide(from);
+  if (ground === INK) await anim(ghost, [{ opacity: 1 }, { opacity: 0 }], { duration: 380, fill: 'forwards' });
+  ghost.remove();
+  held.forEach(el => el.getAnimations().forEach(x => x.cancel()));
+  key.style.transformOrigin = '';
+  to.getAnimations().forEach(a => a.cancel());
+  to.style.zIndex = ''; to.style.opacity = '';
+};
+
+/* =====================================================================
+   DECK STATE + NAVIGATION
+   ===================================================================== */
+let cur = 0, step = 0, busy = false, pending = null, overview = false, selected = 0, short = false;
+const skippable = i => short && slides[i] && slides[i].dataset.cut === 'skip';
+
+function setChrome() {
+  const s = slides[cur];
+  stage.dataset.theme = s.dataset.theme === 'light' ? 'light' : 'dark';
+  stage.dataset.hud = s.dataset.hud || 'on';
+  qs('#hud-n').textContent = String(cur + 1).padStart(2, '0');
+  qs('#hud-t').textContent = String(N).padStart(2, '0');
+  qs('#hud-bar').style.width = ((cur + 1) / N * 100) + '%';
+  const darkGround = s.dataset.theme !== 'light' && !s.classList.contains('t-demo');
+  Ambient.cv.style.opacity = darkGround ? 1 : 0;
+  if (location.hash !== `#/${cur + 1}`) history.replaceState(null, '', `#/${cur + 1}`);
+  broadcast();
+}
+
+async function go(to, { toStep = 0, instant = false, transition } = {}) {
+  to = clamp(to, 0, N - 1);
+  if (to === cur && !instant) { step = toStep; applyStep(slides[cur], step, false); setChrome(); return; }
+  if (busy) { pending = () => go(to, { toStep, instant, transition }); return; }
+  const from = slides[cur], target = slides[to], dir = to > cur ? 1 : -1;
+  busy = true;
+  onLeave(from);
+  cur = to; step = toStep;
+  applyStep(target, step, true);
+  setChrome();
+  let name = transition || (dir > 0 ? target.dataset.transition : from.dataset.transition) || 'fade';
+  if (dir < 0 && name !== 'morph' && name !== 'cut') name = 'crossfade';          // backwards stays quiet
+  if (RM && name !== 'cut') name = 'crossfade';
+  if (Math.abs(to - slides.indexOf(from)) > 1 && name === 'morph') name = 'fade';
+  if (instant || from === target) { if (from !== target) hide(from); show(target); }
+  else {
+    if (!RM && name !== 'cut' && name !== 'lift') Ambient.ripple(W / 2, H / 2, name === 'ember-wipe' ? 1.2 : .7);
+    const run = (T[name] || T.fade)(from, target, dir);
+    onEnter(target, from, dir, false);
+    try { await run; } catch (e) { console.warn('transition failed', name, e); hide(from); show(target); }
+  }
+  if (from !== target) settle(from);
+  if (instant) onEnter(target, from, dir, true);
+  busy = false;
+  if (pending) { const p = pending; pending = null; p(); }
+}
+
+function next() {
+  if (overview) return moveSel(1);
+  const s = slides[cur];
+  if (step < s._groups.length) { step++; applyStep(s, step, false); broadcast(); return; }
+  let t = cur + 1; while (t < N - 1 && skippable(t)) t++;
+  if (cur < N - 1) go(t);
+}
+function prev() {
+  if (overview) return moveSel(-1);
+  const s = slides[cur];
+  if (step > 0 && !busy) { step--; applyStep(s, step, false); broadcast(); return; }
+  let t = cur - 1; while (t > 0 && skippable(t)) t--;
+  if (cur > 0) go(t, { toStep: slides[t]._groups.length });
+}
+
+/* ---------- overview grid ---------- */
+function layoutOverview() {
+  const cols = 6, gap = 26, mx = 60, top = 150;
+  const cw = (W - mx * 2 - gap * (cols - 1)) / cols, s = cw / W, ch = H * s;
+  slides.forEach((sl, i) => {
+    const x = mx + (i % cols) * (cw + gap), y = top + Math.floor(i / cols) * (ch + gap);
+    sl.style.transform = `translate(${x}px,${y}px) scale(${s})`;
+  });
+}
+function toggleOverview(on = !overview) {
+  overview = on;
+  if (on) {
+    selected = cur;
+    slides.forEach(sl => { sl.style.width = W + 'px'; sl.style.height = H + 'px'; sl.style.inset = '0 auto auto 0'; sl.classList.add('entered'); });
+    stage.classList.add('overview'); layoutOverview(); markSel();
+  } else {
+    stage.classList.remove('overview');
+    slides.forEach(sl => { sl.style.transform = ''; sl.style.width = ''; sl.style.height = ''; sl.style.inset = ''; sl.classList.remove('is-selected'); if (sl !== slides[cur]) settle(sl); });
+  }
+}
+function markSel() { slides.forEach((s, i) => s.classList.toggle('is-selected', i === selected)); }
+function moveSel(d) { selected = clamp(selected + d, 0, N - 1); markSel(); }
+function pickOverview(i) { toggleOverview(false); go(i, { instant: true }); }
+
+/* ---------- presenter sync (BroadcastChannel + opener/child fallback) ---------- */
+const CH = 'ae-deck';
+let bc = null; try { bc = new BroadcastChannel(CH); } catch (e) {}
+let child = null;
+function send(msg) {
+  msg.__ae = 1;
+  try { bc && bc.postMessage(msg); } catch (e) {}
+  try { if (child && !child.closed) child.postMessage(msg, '*'); } catch (e) {}
+  try { if (window.opener && window.opener !== window) window.opener.postMessage(msg, '*'); } catch (e) {}
+}
+function broadcast() { if (VIEW === 'main') send({ type: 'state', index: cur, step }); }
+function onMsg(m) {
+  if (!m || !m.__ae) return;
+  if (VIEW === 'main') {
+    if (m.type === 'hello') broadcast();
+    if (m.type === 'cmd') ({ next, prev, short: toggleShort }[m.action] || (() => go(m.index)))();
+  } else if (VIEW === 'presenter' && m.type === 'state') Presenter.render(m.index, m.step, true);
+}
+if (bc) bc.onmessage = e => onMsg(e.data);
+window.addEventListener('message', e => onMsg(e.data));
+function openPresenter() {
+  const u = new URL(location.href); u.searchParams.set('view', 'presenter');
+  child = window.open(u.toString(), 'ae-presenter', 'width=1400,height=860');
+}
+
+/* =====================================================================
+   PRESENTER VIEW
+   ===================================================================== */
+const Presenter = {
+  idx: 0, st: 0, t0: null, linked: false,
+  init() {
+    document.documentElement.classList.add('presenter');
+    document.title = 'Presenter · Building Agent Economies';
+    setInterval(() => this.tick(), 500);
+    send({ type: 'hello' });
+    this.render(this.idx, 0, false);
+    window.addEventListener('resize', () => this.render(this.idx, this.st, this.linked));
+  },
+  frame(host, i, st) {
+    host.innerHTML = '';
+    if (i >= N) { host.innerHTML = '<div class="p-cap" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">End</div>'; return; }
+    const c = slides[i].cloneNode(true);
+    c.classList.add('static', 'is-active', 'entered'); c.removeAttribute('id');
+    qsa('[id]', c).forEach(e => e.removeAttribute('id'));
+    qsa('.notes', c).forEach(e => e.remove());
+    const groups = buildGroups(c); groups.forEach((g, k) => g.forEach(e => e.classList.toggle('built', k < st)));
+    host.appendChild(c);
+    const s = host.clientWidth / W; c.style.transform = `scale(${s})`;
+  },
+  render(i, st, linked) {
+    this.idx = i; this.st = st; this.linked = linked || this.linked;
+    if (this.t0 === null && (i > 0 || st > 0)) this.t0 = Date.now();
+    this.frame(qs('#p-cur'), i, st);
+    this.frame(qs('#p-next'), st < slides[i]._groups.length ? i : i + 1, st < slides[i]._groups.length ? st + 1 : 0);
+    const notes = qs('aside.notes', slides[i]);
+    qs('#p-notes').innerHTML = notes ? notes.innerHTML : '<p style="color:var(--stone)">No notes.</p>';
+    qs('#p-cut').textContent = slides[i].dataset.cut === 'skip' ? 'Skippable in the 5 min cut' : '';
+    qs('#p-pos').textContent = `Slide ${i + 1} / ${N} · ${slides[i].dataset.section || ''} · ${slides[i].dataset.transition || 'fade'}`;
+    const g = slides[i]._groups.length;
+    qs('#p-build').textContent = g ? `Build ${st} / ${g}` : '';
+  },
+  tick() {
+    const el = qs('#p-timer');
+    const sec = this.t0 ? Math.floor((Date.now() - this.t0) / 1000) : 0;
+    el.textContent = String(Math.floor(sec / 60)).padStart(2, '0') + ':' + String(sec % 60).padStart(2, '0');
+    el.classList.toggle('over', sec > 10 * 60);
+    const d = new Date(); qs('#p-clock').textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  },
+  cmd(action) {
+    if (this.linked) { send({ type: 'cmd', action }); return; }
+    // standalone presenter (no deck window): drive the local previews
+    const g = slides[this.idx]._groups.length;
+    if (action === 'next') { if (this.st < g) this.render(this.idx, this.st + 1); else if (this.idx < N - 1) this.render(this.idx + 1, 0); }
+    else { if (this.st > 0) this.render(this.idx, this.st - 1); else if (this.idx > 0) this.render(this.idx - 1, slides[this.idx - 1]._groups.length); }
+  },
+};
+
+
+/* =====================================================================
+   INPUT
+   ===================================================================== */
+function toggleShort() { short = !short; stage.classList.toggle('short', short); broadcast(); }
+function onKey(e) {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key;
+  if (VIEW === 'presenter') {
+    if (['ArrowRight', 'ArrowDown', ' ', 'PageDown', 'Enter', 'n'].includes(k)) { e.preventDefault(); Presenter.cmd('next'); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace', 'p'].includes(k)) { e.preventDefault(); Presenter.cmd('prev'); }
+    else if (k === 't' || k === 'T') Presenter.t0 = Date.now();
+    else if ((k === 'c' || k === 'C') && Presenter.linked) send({ type: 'cmd', action: 'short' });
+    return;
+  }
+  if (stage.classList.contains('is-black') && !['b', 'B', '.'].includes(k)) { stage.classList.remove('is-black'); e.preventDefault(); return; }
+  switch (k) {
+    case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': case 'n':
+      e.preventDefault(); next(); break;
+    case 'ArrowLeft': case 'ArrowUp': case 'PageUp': case 'Backspace':
+      e.preventDefault(); prev(); break;
+    case 'Enter': if (overview) pickOverview(selected); else next(); break;
+    case 'Home': go(0, { instant: true }); break;
+    case 'End': go(N - 1, { instant: true }); break;
+    case 'f': case 'F':
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(() => {}); else document.exitFullscreen?.(); break;
+    case 'o': case 'O': case 'Escape':
+      if (k === 'Escape' && !overview) break;
+      if (overview && k !== 'Escape') { pickOverview(selected); break; }
+      toggleOverview(k === 'Escape' ? false : !overview); break;
+    case 'p': case 'P': openPresenter(); break;
+    case 'b': case 'B': case '.': stage.classList.toggle('is-black'); break;
+    case 'c': case 'C': toggleShort(); break;
+    case 'v': case 'V': { const s = slides[cur]; if (s.classList.contains('t-demo')) setFallback(s, !s.classList.contains('use-fallback')); break; }
+  }
+}
+document.addEventListener('keydown', onKey);
+
+function onClick(e) {
+  if (VIEW !== 'main') return;
+  if (e.target.closest('a,button,video[controls],iframe,.no-advance')) return;
+  if (overview) { const s = e.target.closest('section.slide'); if (s) pickOverview(slides.indexOf(s)); return; }
+  const x = e.clientX / innerWidth;
+  if (x < .15) prev(); else next();
+}
+document.addEventListener('click', onClick);
+document.addEventListener('pointermove', e => {
+  if (RM || VIEW !== 'main') return;
+  Ambient.pointer(clamp(e.clientX / innerWidth * 2 - 1, -1, 1), clamp(e.clientY / innerHeight * 2 - 1, -1, 1));
+});
+let touch = null;
+document.addEventListener('touchstart', e => { touch = e.touches[0] ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : null; }, { passive: true });
+document.addEventListener('touchend', e => {
+  if (!touch || VIEW !== 'main') return;
+  const t = e.changedTouches[0], dx = t.clientX - touch.x, dy = t.clientY - touch.y;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { e.preventDefault(); dx < 0 ? next() : prev(); }
+  touch = null;
+});
+window.addEventListener('hashchange', () => {
+  const n = parseInt((location.hash.match(/#\/(\d+)/) || [])[1], 10);
+  if (n && n - 1 !== cur) go(n - 1);
+});
+
+
+function fit() {
+  const vw = innerWidth, vh = innerHeight;
+  scale = Math.min(vw / W, vh / H);
+  stage.style.transform = `translate(${((vw - W * scale) / 2).toFixed(2)}px,${((vh - H * scale) / 2).toFixed(2)}px) scale(${scale})`;
+}
+window.addEventListener('resize', fit);
+
+window.addEventListener('resize', fit);
+
+/* =====================================================================
+   BOOT
+   ===================================================================== */
+prepareMedia();
+slides.forEach(s => { s._groups = buildGroups(s); });
+fit();
+
+if (VIEW === 'presenter') {
+  Presenter.init();
+} else {
+  const n = parseInt((location.hash.match(/#\/(\d+)/) || [])[1], 10);
+  cur = n ? clamp(n - 1, 0, N - 1) : 0;
+  slides.forEach(hide);
+  show(slides[cur]); applyStep(slides[cur], 0, true);
+  setChrome(); onEnter(slides[cur], null, 1, true);
+  RM ? Ambient.staticDraw() : Ambient.start();
+}
+
+// Public API: used by SLIDE-GUIDE recipes and the smoke tests.
+window.deck = {
+  get index() { return cur; }, get step() { return step; }, get busy() { return busy; },
+  get total() { return N; }, slides, next, prev, go, overview: toggleOverview,
+  builds: i => slides[i]._groups.length, short: on => { if (on !== short) toggleShort(); }, setFallback,
+};
+})();
+</script>
+</body>
+</html>
