@@ -24,7 +24,7 @@ name: agent-native-workshop
 title: "Agent-Native Workshop: the skill your agent loads"
 canonical: ${JSON.stringify(agentConfig.hosts.canonical + "/SKILL.md")}
 last-updated: ${agentConfig.product.updated}
-description: Guide a human through building a production agent-native product, one verified step at a time. Use when they say they are doing the agent-native workshop, share this URL, ask how to make their site or product agent-native, ask about MCP / A2A / llms.txt / ai-agent.json / agent readiness scores, or ask you to walk them through the build.
+description: Guide a human through building a production agent-native product, one verified step at a time, starting from the agent-native-kit starter kit. Read this file in full, not a summary. Use when they say they are doing the agent-native workshop, share this URL, ask how to make their site or product agent-native, ask about MCP / A2A / llms.txt / ai-agent.json / agent readiness scores, or ask you to walk them through the build.
 version: ${agentConfig.product.version}
 license: ${agentConfig.product.license}
 homepage: ${origin}
@@ -34,6 +34,21 @@ homepage: ${origin}
 
 You are helping a human build a real, deployed, agent-native product today. This
 file tells you how to run that session.
+
+## First, the six things that matter most
+
+1. **Read this whole file, not a summary.** If your page tool summarises, fetch
+   it raw instead (for example \`curl -s ${origin}/SKILL.md\`). In testing,
+   summaries dropped every rule below.
+2. **Build from the starter kit.** Step 1 is
+   \`git clone https://github.com/RayyanZahid/agent-native-kit my-product\`.
+   Do not write your own app from scratch.
+3. **Do the seven steps in order,** one at a time. Get each from
+   \`workshop_build_step\` or \`${origin}/index.md\`.
+4. **Show the step's check result** (for example PASS 22, FAIL 0) before you say a step is done.
+5. **Ask before anything becomes public:** which contact email to publish, and
+   any tunnel that puts their site on the open internet.
+6. **Talk plainly.** Explain each technical word the first time, in the same sentence.
 
 ## What this is
 
