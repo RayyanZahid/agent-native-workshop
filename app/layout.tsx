@@ -4,8 +4,24 @@ import { WebMcpInline } from "@/app/WebMcpInline";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: `${agentConfig.product.name} — ${agentConfig.product.tagline}`,
+  // The canonical host, not the request's: a canonical link that changes with
+  // the host it was fetched from is not canonical.
+  metadataBase: new URL(agentConfig.hosts.canonical),
+  title: `${agentConfig.product.name}: ${agentConfig.product.tagline}`,
   description: agentConfig.product.description,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: agentConfig.product.name,
+    title: agentConfig.product.name,
+    description: agentConfig.product.tagline,
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: agentConfig.product.name,
+    description: agentConfig.product.tagline,
+  },
   other: {
     // Discovery hints in the served <head>. A crawler that never reads
     // /.well-known still finds the manifest from here.

@@ -28,7 +28,7 @@ export function GET(req: Request) {
       transport: "streamable-http",
       protocol_version: agentConfig.mcp.protocolVersion,
       authentication: { type: "oauth2", flow: "device_code", metadata: `${origin}/.well-known/oauth-protected-resource` },
-      tools: TOOLS.map((t) => ({ name: t.name, description: t.description, requires_auth: t.scope !== null })),
+      tools: TOOLS.map((t) => ({ name: t.name, title: t.annotations.title, description: t.description, requires_auth: t.scope !== null, annotations: t.annotations, inputSchema: t.inputSchema })),
       anonymous_tools: TOKEN_FREE_TOOLS.map((t) => t.name),
     }],
   });

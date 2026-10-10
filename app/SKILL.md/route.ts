@@ -21,6 +21,9 @@ export function GET(req: Request) {
 
   const body = `---
 name: agent-native-workshop
+title: "Agent-Native Workshop: the skill your agent loads"
+canonical: ${JSON.stringify(agentConfig.hosts.canonical + "/SKILL.md")}
+last-updated: ${agentConfig.product.updated}
 description: Guide a human through building a production agent-native product, one verified step at a time. Use when they say they are doing the agent-native workshop, share this URL, ask how to make their site or product agent-native, ask about MCP / A2A / llms.txt / ai-agent.json / agent readiness scores, or ask you to walk them through the build.
 version: ${agentConfig.product.version}
 license: ${agentConfig.product.license}

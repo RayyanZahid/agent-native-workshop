@@ -42,8 +42,8 @@ surface a PRODUCT exposes so agents can find, authenticate to and call it.
 
 ## Start here, in this order
 
-1. Load ${origin}/SKILL.md - instructions written for you, on how to run the session.
-2. Call \`workshop_overview\` on ${origin}${agentConfig.mcp.path} - no token needed.
+1. Load [SKILL.md](${origin}/SKILL.md), instructions written for you on how to run the session.
+2. Call \`workshop_overview\` on the [MCP server](${origin}${agentConfig.mcp.path}). No token needed.
 3. Ask your human which part they want before reading anything aloud.
 
 ## The shape
@@ -53,8 +53,8 @@ ${PARTS.map((p) => `- **Part ${p.n}, ${p.name}.** ${p.summary}`).join("\n")}
 Then a ${BUILD_STEPS.length}-step build, each step with a done-condition that is
 checked on the wire rather than in a config file.
 
-${SLIDES.length} slides total. Full text at ${origin}/index.md, or JSON at
-${origin}/api/v1/outline.
+${SLIDES.length} slides total. Full text at [index.md](${origin}/index.md), or JSON at
+[the outline](${origin}/api/v1/outline).
 
 ## Tools
 
@@ -87,7 +87,7 @@ POST ${origin}/api/agent/signup/start  {"scopes":["read:public","progress:read",
 
 Scopes: ${SCOPES.join(", ")}
 
-Full guide: ${origin}/auth.md
+Full guide: [auth.md](${origin}/auth.md)
 
 ## Something wrong or confusing?
 
@@ -113,17 +113,19 @@ ${agentConfig.pricing.summary}
 ## The kit
 
 Everything taught here is implemented in agent-native-kit, MIT licensed:
-https://agent-native-kit.vercel.app
+[agent-native-kit](https://agent-native-kit.vercel.app)
 
 This deck is built on it, so the deck is a worked example of its own curriculum.
 
 ## Docs
 
-- Skill (read this first): ${origin}/SKILL.md
-- Full text: ${origin}/index.md
-- Outline as JSON: ${origin}/api/v1/outline
-- Auth guide: ${origin}/auth.md
-- OpenAPI: ${origin}/openapi.json
+- [SKILL.md](${origin}/SKILL.md): the skill to read first, written for you
+- [index.md](${origin}/index.md): the whole workshop as text
+- [Outline](${origin}/api/v1/outline): the same as JSON
+- [auth.md](${origin}/auth.md): how to get a human-approved token
+- [OpenAPI](${origin}/openapi.json): the REST description
+- [Agent manifest](${origin}/.well-known/ai-agent.json): every address in one file
+- [Pricing](${origin}/pricing.md): free
 `;
 
   return new Response(body, {

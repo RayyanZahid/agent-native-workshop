@@ -1,5 +1,6 @@
 import agentConfig from "@/agent.config";
 import { resolveOrigin } from "@/lib/origin";
+import { frontmatter } from "@/lib/meta";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +14,11 @@ export const dynamic = "force-dynamic";
  */
 export function GET(req: Request) {
   const origin = resolveOrigin(req);
-  const body = `# Pricing
+  const body = frontmatter({
+    title: `${agentConfig.product.name}: pricing`,
+    description: agentConfig.pricing.summary,
+    path: "/pricing.md",
+  }) + `# Pricing
 
 Model: **${agentConfig.pricing.model}**
 

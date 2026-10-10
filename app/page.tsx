@@ -4,6 +4,44 @@ import { TOOLS, TOKEN_FREE_TOOLS } from "@/lib/mcp/tools";
 import * as ws from "@/lib/workshop";
 import { kvConfigured } from "@/lib/store";
 
+/**
+ * Structured data for the homepage. Every field is something this page can
+ * back up: it is a free, self-paced course with three parts and seven build
+ * steps, run by Immersive Commons, built on the open agent-native-kit. It is
+ * rendered on the server so it is in the first bytes, like everything else here.
+ */
+function jsonLd() {
+  const site = agentConfig.hosts.canonical;
+  const org = {
+    "@type": "Organization",
+    "@id": `${agentConfig.product.authorUrl}/#org`,
+    name: agentConfig.product.author,
+    url: agentConfig.product.authorUrl,
+  };
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      org,
+      {
+        "@type": "Course",
+        "@id": `${site}/#course`,
+        name: agentConfig.product.name,
+        description: agentConfig.product.description,
+        url: site,
+        inLanguage: "en",
+        isAccessibleForFree: true,
+        dateModified: agentConfig.product.updated,
+        license: "https://opensource.org/licenses/MIT",
+        provider: { "@id": org["@id"] },
+        isBasedOn: { "@type": "SoftwareSourceCode", name: "agent-native-kit", codeRepository: "https://github.com/RayyanZahid/agent-native-kit", url: "https://agent-native-kit.vercel.app" },
+        teaches: "How to make a website or product that AI agents can find, read, get permission to use, and use.",
+        hasPart: PARTS.map((p) => ({ "@type": "CreativeWork", name: `Part ${p.n}: ${p.name}`, description: p.summary })),
+        offers: { "@type": "Offer", price: 0, priceCurrency: "USD", category: "Free", url: site },
+      },
+    ],
+  };
+}
+
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
@@ -23,6 +61,12 @@ export default async function Deck() {
 
   return (
     <main>
+      <script
+        type="application/ld+json"
+        // Built from constants and the curriculum. No request data reaches it.
+        // "<" is escaped so no field can close the script tag.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd()).replace(/</g, "\\u003c") }}
+      />
       {/* Same sentence as lib/entry.ts ENTRY_LINE, written out so it sits in the served HTML. */}
       <p className="panel callout" id="agents-start">
         <strong>Agents: read</strong> <a href="/SKILL.md"><code>/SKILL.md</code></a>{" "}

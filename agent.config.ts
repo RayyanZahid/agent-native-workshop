@@ -31,8 +31,14 @@ export const agentConfig = {
       "read the whole curriculum, hand you each build step with its commands and done-condition, and " +
       "check your deployment for you. Built on agent-native-kit.",
     version: "1.0.0",
+    /** Date the content last changed, YYYY-MM-DD. Served as `last-updated` in the
+     *  frontmatter of every markdown file. Bump it when you change the content;
+     *  a date that always says "today" tells an agent nothing. */
+    updated: "2026-10-10",
     license: "MIT",
     author: "Immersive Commons",
+    /** The organisation's own site, used in the homepage structured data. */
+    authorUrl: "https://www.immersivecommons.com",
     contact: "https://github.com/RayyanZahid/agent-native-workshop/issues",
   },
 

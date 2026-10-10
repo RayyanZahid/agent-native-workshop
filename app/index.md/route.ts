@@ -4,6 +4,7 @@ import { TOOLS, TOKEN_FREE_TOOLS } from "@/lib/mcp/tools";
 import { PARTS, SLIDES, BUILD_STEPS, slidesForPart } from "@/lib/curriculum";
 import * as ws from "@/lib/workshop";
 import { entryMarkdown } from "@/lib/entry";
+import { frontmatter } from "@/lib/meta";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +21,11 @@ export async function GET(req: Request) {
   const bare = origin.replace("https://", "");
   const progress = await ws.roomProgress();
 
-  const body = `# ${agentConfig.product.name}
+  const body = frontmatter({
+    title: `${agentConfig.product.name}: the whole workshop as text`,
+    description: agentConfig.product.tagline,
+    path: "/index.md",
+  }) + `# ${agentConfig.product.name}
 
 **${entryMarkdown(origin)}**
 

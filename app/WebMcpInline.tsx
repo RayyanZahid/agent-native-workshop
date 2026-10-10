@@ -36,6 +36,7 @@ const SCRIPT = `
       name: "workshop_overview",
       description: "What this workshop is, its three parts, and how to walk a human through it. Read this first.",
       inputSchema: EMPTY,
+      annotations: { readOnlyHint: true },
       execute: function () {
         return ok({
           name: "Agent-Native Workshop",
@@ -54,6 +55,7 @@ const SCRIPT = `
       name: "workshop_outline",
       description: "The full outline: three parts, every slide title, and the seven build steps.",
       inputSchema: EMPTY,
+      annotations: { readOnlyHint: true },
       execute: function () {
         return fetch(SITE + "/api/v1/outline", { headers: { accept: "application/json" } })
           .then(function (r) { return r.ok ? r.json() : null; })
@@ -65,6 +67,7 @@ const SCRIPT = `
       name: "workshop_board",
       description: "Who is in the room and how far each attendee has got through the build.",
       inputSchema: EMPTY,
+      annotations: { readOnlyHint: true },
       execute: function () {
         return fetch(SITE + "/api/v1/attendees", { headers: { accept: "application/json" } })
           .then(function (r) { return r.ok ? r.json() : null; })

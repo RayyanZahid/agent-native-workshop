@@ -26,6 +26,15 @@ export type Tool = {
   inputSchema: Record<string, unknown>;
   scope: Scope | null;
   rateClass: string;
+  /** MCP tool annotations. Explicit beats implicit: a client that can see a
+   *  tool is read-only can call it without asking anyone. */
+  annotations: {
+    title: string;
+    readOnlyHint: boolean;
+    destructiveHint: boolean;
+    idempotentHint: boolean;
+    openWorldHint: boolean;
+  };
   handler: (ctx: ToolCtx, input: Record<string, unknown>) => Promise<unknown>;
 };
 
@@ -40,6 +49,7 @@ export const TOOLS: Tool[] = [
     inputSchema: EMPTY,
     scope: null,
     rateClass: "public",
+    annotations: { title: "Workshop overview", readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     handler: async ({ origin }) => ({
       name: agentConfig.product.name,
       summary: agentConfig.product.tagline,
@@ -74,6 +84,7 @@ export const TOOLS: Tool[] = [
     inputSchema: EMPTY,
     scope: null,
     rateClass: "public",
+    annotations: { title: "Workshop outline", readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     handler: async () => ({
       parts: PARTS.map((p) => ({
         ...p,
@@ -95,6 +106,7 @@ export const TOOLS: Tool[] = [
     },
     scope: null,
     rateClass: "public",
+    annotations: { title: "Read one part", readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     handler: async (_ctx, { part }) => {
       const n = Number(part) as 1 | 2 | 3;
       const meta = PARTS.find((p) => p.n === n);
@@ -113,6 +125,7 @@ export const TOOLS: Tool[] = [
     },
     scope: null,
     rateClass: "public",
+    annotations: { title: "Read one slide", readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     handler: async (_ctx, { n }) => {
       const s = getSlide(Number(n));
       if (!s) throw new Error(`No slide ${n}. There are ${SLIDES.length}.`);
@@ -138,6 +151,7 @@ export const TOOLS: Tool[] = [
     },
     scope: null,
     rateClass: "public",
+    annotations: { title: "Get a build step", readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     handler: async (_ctx, { step }) => {
       const s = getStep(typeof step === "number" ? step : String(step));
       if (!s) throw new Error(`No such step. Use 1 to ${BUILD_STEPS.length}, or an id from workshop_outline.`);
@@ -169,17 +183,24 @@ export const TOOLS: Tool[] = [
     },
     scope: null,
     rateClass: "public",
+    annotations: { title: "Check a deployed site", readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     handler: async (_ctx, { url }) => checkTarget(String(url ?? "")),
   },
   {
     name: "workshop_board",
     description:
       "Who is in the room and how far each attendee has got. This is what is on the projector. No token required.",
-    inputSchema: EMPTY,
+    inputSchema: {
+      type: "object",
+      properties: { limit: { type: "integer", minimum: 1, maximum: 100, description: "How many attendees to return, 1 to 100. Default 50." } },
+      additionalProperties: false,
+    },
     scope: null,
     rateClass: "public",
-    handler: async () => {
-      const [attendees, progress] = await Promise.all([ws.listAttendees(100), ws.roomProgress()]);
+    annotations: { title: "The room board", readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+    handler: async (_ctx, { limit }) => {
+      const n = Math.min(Math.max(Number(limit) || 50, 1), 100);
+      const [attendees, progress] = await Promise.all([ws.listAttendees(n), ws.roomProgress()]);
       return {
         progress,
         attendees: attendees.map((a) => ({
@@ -213,6 +234,7 @@ export const TOOLS: Tool[] = [
     },
     scope: null,
     rateClass: "public",
+    annotations: { title: "Report a problem", readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false },
     handler: async (_ctx, input) => {
       const saved = await recordFeedback(input, "mcp");
       if (!saved.ok) throw new Error(`problem is required. ${FEEDBACK_REMEDY}`);
@@ -236,6 +258,7 @@ export const TOOLS: Tool[] = [
     },
     scope: "progress:write",
     rateClass: "write",
+    annotations: { title: "Register on the board", readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     handler: async ({ agent }, { target_url, note }) => {
       const a = await ws.upsertAttendee(
         { id: agent!.id, agentName: agent!.agentName, humanLabel: agent!.humanLabel },
@@ -262,6 +285,7 @@ export const TOOLS: Tool[] = [
     },
     scope: "progress:write",
     rateClass: "write",
+    annotations: { title: "Mark a build step complete", readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     handler: async ({ agent }, { step_id }) => {
       await ws.upsertAttendee({ id: agent!.id, agentName: agent!.agentName, humanLabel: agent!.humanLabel });
       const a = await ws.completeStep(agent!.id, String(step_id));
@@ -288,6 +312,7 @@ export const TOOLS: Tool[] = [
     },
     scope: "progress:write",
     rateClass: "write",
+    annotations: { title: "Ask the facilitator", readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false },
     handler: async ({ agent }, { question }) => {
       const q = String(question ?? "").trim().slice(0, 300);
       if (!q) throw new Error("question is required");
@@ -322,10 +347,12 @@ export function findTool(name: string): Tool | undefined {
 }
 
 export function publicToolList() {
-  return TOOLS.map(({ name, description, inputSchema, scope }) => ({
+  return TOOLS.map(({ name, description, inputSchema, scope, annotations }) => ({
     name,
+    title: annotations.title,
     description,
     inputSchema,
+    annotations,
     ...(scope ? { _meta: { requiredScope: scope } } : {}),
   }));
 }
