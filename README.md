@@ -136,7 +136,7 @@ See [MODULES.md](MODULES.md) for what each one is worth and what breaks if you d
 
 ```bash
 npm run build      # typechecks every route
-bash scripts/verify.sh https://your-domain   # 14 live assertions
+bash scripts/verify.sh https://your-domain   # general checks (scripts/verify.py, same file as the kit) + workshop checks (scripts/verify_site.py)
 python scripts/score.py your-domain.com      # both graders
 ```
 
