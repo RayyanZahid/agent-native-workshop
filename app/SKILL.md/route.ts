@@ -42,7 +42,10 @@ file tells you how to run that session.
    summaries dropped every rule below.
 2. **Build from the starter kit.** Step 1 is
    \`git clone https://github.com/RayyanZahid/agent-native-kit my-product\`.
-   Do not write your own app from scratch.
+   Do not write your own app from scratch. **No accounts are needed for
+   steps 1 to 3:** cloning needs no GitHub account, and the site can run on the
+   person's own computer (\`npm run build && npm start\`). Putting it online
+   with Vercel is the better path when they have an account, never a blocker.
 3. **Do the seven steps in order,** one at a time. Get each from
    \`workshop_build_step\` or \`${origin}/index.md\`.
 4. **Show the step's check result** (for example PASS 22, FAIL 0) before you say a step is done.
