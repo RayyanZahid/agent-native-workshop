@@ -4,6 +4,8 @@ import { resolveOrigin } from "@/lib/origin";
 import { getStep } from "@/lib/curriculum";
 import { checkTarget } from "@/lib/checkTarget";
 import * as ws from "@/lib/workshop";
+import { GET as cardGET } from "@/app/.well-known/agent-card.json/route";
+import { GET as agentCardGET } from "@/app/api/a2a/[agent]/.well-known/agent-card.json/route";
 
 /**
  * ONE A2A handler, mounted twice: at /api/a2a (the address the agent card
@@ -45,11 +47,14 @@ export async function handleA2A(req: Request, targetId: string | null): Promise<
 
   const { method, id } = body;
 
+  // The card comes back as the JSON-RPC result. It used to be a 307 to the
+  // card's URL, and a 307 keeps the method, so a JSON-RPC client re-POSTed to
+  // a GET-only route and got 405 instead of a card.
   if (method === "agent/getCard") {
-    const card = targetId
-      ? `${origin}/api/a2a/${targetId}/.well-known/agent-card.json`
-      : `${origin}/.well-known/agent-card.json`;
-    return Response.redirect(card, 307);
+    const res = targetId
+      ? await agentCardGET(req, { params: Promise.resolve({ agent: targetId }) })
+      : (cardGET(req) as Response);
+    return rpc(id, null, 200, await res.json());
   }
 
   if (method !== "message/send") {

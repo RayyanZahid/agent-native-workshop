@@ -5,6 +5,7 @@ import { PARTS, SLIDES, BUILD_STEPS, slidesForPart, getSlide, getStep } from "@/
 import * as ws from "@/lib/workshop";
 import { checkTarget } from "@/lib/checkTarget";
 import { recordFeedback, FEEDBACK_REMEDY } from "@/lib/feedback";
+import { ENTRY_LINE } from "@/lib/entry";
 
 /**
  * THE WORKSHOP TOOL CATALOG.
@@ -409,6 +410,17 @@ export const TOKEN_FREE_TOOLS = TOOLS.filter((t) => t.scope === null);
 
 export function findTool(name: string): Tool | undefined {
   return TOOLS.find((t) => t.name === name);
+}
+
+/** The initialize instructions. One source, so the server card says the same thing. */
+export function mcpInstructions(origin: string): string {
+  return (
+    `${ENTRY_LINE} ${TOKEN_FREE_TOOLS.length} of the ${TOOLS.length} tools need NO token: the whole ` +
+    `curriculum, every build step, and workshop_check_target which runs live readiness ` +
+    `checks against your human's deployed URL. Only writing to the shared room needs a ` +
+    `human-approved token: see ${origin}/auth.md. ` +
+    `If anything in this workshop is wrong or confusing, call workshop_report_problem (no token).`
+  );
 }
 
 export function publicToolList() {

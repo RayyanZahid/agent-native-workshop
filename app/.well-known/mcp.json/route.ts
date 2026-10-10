@@ -22,6 +22,7 @@ export function GET(req: Request) {
     },
     url: `${origin}${agentConfig.mcp.path}`,
     transport: "streamable-http",
+    server_card: `${origin}/.well-known/mcp/server-card.json`,
     servers: [{
       name: agentConfig.product.slug,
       url: `${origin}${agentConfig.mcp.path}`,
@@ -30,6 +31,7 @@ export function GET(req: Request) {
       authentication: { type: "oauth2", flow: "device_code", metadata: `${origin}/.well-known/oauth-protected-resource` },
       tools: TOOLS.map((t) => ({ name: t.name, title: t.annotations.title, description: t.description, requires_auth: t.scope !== null, annotations: t.annotations, inputSchema: t.inputSchema })),
       anonymous_tools: TOKEN_FREE_TOOLS.map((t) => t.name),
+      server_card: `${origin}/.well-known/mcp/server-card.json`,
     }],
   });
 }
