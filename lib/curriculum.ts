@@ -293,7 +293,7 @@ export const BUILD_STEPS: BuildStep[] = [
       "npm install",
       "# Online with Vercel (a free hosting site; the first run asks you to log in):",
       "npx vercel deploy --prod",
-      "# Or on your own computer, no account needed. It serves on http://localhost:3000:",
+      "# Or on your own computer, no account needed. It serves on http://localhost:3000 (to use another port, put PORT=3001 in front of npm start):",
       "npm run build && npm start",
     ],
     doneWhen:
@@ -319,8 +319,9 @@ export const BUILD_STEPS: BuildStep[] = [
     edits: [
       "product.name: your product's name.",
       "product.description: one or two plain sentences about what it does. It still describes the kit's example room until you change it.",
+      "product.tagline: the one-line summary. It still describes the kit's example room until you change it.",
       "product.author: you or your team. It ships as \"Immersive Commons\".",
-      "product.contact: a web address or email where people can reach you. It ships as hello@example.com, which is a placeholder, not you.",
+      "product.contact: a web address or email where people can reach you. It ships as TODO-your-contact@example.com, which is a placeholder, not you, and verify warns until you change it.",
       "hosts.canonical: your real address with https://, for example https://my-product.vercel.app. Leave it as is if you are only running on your own computer.",
       "hosts.allowed: every host name your site answers on, as host:port with no https://. For example \"my-product.vercel.app\" and \"localhost:3000\". If you run on another port, add \"localhost:PORT\" exactly, or the files quietly use the kit's address.",
     ],
