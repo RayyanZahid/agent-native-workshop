@@ -281,7 +281,9 @@ export const BUILD_STEPS: BuildStep[] = [
     ],
     doneWhen: "Opening YOUR_SITE/.well-known/ai-agent.json in a browser shows text, not an error page.",
     verify: "curl -s YOUR_URL/.well-known/ai-agent.json | head -5",
-    trap: "Don't add your own domain name yet. That comes in step 2.",
+    trap:
+      "The first time you run the deploy command, Vercel asks you to log in and link a project. Accept the defaults. " +
+      "Any other host works too, and the check is the same. Don't add your own domain name yet. That comes in step 2.",
   },
   {
     id: "make-it-yours",
@@ -290,7 +292,9 @@ export const BUILD_STEPS: BuildStep[] = [
     goal: "Your product's name, web address, and the permissions agents can ask for.",
     why:
       "Every description file agents read is generated from agent.config.ts. " +
-      "If the web address there is wrong, every file points agents to the wrong place.",
+      "If the web address there is wrong, every file points agents to the wrong place. " +
+      "The web address in that file must match where your site really runs, or the description files point to the kit's default address. " +
+      "Your changes do not show until you rebuild and redeploy (or restart, if you run it on your own computer).",
     files: ["agent.config.ts"],
     commands: ["npm run build", "npx vercel deploy --prod"],
     doneWhen: "Your site's description files show your product name and your real web address.",
@@ -306,13 +310,15 @@ export const BUILD_STEPS: BuildStep[] = [
     why:
       "This is the only step about your actual product. Everything else is the foundation. " +
       "Keep at least one action agents can do without logging in, or they can't tell what your site is for.",
-    files: ["lib/room.ts", "lib/mcp/tools.ts"],
+    files: ["lib/mcp/tools.ts", "lib/room.ts"],
     commands: ["npm run build"],
-    doneWhen: "Your agent can see your actions without logging in, and at least one of them works.",
+    doneWhen:
+      "tools/list shows at least one tool you added (not one of the example's floor_ tools), and it works without a login.",
     verify:
       "curl -s -X POST YOUR_URL/api/mcp -H 'content-type: application/json' -d '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/list\"}'",
     trap:
-      "Agents choose actions by reading their descriptions. Write each one as if explaining it to a new colleague: what it does and when to use it.",
+      "Agents choose actions by reading their descriptions. Write each one as if explaining it to a new colleague: what it does and when to use it. " +
+      "After you rename things in those two files, search the whole project for floor_ and rename what's left.",
   },
   {
     id: "wire-auth",
@@ -321,12 +327,16 @@ export const BUILD_STEPS: BuildStep[] = [
     goal: "The person approving an agent is a real, logged-in user.",
     why:
       "Right now, anyone who knows an approval code can approve an agent. That's fine for practice, not for real use. " +
-      "The whole point of the approval step is that a known person said yes.",
+      "The whole point of the approval step is that a known person said yes. " +
+      "This step needs a free Clerk account (clerk.com) and two keys from it: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY and CLERK_SECRET_KEY. " +
+      "Add both in your Vercel project settings under Environment Variables, then redeploy.",
     files: ["app/api/agent/signup/complete/route.ts"],
     commands: ["npm install @clerk/nextjs", "npm run build"],
-    doneWhen: "Approving an agent without being logged in fails, and approvals record who you are.",
+    doneWhen:
+      "Starting a real signup and then trying to approve its code without being logged in is refused (401 or 403), not approved. Approvals record who you are.",
     verify:
-      "curl -s -X POST YOUR_URL/api/agent/signup/complete -H 'content-type: application/json' -d '{\"user_code\":\"TEST-TEST\"}'",
+      "CODE=$(curl -s -X POST YOUR_URL/api/agent/signup/start -H 'content-type: application/json' -d '{\"scopes\":[\"read:public\"],\"agent_name\":\"check\"}' | python3 -c 'import sys,json;print(json.load(sys.stdin)[\"user_code\"])') && " +
+      "curl -s -o /dev/null -w '%{http_code}\n' -X POST YOUR_URL/api/agent/signup/complete -H 'content-type: application/json' -d \"{\\\"user_code\\\":\\\"$CODE\\\"}\"  # 401 or 403 is a pass, 200 means anyone can approve",
     trap:
       "Read who the person is from their login, never from what the request says. The comment in that file shows how.",
   },
