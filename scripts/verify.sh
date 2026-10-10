@@ -80,7 +80,8 @@ case "$SK" in *markdown*) ok "SKILL.md served as text/markdown" ;; *) bad "SKILL
 MD=$(curl -sf -o /dev/null -w '%{content_type}' -H 'accept: text/markdown' "$B/" 2>/dev/null)
 case "$MD" in *markdown*) ok "/ content-negotiates to markdown" ;; *) bad "/ does not negotiate markdown (got: $MD)" ;; esac
 CT=$(curl -s --max-time 90 -X POST "$B/api/mcp" -H 'content-type: application/json' --data-binary '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"workshop_check_target","arguments":{"url":"https://agent-native-kit.vercel.app"}}}')
-if echo "$CT" | grep -q '"findings"'; then ok "workshop_check_target runs anonymously"; else bad "workshop_check_target not reachable"; fi
+# The tool result is JSON inside a JSON string, so the key arrives as \"findings\".
+if echo "$CT" | grep -q 'findings'; then ok "workshop_check_target runs anonymously"; else bad "workshop_check_target not reachable"; fi
 RL=$(curl -s -D- -o /dev/null "$B/api/v1/posts" | grep -ci 'ratelimit' || true)
 echo "  note  RateLimit-* headers appear on authenticated writes, not public reads"
 
