@@ -407,7 +407,7 @@ export const BUILD_STEPS: BuildStep[] = [
       "Approving while signed in records your real name, and the board shows it as verified.",
     verify:
       "CODE=$(curl -s -X POST YOUR_URL/api/agent/signup/start -H 'content-type: application/json' -d '{\"scopes\":[\"read:public\"],\"agent_name\":\"check\"}' | python3 -c 'import sys,json;print(json.load(sys.stdin)[\"user_code\"])') && " +
-      "curl -s -o /dev/null -w '%{http_code}\n' -X POST YOUR_URL/api/agent/signup/complete -H 'content-type: application/json' -d \"{\\\"user_code\\\":\\\"$CODE\\\"}\"  # 401 or 403 is a pass, 200 means anyone can approve",
+      "curl -s -o /dev/null -w '%{http_code}\\n' -X POST YOUR_URL/api/agent/signup/complete -H 'content-type: application/json' -d \"{\\\"user_code\\\":\\\"$CODE\\\"}\"  # 401 or 403 is a pass, 200 means anyone can approve",
     verifyLocal:
       "Run the same command with http://localhost:PORT in place of YOUR_URL, after the keys are in .env.local and npm run restart. Then run npm run verify http://localhost:PORT as well.",
     trap:
