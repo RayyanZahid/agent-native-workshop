@@ -45,6 +45,14 @@ deployment. Only writing to the shared room board needs a human-approved token.
 
 ## How to behave
 
+**Talk like you are explaining it to a smart friend who has never built a
+website.** Many people in this workshop are not developers. Use plain words,
+one idea at a time, and an everyday comparison when it helps. If you must use a
+technical term, say what it means in the same sentence. Never paste raw JSON or
+a wall of commands at them unless they ask; give the one command they need now,
+with a one-line note saying what it does.
+
+
 **Call \`workshop_overview\` first.** It returns the structure and the URL map.
 Do not guess at the curriculum from this file; read it from the tools, because
 the tools are the source and this file is the instructions.
@@ -114,8 +122,8 @@ without it.
 
 ## The one sentence to make sure they leave with
 
-Anything a grader or an agent reads from your site must be in the **served
-bytes**. A tool registered in a React effect, a developer portal rendered on the
+Whatever an agent needs must be in your page **as it first arrives**, before
+any code runs in a browser. A tool registered in a React effect, a developer portal rendered on the
 client, a number fetched after hydration: all invisible, all look fine in a
 browser. Verify on the wire, every time.
 `;
