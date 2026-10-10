@@ -627,11 +627,11 @@ and walk me through this workshop.</span></p>
   <p class="lede">Your agent finds the manifest, loads SKILL.md, and can hand you every build step in this room.</p>
   <p class="body">Nothing is scraped. This deck exposes itself the same way it is about to teach you to expose your product.</p>
   <div class="row" aria-hidden="true">
-    <figure><svg class="ico ice"><use href="#i-agent"/></svg><figcaption>Your agent</figcaption></figure>
+    <figure><svg class="ico ice"><use href="#i-agent"/></svg><figcaption class="label">Your agent</figcaption></figure>
     <svg class="ico sm"><use href="#i-arrow"/></svg>
-    <figure><svg class="ico"><use href="#i-page"/></svg><figcaption>Manifest</figcaption></figure>
+    <figure><svg class="ico"><use href="#i-page"/></svg><figcaption class="label">Manifest</figcaption></figure>
     <svg class="ico sm"><use href="#i-arrow"/></svg>
-    <figure><svg class="ico"><use href="#i-tool"/></svg><figcaption>Steps</figcaption></figure>
+    <figure><svg class="ico"><use href="#i-tool"/></svg><figcaption class="label">Steps</figcaption></figure>
   </div>
   <aside class="notes"><p>Before I say anything else, open an agent and type this line.</p><p>Go ahead. Claude, ChatGPT, Cursor, whatever you have.</p><p>It will find the manifest at that domain, load the skill file, and start walking you through this workshop.</p><p>I did not give it a scraper. I gave it a door.</p><p>That is the whole workshop in one line. This deck is built the way I am about to ask you to build your product.</p><p>If it works for you, say so out loud. If it does not, tell me and we debug it live.</p><ul class="ledger"><li>no visible numbers</li><li>live URL = agent-native-workshop.vercel.app (this deck)</li></ul></aside>
 </section>
@@ -663,9 +663,9 @@ and walk me through this workshop.</span></p>
   <div class="ember-rule"></div>
   <p class="lede sub">Two visitors arrive. Five verbs decide whether one of them can do anything at all.</p>
   <div class="beats" aria-hidden="true">
-    <figure><svg class="ico"><use href="#i-eye"/></svg><figcaption>Two readers</figcaption></figure>
-    <figure><svg class="ico ice"><use href="#i-link"/></svg><figcaption>Five verbs</figcaption></figure>
-    <figure><svg class="ico"><use href="#i-network"/></svg><figcaption>Seven layers</figcaption></figure>
+    <figure><svg class="ico"><use href="#i-eye"/></svg><figcaption class="label">Two readers</figcaption></figure>
+    <figure><svg class="ico ice"><use href="#i-link"/></svg><figcaption class="label">Five verbs</figcaption></figure>
+    <figure><svg class="ico"><use href="#i-network"/></svg><figcaption class="label">Seven layers</figcaption></figure>
   </div>
   <aside class="notes"><p>Part one. What agent-native actually means.</p><p>Three moves here. Two visitors arrive at your product and only one of them gets served.</p><p>Then a definition you can test your own site against: five verbs.</p><p>Then the claim the rest of the workshop rests on. It is the same seven layers every time.</p><p>Keep your own product in your head while I do this. You will be auditing it shortly.</p><ul class="ledger"><li>no visible numbers</li><li>roman numeral is drawn as SVG decoration, aria-hidden</li></ul></aside>
 </section>
@@ -828,7 +828,7 @@ and walk me through this workshop.</span></p>
       <text class="nm" x="16" y="48" data-nonfact>1</text>
       <text class="lb" x="86" y="52">Discovery</text>
       <rect class="track" x="470" y="16" width="700" height="48" rx="10"/>
-      <text class="nt" x="1200" y="49">FREE, MINUTES</text>
+      <text class="nt lbl" x="1200" y="49">FREE, MINUTES</text>
     </g>
     <g data-build data-build-style="fade">
       <text class="nm" x="16" y="121" data-nonfact>2</text>
@@ -854,7 +854,7 @@ and walk me through this workshop.</span></p>
       <text class="nm" x="16" y="413" data-nonfact>6</text>
       <text class="lb" x="86" y="417">API-as-product</text>
       <rect class="track hot" x="470" y="381" width="700" height="48" rx="10"/>
-      <text class="nt hot" x="1200" y="414">WHERE THE POINTS ARE</text>
+      <text class="nt hot lbl" x="1200" y="414">WHERE THE POINTS ARE</text>
     </g>
     <g data-build data-build-style="fade">
       <text class="nm" x="16" y="486" data-nonfact>7</text>
@@ -948,7 +948,7 @@ and walk me through this workshop.</span></p>
 <!-- ===== 2-01.html ===== -->
 <!-- II.1 · layer 1 · discovery · eleven surfaces, one source -->
 <style>
-.s2-01 .headline{margin-top:28px}
+.s2-01 .headline{margin-top:16px}
 .s2-01 .points li b{white-space:normal}
 .s2-01 .panel{padding:0}
 .s2-01 .fanout{display:block;width:100%;height:100%}
@@ -959,6 +959,9 @@ and walk me through this workshop.</span></p>
 .s2-01 .fanout .pathtxt{font:500 24px var(--font-mono);fill:var(--paper-dim)}
 .s2-01 .fanout .pathtxt.on{fill:var(--paper)}
 .s2-01 .fanout .note{font:500 22px var(--font-mono);fill:var(--paper-dim)}
+/* Q4: the left column was taller than div.l. 30px stays above the 28px sentence floor. */
+.s2-01 .points li{font-size:28px;line-height:1.26}
+.s2-01 .points{gap:12px}
 </style>
 <section class="slide t-split s2-01" data-comp="split" data-theme="dark" data-transition="fade" data-section="II · What is actually happening" data-cut="skip">
   <div class="l">
@@ -1017,7 +1020,7 @@ and walk me through this workshop.</span></p>
 <!-- II.2 · layer 2 · readable · the served bytes -->
 <style>
 .s2-02 .statement{font-size:112px;max-width:1480px}
-.s2-02 .proof{display:flex;align-items:flex-end;gap:88px;margin-top:76px}
+.s2-02 .proof{display:flex;align-items:flex-end;gap:72px;margin-top:48px}
 .s2-02 .chk{flex:none;display:flex;flex-direction:column;gap:18px}
 .s2-02 .cmd{margin:0;padding:28px 32px;background:var(--ink);box-shadow:inset 0 0 0 2px var(--line);border-radius:10px;
   font:500 30px/1.5 var(--font-mono);color:var(--paper);white-space:pre}
@@ -1108,6 +1111,9 @@ and walk me through this workshop.</span></p>
 .s2-04 .points li b{white-space:normal}
 .s2-04 .code{font-size:28px;padding:44px 48px}
 .s2-04 .code .dim{color:var(--paper-dim)}
+/* Q4: the left column was taller than div.l. 30px stays above the 28px sentence floor. */
+.s2-04 .points li{font-size:30px;line-height:1.32}
+.s2-04 .points{gap:18px}
 </style>
 <section class="slide t-split s2-04" data-comp="split" data-theme="dark" data-transition="fade" data-section="II · What is actually happening" data-cut="keep">
   <div class="l">
@@ -1149,7 +1155,7 @@ and walk me through this workshop.</span></p>
 .s2-05 .headline{font-size:68px;max-width:none}
 .s2-05 .cardpath{text-transform:none;letter-spacing:.02em;font-size:26px;margin-top:14px;color:var(--paper-dim)}
 .s2-05 .auth{font-size:34px;max-width:15ch;color:var(--paper-dim);text-align:right}
-.s2-05 svg.dg{height:620px;margin-top:28px}
+.s2-05 svg.dg{height:596px;margin-top:18px}
 .s2-05 .dg .ah{fill:var(--mute);stroke:none}
 .s2-05 .dg .ahx{fill:var(--ember);stroke:none}
 .s2-05 .dg .lbl.path{letter-spacing:.02em;fill:var(--ice)}
@@ -1243,6 +1249,9 @@ and walk me through this workshop.</span></p>
   font:700 64px/1 var(--font-mono);letter-spacing:-.03em;color:var(--ice)}
 .s2-06 .ch-val.sm{font-size:44px}
 .s2-06 .ch-foot{margin:10px 0 0;font-size:26px;text-transform:none;letter-spacing:.02em;color:var(--paper-dim)}
+/* Q4: the left column was taller than div.l. 30px stays above the 28px sentence floor. */
+.s2-06 .points li{font-size:30px;line-height:1.32}
+.s2-06 .points{gap:18px}
 </style>
 <section class="slide t-split s2-06" data-comp="split" data-theme="dark" data-transition="fade" data-section="II · What is actually happening" data-cut="keep">
   <div class="l">
@@ -1310,6 +1319,7 @@ and walk me through this workshop.</span></p>
   text-transform:none;letter-spacing:.02em;color:var(--paper)}
 .s2-07 .loopback{margin:36px 0 0;font-size:32px;max-width:60ch}
 .s2-07 .loopback b{color:var(--paper);font-weight:700}
+.s2-07 .steps .ep{font-size:24px;line-height:1.15;margin-top:4px;white-space:normal;letter-spacing:0}
 </style>
 <section class="slide t-flow s2-07" data-comp="flow" data-theme="dark" data-transition="fade" data-section="II · What is actually happening" data-cut="skip">
   <div class="top">
@@ -1331,7 +1341,7 @@ and walk me through this workshop.</span></p>
       <svg class="ico ember" aria-hidden="true"><use href="#i-message"/></svg>
       <h3>It tells you.</h3>
       <p>Anonymous and unauthenticated on purpose.</p>
-      <p class="ep">POST /api/agent/feedback</p>
+      <p class="ep">POST /api/agent/<wbr>feedback</p>
     </li>
   </ol>
   <p class="body loopback" data-build data-build-style="fade">The agent that cannot authenticate is exactly the one with something to report. <b>Without this you find out from a score drop, weeks later.</b></p>
@@ -1365,6 +1375,9 @@ and walk me through this workshop.</span></p>
 .s2-08 .cmp-n.bad b{color:var(--paper-dim)}
 .s2-08 .cmp-foot{margin:18px 0 0;font-size:30px}
 .s2-08 .cmp-note{margin:0;text-transform:none;letter-spacing:.02em;font-size:26px;color:var(--paper-dim)}
+/* Q4: the left column was taller than div.l. 30px stays above the 28px sentence floor. */
+.s2-08 .points li{font-size:30px;line-height:1.32}
+.s2-08 .points{gap:18px}
 </style>
 <section class="slide t-split s2-08" data-comp="split" data-theme="dark" data-transition="cut" data-section="II · What is actually happening" data-cut="keep">
   <div class="l">
@@ -1381,14 +1394,14 @@ and walk me through this workshop.</span></p>
     <div class="panel cmp">
       <p class="label cmp-head">isitagentready.com, measured on the kit</p>
       <div class="cmp-row" data-build data-build-style="fade">
-        <p class="cmp-k">Before</p>
-        <div class="cmp-n"><b>6</b><span>passing</span></div>
-        <div class="cmp-n bad"><b>10</b><span>failing</span></div>
+        <p class="cmp-k label">Before</p>
+        <div class="cmp-n"><b>6</b><span class="label">passing</span></div>
+        <div class="cmp-n bad"><b>10</b><span class="label">failing</span></div>
       </div>
       <div class="cmp-row" data-build data-build-style="fade">
-        <p class="cmp-k">After</p>
-        <div class="cmp-n"><b>14</b><span>passing</span></div>
-        <div class="cmp-n bad"><b>2</b><span>failing</span></div>
+        <p class="cmp-k label">After</p>
+        <div class="cmp-n"><b>14</b><span class="label">passing</span></div>
+        <div class="cmp-n bad"><b>2</b><span class="label">failing</span></div>
       </div>
       <p class="body cmp-foot" data-build data-build-style="fade">Three separate checks revealed a brand new sub-check the moment they went green. One remaining failure needs DNS records a vercel.app subdomain cannot have.</p>
       <p class="label cmp-note" data-build data-build-style="fade">Watch the cache between you and the grader.</p>
@@ -1450,7 +1463,7 @@ and walk me through this workshop.</span></p>
 .s3-01 .s301-two figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:14px}
 .s3-01 .s301-two .ico{width:96px;height:96px}
 .s3-01 .s301-two figcaption{font:500 28px/1.2 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.s3-01 .s301-two .plus{font:700 64px/1 var(--font-head);color:var(--mute);margin-bottom:38px}
+.s3-01 .s301-two .plus{font:700 64px/1 var(--font-head);color:var(--paper-dim);margin-bottom:38px}
 .s3-01 .points{margin-top:36px}
 .s3-01 .acct{display:flex;flex-direction:column;justify-content:center;padding:36px 40px}
 .s3-01 .ahead{font:500 24px/1.25 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
@@ -1480,20 +1493,20 @@ and walk me through this workshop.</span></p>
   </div>
   <div class="r">
     <div class="panel acct">
-      <div class="ahead">Accounts, in the order you need them</div>
+      <div class="ahead label">Accounts, in the order you need them</div>
       <div class="grp">
-        <p class="gk">Now</p>
-        <div class="arow"><span class="aname">GitHub</span><span class="acost">free</span><p class="awhy">the repo you clone, and CI later</p></div>
-        <div class="arow"><span class="aname">Vercel or Cloudflare</span><span class="acost">free tier</span><p class="awhy">hosting for the Next.js app</p></div>
+        <p class="gk label">Now</p>
+        <div class="arow"><span class="aname">GitHub</span><span class="acost label">free</span><p class="awhy">the repo you clone, and CI later</p></div>
+        <div class="arow"><span class="aname">Vercel or Cloudflare</span><span class="acost label">free tier</span><p class="awhy">hosting for the Next.js app</p></div>
       </div>
       <div class="grp">
-        <p class="gk">Before you demo to anyone</p>
-        <div class="arow"><span class="aname">A KV store</span><span class="acost">free tier</span><p class="awhy">durable state. Any Upstash protocol KV works.</p></div>
+        <p class="gk label">Before you demo to anyone</p>
+        <div class="arow"><span class="aname">A KV store</span><span class="acost label">free tier</span><p class="awhy">durable state. Any Upstash protocol KV works.</p></div>
       </div>
       <div class="grp">
-        <p class="gk">Step four, or never</p>
-        <div class="arow"><span class="aname">Clerk, or any auth</span><span class="acost">free tier</span><p class="awhy">names the human who approves a token</p></div>
-        <div class="arow"><span class="aname">A domain registrar</span><span class="acost">you have one</span><p class="awhy">DNS for the last discovery check, and DNSSEC</p></div>
+        <p class="gk label">Step four, or never</p>
+        <div class="arow"><span class="aname">Clerk, or any auth</span><span class="acost label">free tier</span><p class="awhy">names the human who approves a token</p></div>
+        <div class="arow"><span class="aname">A domain registrar</span><span class="acost label">you have one</span><p class="awhy">DNS for the last discovery check, and DNSSEC</p></div>
       </div>
     </div>
   </div>
@@ -1556,7 +1569,7 @@ npm audit     0 vulnerabilities</pre>
     <h2 class="headline">Writes succeed. Then they are <em>gone.</em></h2></div></div>
   <svg class="dg" viewBox="0 0 1632 690" width="1632" height="690" xmlns="http://www.w3.org/2000/svg">
     <g data-build data-build-style="fade">
-      <text class="lbl" x="0" y="20">WITHOUT A KV STORE, NOTHING ERRORS</text>
+      <text class="lbl" x="4" y="30">NOTHING ERRORS</text>
       <rect class="box" x="0" y="44" width="440" height="116" rx="12"/>
       <text class="big" x="28" y="112">POST a record</text>
       <path class="ln" d="M452 102 H506"/><path class="ah" d="M506 94 l20 8 -20 8 z"/>
@@ -1657,8 +1670,9 @@ npm audit     0 vulnerabilities</pre>
     <li data-build>
       <span class="n">1</span>
       <h3>Deploy the kit unchanged.</h3>
-      <pre class="code">git clone &lt;kit&gt; my-product
-cd my-product
+      <pre class="code">git clone https://github.com/\
+  RayyanZahid/agent-native-kit
+cd agent-native-kit
 npm install
 npx vercel deploy --prod</pre>
       <p data-nonfact><b>Done when:</b> your URL returns 200 for <span class="mono">/.well-known/ai-agent.json</span></p>
