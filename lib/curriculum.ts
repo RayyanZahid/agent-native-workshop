@@ -314,7 +314,7 @@ export const BUILD_STEPS: BuildStep[] = [
     why:
       "Every description file agents read is generated from agent.config.ts. " +
       "If the web address there is wrong, every file points agents to the wrong place, and nothing shows an error. " +
-      "The file only takes effect after you rebuild and restart, so the last part of this step is not optional.",
+      "The file only takes effect after you restart (on your own computer) or redeploy (online), so the last part of this step is not optional.",
     files: ["agent.config.ts"],
     edits: [
       "product.name: your product's name.",
@@ -325,11 +325,10 @@ export const BUILD_STEPS: BuildStep[] = [
       "hosts.allowed: every host name your site answers on, as host:port with no https://. For example \"my-product.vercel.app\" and \"localhost:3000\". If you run on another port, add \"localhost:PORT\" exactly, or the files quietly use the kit's address.",
     ],
     commands: [
-      "# Online:",
-      "npm run build",
+      "# Online: rebuild and redeploy (a deploy replaces the old version for you):",
       "npx vercel deploy --prod",
-      "# On your own computer: first stop the server you started (Ctrl+C in its window), then:",
-      "npm run build && npm start",
+      "# On your own computer: one command stops the old server, rebuilds and starts the new one:",
+      "npm run restart",
     ],
     doneWhen:
       "YOUR_SITE/.well-known/ai-agent.json shows your product name, your description and your real web address, not \"The Floor\" or agent-native-kit.vercel.app.",
@@ -337,8 +336,10 @@ export const BUILD_STEPS: BuildStep[] = [
     verifyLocal: "curl -s http://localhost:PORT/.well-known/ai-agent.json | head -20 && npm run verify http://localhost:PORT",
     trap:
       "Check ai-agent.json, because it is the one file that shows your name. The others only show the address. " +
-      "On your own computer, starting a second server while the first is still running fails with \"address already in use\", and the old one keeps serving the old settings. " +
-      "Stop only the server you started. Do not use pkill -f, which can stop other people's servers on a shared machine. " +
+      "Restart with npm run restart on your own computer, or redeploy online. Do not stop the server by hand. " +
+      "Closing the wrong window or stopping the wrong process leaves the old version running, so the check reads stale results and looks like your edit did nothing. " +
+      "npm run restart finds whatever is holding the port, stops it, rebuilds, starts the new version and waits until it answers. " +
+      "Do not use pkill -f, which can stop other people's servers on a shared machine. " +
       "If the server log says your host is \"not in agent.config.ts hosts.allowed\", add that host:port to hosts.allowed. " +
       "If your site works both with and without \"www.\", list both in hosts.allowed.",
   },
