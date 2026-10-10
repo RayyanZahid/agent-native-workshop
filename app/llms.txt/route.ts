@@ -3,6 +3,7 @@ import { resolveOrigin } from "@/lib/origin";
 import { TOOLS, TOKEN_FREE_TOOLS } from "@/lib/mcp/tools";
 import { PARTS, SLIDES, BUILD_STEPS } from "@/lib/curriculum";
 import { SCOPES } from "@/lib/scopes";
+import { entryMarkdown } from "@/lib/entry";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +21,8 @@ export function GET(req: Request) {
   const origin = resolveOrigin(req);
 
   const body = `# ${agentConfig.product.name}
+
+**${entryMarkdown(origin)}**
 
 > ${agentConfig.product.tagline}
 

@@ -23,6 +23,13 @@ export default async function Deck() {
 
   return (
     <main>
+      {/* Same sentence as lib/entry.ts ENTRY_LINE, written out so it sits in the served HTML. */}
+      <p className="panel callout" id="agents-start">
+        <strong>Agents: read</strong> <a href="/SKILL.md"><code>/SKILL.md</code></a>{" "}
+        <strong>first, then call</strong> <code>workshop_overview</code>. No MCP connection? Read{" "}
+        <a href="/index.md"><code>/index.md</code></a> and use <a href="/api/v1/outline"><code>/api/v1/outline</code></a>.
+      </p>
+
       <header>
         <p className="kicker">Workshop · {SLIDES.length} slides · {BUILD_STEPS.length} build steps</p>
         <h1>{agentConfig.product.name}</h1>

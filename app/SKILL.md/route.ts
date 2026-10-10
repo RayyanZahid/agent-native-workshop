@@ -43,6 +43,12 @@ ${origin}${agentConfig.mcp.path}
 Seven of its ten tools are anonymous, including the one that checks your human's
 deployment. Only writing to the shared room board needs a human-approved token.
 
+**No MCP connection?** You can still do everything that teaches. Read
+\`${origin}/index.md\` (the whole workshop as text) and
+\`${origin}/api/v1/outline\` (the same as JSON). To check a deployed site,
+POST \`{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"workshop_check_target","arguments":{"url":"https://their-site.example"}}}\`
+to \`${origin}${agentConfig.mcp.path}\` with plain HTTP. No token is needed.
+
 ## How to behave
 
 **Talk like you are explaining it to a smart friend who has never built a

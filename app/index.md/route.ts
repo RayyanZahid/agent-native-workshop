@@ -3,6 +3,7 @@ import { resolveOrigin } from "@/lib/origin";
 import { TOOLS, TOKEN_FREE_TOOLS } from "@/lib/mcp/tools";
 import { PARTS, SLIDES, BUILD_STEPS, slidesForPart } from "@/lib/curriculum";
 import * as ws from "@/lib/workshop";
+import { entryMarkdown } from "@/lib/entry";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +21,8 @@ export async function GET(req: Request) {
   const progress = await ws.roomProgress();
 
   const body = `# ${agentConfig.product.name}
+
+**${entryMarkdown(origin)}**
 
 > ${agentConfig.product.tagline}
 

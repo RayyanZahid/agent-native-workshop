@@ -2,6 +2,7 @@ import agentConfig from "@/agent.config";
 import { resolveOrigin, discoveryJson } from "@/lib/origin";
 import { SCOPES } from "@/lib/scopes";
 import { TOOLS, TOKEN_FREE_TOOLS } from "@/lib/mcp/tools";
+import { ENTRY_LINE } from "@/lib/entry";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +12,7 @@ export function GET(req: Request) {
   const origin = resolveOrigin(req);
   return discoveryJson({
     schema_version: "1.0",
+    start_here: { instruction: ENTRY_LINE, skill: `${origin}/SKILL.md`, first_tool: "workshop_overview" },
     name: agentConfig.product.name,
     description: agentConfig.product.description,
     version: agentConfig.product.version,

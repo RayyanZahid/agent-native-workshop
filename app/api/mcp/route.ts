@@ -4,6 +4,7 @@ import { findTool, publicToolList } from "@/lib/mcp/tools";
 import { checkRate, rateHeaders } from "@/lib/ratelimit";
 import { resolveOrigin } from "@/lib/origin";
 import * as ws from "@/lib/workshop";
+import { ENTRY_LINE } from "@/lib/entry";
 
 export const dynamic = "force-dynamic";
 
@@ -33,7 +34,7 @@ export async function POST(req: Request) {
       capabilities: { tools: { listChanged: false } },
       serverInfo: { name: agentConfig.product.name, version: agentConfig.product.version },
       instructions:
-        `Call workshop_overview first. Seven of the ten tools need NO token: the whole ` +
+        `${ENTRY_LINE} Seven of the ten tools need NO token: the whole ` +
         `curriculum, every build step, and workshop_check_target which runs live readiness ` +
         `checks against your human's deployed URL. Only writing to the shared room needs a ` +
         `human-approved token: see ${origin}/auth.md`,
