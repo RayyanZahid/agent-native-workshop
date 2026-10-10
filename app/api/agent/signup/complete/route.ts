@@ -1,5 +1,16 @@
 import { approveDeviceFlow } from "@/lib/device";
 import { problem } from "@/lib/errors";
+import { kvGet, kvIncr } from "@/lib/store";
+
+// Failed approvals (wrong or expired codes) allowed per network address per hour.
+// Generous enough for a whole room behind one venue Wi-Fi address, far too few to
+// guess an 8 character code before it expires.
+const FAILED_PER_HOUR = 60;
+
+function clientKey(req: Request): string {
+  const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "unknown";
+  return `approve-fail:${ip}:${new Date().toISOString().slice(0, 13)}`;
+}
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +36,12 @@ export const dynamic = "force-dynamic";
  * =====================================================================
  */
 export async function POST(req: Request) {
+  const failKey = clientKey(req);
+  const failures = (await kvGet<number>(failKey).catch(() => null)) ?? 0;
+  if (failures >= FAILED_PER_HOUR) {
+    return problem("rate_limited", "Too many wrong codes from this network in the last hour.",
+      "Wait a while, or ask your agent to start a fresh sign-in and use the code it shows you.");
+  }
   const body = await req.json().catch(() => null) as
     { user_code?: unknown; human_label?: unknown; decision?: unknown } | null;
 
@@ -34,19 +51,21 @@ export async function POST(req: Request) {
 
   const label = typeof body.human_label === "string" && body.human_label.trim()
     ? body.human_label.trim().slice(0, 60)
-    : "anonymous human";
+    : "someone";
+  const shownAs = `${label} (unverified, no login yet)`;
 
   // TODO(you): replace this with your session identity. See the block above.
   const humanId = `h_${label.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 32)}`;
 
-  const out = await approveDeviceFlow(body.user_code, humanId, label, "member");
+  const out = await approveDeviceFlow(body.user_code, humanId, shownAs, "member");
   if (!out.ok) {
+    await kvIncr(failKey, 3600).catch(() => 0); // only wrong or expired codes count
     return problem("not_found", "That code is not pending approval.",
       "Codes expire after 15 minutes and can only be approved once. Ask the agent to start a new flow.");
   }
 
   return Response.json(
-    { ok: true, approved_for: out.agentName, granted: out.granted,
+    { ok: true, approved_for: out.agentName, granted: out.granted, recorded_as: shownAs, verified: false,
       note: "The agent's next poll will receive its token. You can revoke it later." },
     { headers: { "cache-control": "no-store" } },
   );

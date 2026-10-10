@@ -25,6 +25,12 @@ export default async function ApprovePage({
   return (
     <main>
       <h1>Approve an agent</h1>
+      <p className="panel callout">
+        <strong>Only approve a code your own agent just showed you.</strong> This workshop site is
+        the &quot;before step 4&quot; version on purpose: anyone who has the code can approve it,
+        and the name you type is not checked. Step 4 of the build is where you fix that on your own
+        site, by adding a real login.
+      </p>
       <p className="sub">
         An agent is asking to act in {agentConfig.product.name} on your behalf.
       </p>
