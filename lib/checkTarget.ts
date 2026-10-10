@@ -49,11 +49,11 @@ export function validateTarget(raw: string): { ok: true; url: URL } | { ok: fals
     return { ok: false, error: "Not a valid absolute URL. Include https://" };
   }
   if (url.protocol !== "https:") {
-    return { ok: false, error: "Only https targets are checked. Deploy with TLS first." };
+    return { ok: false, error: "I can only check a site that is on the internet with https. If you're running it on your own computer, run `npm run verify http://localhost:PORT` in the kit folder instead; that runs the same checks." };
   }
   const h = url.hostname.toLowerCase();
   if (h === "localhost" || h.endsWith(".localhost") || h.endsWith(".local") || h.endsWith(".internal")) {
-    return { ok: false, error: "Local hostnames cannot be checked from here. Deploy it first, then check the deployed URL." };
+    return { ok: false, error: "I can't reach a site on your own computer. Run `npm run verify http://localhost:PORT` in the kit folder instead; that runs the same checks. Once it is deployed, give me the https address." };
   }
   // Reject IP literals outright rather than enumerating private ranges.
   if (/^\d{1,3}(\.\d{1,3}){3}$/.test(h) || h.includes(":") || h.startsWith("[")) {
