@@ -323,7 +323,8 @@ export const BUILD_STEPS: BuildStep[] = [
       "product.author: you or your team. It ships as \"Immersive Commons\".",
       "product.contact: a web address or email where people can reach you. It ships as TODO-your-contact@example.com, which is a placeholder, not you, and verify warns until you change it.",
       "hosts.canonical: your real address with https://, for example https://my-product.vercel.app. Leave it as is if you are only running on your own computer.",
-      "hosts.allowed: every host name your site answers on, as host:port with no https://. For example \"my-product.vercel.app\" and \"localhost:3000\". If you run on another port, add \"localhost:PORT\" exactly, or the files quietly use the kit's address.",
+      "hosts.allowed: every host name your site answers on, as host:port with no https://. For example \"my-product.vercel.app\" and \"localhost:3000\". If you run on another port, add \"localhost:PORT\" exactly, or the files quietly use the kit's address. You must also pass that PORT to every npm run start, restart, stop and verify command (for example PORT=3001 npm run restart), or they act on port 3000.",
+      "If you only run on your own computer, npm run verify will WARN that the web address is the kit's default or not yours. That is expected until you put the site online, so do not chase it.",
     ],
     commands: [
       "# Online: rebuild and redeploy (a deploy replaces the old version for you):",
