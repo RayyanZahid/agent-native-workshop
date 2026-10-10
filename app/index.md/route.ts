@@ -1,9 +1,9 @@
 import agentConfig from "@/agent.config";
 import { resolveOrigin } from "@/lib/origin";
 import { TOOLS, TOKEN_FREE_TOOLS } from "@/lib/mcp/tools";
-import { PARTS, SLIDES, BUILD_STEPS, slidesForPart } from "@/lib/curriculum";
+import { PARTS, SLIDES, BUILD_STEPS, AGENT_RULES_ALL_STEPS, slidesForPart } from "@/lib/curriculum";
 import * as ws from "@/lib/workshop";
-import { entryMarkdown } from "@/lib/entry";
+import { entryMarkdown, SUMMARY_LINE } from "@/lib/entry";
 import { frontmatter } from "@/lib/meta";
 
 export const dynamic = "force-dynamic";
@@ -22,8 +22,8 @@ export async function GET(req: Request) {
   const progress = await ws.roomProgress();
 
   const body = frontmatter({
-    title: `${agentConfig.product.name}: the whole workshop as text`,
-    description: agentConfig.product.tagline,
+    title: `${agentConfig.product.name}: the whole workshop as text. ${SUMMARY_LINE}`,
+    description: `${agentConfig.product.tagline} ${SUMMARY_LINE}`,
     path: "/index.md",
   }) + `# ${agentConfig.product.name}
 
@@ -64,10 +64,16 @@ ${s.evidence ? `\n_${s.evidence}_` : ""}
 
 These are Step 1 to Step 7. They are not the seven layers from Part 2 (Layer 1 to Layer 7): the layers are what you build, the steps are the order you do it in. Each step has a done-condition checked on the wire, not in your config.
 
+**How your AI agent should guide you, in every step:**
+
+${AGENT_RULES_ALL_STEPS.map((r) => `- ${r}`).join("\n")}
+
 ${BUILD_STEPS.map((s) => `
 ### Step ${s.n}: ${s.title}
 
 **In plain words.** ${s.sayToBeginner}
+
+**Your agent should.** ${s.agentShould.join(" ")}
 
 **Words to explain.** ${s.wordsToExplain.map((w) => `${w.word} (${w.plain})`).join("; ")}
 

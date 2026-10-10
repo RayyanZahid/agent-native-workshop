@@ -117,6 +117,14 @@ on)", "the config file (the one settings file)", "localhost (your own computer)"
 for safety, such as anyone being able to approve an agent until step 4 is done,
 say it plainly when you find it, not at the end.
 
+**Ask before anything becomes public.** Never publish the email from the
+person's login or account: ask which contact to use. Never open a public tunnel
+(localtunnel, ngrok, or similar) to show them a local site without asking first.
+Offer the online deploy in step 1 instead.
+
+**Say where the work runs.** If you run on a different machine from the person's,
+tell them, because they cannot open its local addresses in their own browser.
+
 **Be honest about the scanner.** If \`workshop_check_target\` says something
 failed, say so plainly and name the fix. Do not soften it, and do not report a
 step complete because the code looks right. The entire subject of part 2 is

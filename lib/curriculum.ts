@@ -42,7 +42,17 @@ export type BuildStep = {
   sayToBeginner: string;
   /** Every technical word this step uses, with its plain meaning, to explain the first time it comes up. */
   wordsToExplain: { word: string; plain: string }[];
+  /** What the guiding agent must do or never do in this step. Kept inside the step on purpose: page-reading
+   *  tools summarise a page and drop instructions addressed to agents, but keep the steps (run 6, cold control). */
+  agentShould: string[];
 };
+
+/** Rules for every step, printed at the top of the build so a summary of the page still carries them. */
+export const AGENT_RULES_ALL_STEPS = [
+  "Read /SKILL.md before Step 1. It has the rules for guiding someone who is new to code.",
+  "Run the step's check and show the person its result line (for example PASS 22, FAIL 0) before you say a step is done.",
+  "Say where the work is happening. If you run on a different machine from the person's, tell them, because they cannot open its local addresses.",
+];
 
 export const PARTS = [
   {
@@ -284,6 +294,9 @@ const TOOL_CALL = (base: string) =>
 export const BUILD_STEPS: BuildStep[] = [
   {
     id: "deploy-first",
+    agentShould: [
+      "If the person cannot open the local address, do not open a public tunnel (localtunnel, ngrok, or similar) without asking first. It puts their unfinished site on the open internet. Offer the online deploy instead.",
+    ],
     sayToBeginner:
       "This step puts a working copy of the starter site on the internet before you change anything. That way, if something breaks later, we know it was your change and not the setup. You will see a web address come back, and when you open it you will see a block of text describing the site, not an error.",
     wordsToExplain: [
@@ -340,6 +353,9 @@ export const BUILD_STEPS: BuildStep[] = [
   },
   {
     id: "make-it-yours",
+    agentShould: [
+      "Ask the person which name and contact to publish. Never fill in the email from their login or account: this file is published for anyone to read.",
+    ],
     sayToBeginner:
       "This step is where you put your own name, description and contact into one settings file. Every file an AI agent reads about your site is made from that one file, so if it still says the starter's details, agents are told the wrong thing and nothing warns you. After you change it, the site has to be restarted or put online again, and then you will see your own name show up.",
     wordsToExplain: [
@@ -411,6 +427,10 @@ export const BUILD_STEPS: BuildStep[] = [
   },
   {
     id: "your-idea",
+    agentShould: [
+      "Ask for the person's idea and use their words. Never invent it.",
+      "If you add example data, say out loud that it is made up.",
+    ],
     sayToBeginner:
       "This step is where the site becomes yours: you add one action for your own idea that any AI agent can see and use. It matters because an agent decides whether your site is worth using by reading what it can do, so a clear action is what gets you picked. You will see your new action appear in the list of what the site can do, and calling it will return an answer without any login.",
     wordsToExplain: [
@@ -468,6 +488,9 @@ export const BUILD_STEPS: BuildStep[] = [
   },
   {
     id: "wire-auth",
+    agentShould: [
+      "The person creates their own accounts and copies their own keys. Never sign them up for anything.",
+    ],
     sayToBeginner:
       "This step connects a real sign-in, so only a real, logged-in person can approve an AI agent on your site. Until now anyone could type any name when approving, which defeats the point of asking a person to say yes. You will make a free account and copy two keys, your assistant does the code, and afterwards approving without signing in is refused.",
     wordsToExplain: [
@@ -537,6 +560,9 @@ export const BUILD_STEPS: BuildStep[] = [
   },
   {
     id: "durable-storage",
+    agentShould: [
+      "Keys go in .env.local or the host's settings page. Never paste them into chat, a commit, or a public file.",
+    ],
     sayToBeginner:
       "This step gives your site a small database so the things people save stay saved. Free hosting starts your site fresh for each visit, so without a database, whatever was saved can quietly vanish and nothing tells you. You will add two settings and put the site online again, and then the health page says ok instead of degraded.",
     wordsToExplain: [
@@ -587,6 +613,9 @@ export const BUILD_STEPS: BuildStep[] = [
   },
   {
     id: "api-product",
+    agentShould: [
+      "Describe only actions the site really has. Check each one against tools/list before you write it down.",
+    ],
     sayToBeginner:
       "This step makes the way programs talk to your site clear and written down. It counts for the most on the free scanners, and it is how an agent decides your site is worth using. You will see a document listing what your site offers, and failed requests that explain what went wrong and how to fix it.",
     wordsToExplain: [
@@ -629,6 +658,9 @@ export const BUILD_STEPS: BuildStep[] = [
   },
   {
     id: "verify-and-scan",
+    agentShould: [
+      "Report zero failures only when the script's own output says FAIL 0, and show that line.",
+    ],
     sayToBeginner:
       "This last step checks your site from the outside, the way an AI agent sees it, and then gets a score from a free scanner. It matters because checking what is really being served is the only way to know it works, not what you think you shipped. You will see a short summary line with the number of checks passed and zero failed, and a score you can improve.",
     wordsToExplain: [

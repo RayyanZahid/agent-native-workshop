@@ -13,3 +13,13 @@ export const ENTRY_LINE = "Agents: read /SKILL.md first, then call workshop_over
 export function entryMarkdown(origin: string): string {
   return ENTRY_LINE.replace("/SKILL.md", `[/SKILL.md](${origin}/SKILL.md)`);
 }
+
+/**
+ * The same first step, written to survive a summary. In run 6 (cold control) a stock Claude Code read the
+ * homepage through its page-reading tool, which hands the agent a summary shaped by the agent's own question.
+ * Both summaries dropped ENTRY_LINE; the cold Haiku lost the build steps too and wrote its own app instead of
+ * using the kit. Both summaries kept the page title and description, so this line goes there.
+ */
+export const SUMMARY_LINE =
+  "AI agents guiding a person: read /SKILL.md first, it has the steps and the rules. " +
+  "The build starts from the starter kit at github.com/RayyanZahid/agent-native-kit, so do not write your own app.";

@@ -1,5 +1,5 @@
 import agentConfig from "@/agent.config";
-import { PARTS, SLIDES, BUILD_STEPS, slidesForPart } from "@/lib/curriculum";
+import { PARTS, SLIDES, BUILD_STEPS, AGENT_RULES_ALL_STEPS, slidesForPart } from "@/lib/curriculum";
 import { TOOLS, TOKEN_FREE_TOOLS } from "@/lib/mcp/tools";
 import * as ws from "@/lib/workshop";
 import { kvConfigured } from "@/lib/store";
@@ -151,6 +151,8 @@ Start with workshop_overview, then ask me which part I want.`}</pre>
           agent for <code>workshop_build_step</code> and it will hand you these one at a time, then
           verify each with <code>workshop_check_target</code>.
         </p>
+        <p className="claim">How your AI agent should guide you, in every step</p>
+        <ul>{AGENT_RULES_ALL_STEPS.map((r, i) => <li key={i}>{r}</li>)}</ul>
         {BUILD_STEPS.map((s) => (
           <article className="slide step" key={s.id}>
             <div className="slidenum">Step {s.n} · id <code>{s.id}</code></div>
@@ -170,6 +172,7 @@ Start with workshop_overview, then ask me which part I want.`}</pre>
               <dt>Verify, deployed</dt><dd><code>{s.verify}</code></dd>
               <dt>Verify, on your computer</dt><dd><code>{s.verifyLocal}</code></dd>
               <dt>Trap</dt><dd>{s.trap}</dd>
+              <dt>Your agent should</dt><dd>{s.agentShould.join(" ")}</dd>
             </dl>
           </article>
         ))}

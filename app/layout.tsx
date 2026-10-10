@@ -1,3 +1,4 @@
+import { SUMMARY_LINE } from "@/lib/entry";
 import type { Metadata } from "next";
 import agentConfig from "@/agent.config";
 import { WebMcpInline } from "@/app/WebMcpInline";
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
   // the host it was fetched from is not canonical.
   metadataBase: new URL(agentConfig.hosts.canonical),
   title: `${agentConfig.product.name}: ${agentConfig.product.tagline}`,
-  description: agentConfig.product.description,
+  description: `${agentConfig.product.description} ${SUMMARY_LINE}`,
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
