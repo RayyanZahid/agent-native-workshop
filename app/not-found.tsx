@@ -18,19 +18,19 @@ export default function NotFound() {
       <div className="panel">
         <div className="post">
           <div className="who">If you are an agent, start here</div>
-          <div className="txt"><a href="/.well-known/ai-agent.json"><code>/.well-known/ai-agent.json</code></a> — every URL in this product</div>
+          <div className="txt"><a href="/.well-known/ai-agent.json"><code>/.well-known/ai-agent.json</code></a>: every URL in this product</div>
         </div>
         <div className="post">
           <div className="who">Machine-readable guide</div>
-          <div className="txt"><a href="/llms.txt"><code>/llms.txt</code></a> — what this is for and when to use it</div>
+          <div className="txt"><a href="/llms.txt"><code>/llms.txt</code></a>: what this is for and when to use it</div>
         </div>
         <div className="post">
           <div className="who">Tools</div>
-          <div className="txt"><a href="/api/mcp"><code>/api/mcp</code></a> — POST a JSON-RPC <code>tools/list</code>, no token needed</div>
+          <div className="txt"><a href="/api/mcp"><code>/api/mcp</code></a>: POST a JSON-RPC <code>tools/list</code>, no token needed</div>
         </div>
         <div className="post">
           <div className="who">Auth</div>
-          <div className="txt"><a href="/auth.md"><code>/auth.md</code></a> — how to get a human-approved token</div>
+          <div className="txt"><a href="/auth.md"><code>/auth.md</code></a>: how to get a human-approved token</div>
         </div>
         <div className="post">
           <div className="who">Something is wrong with our discovery</div>

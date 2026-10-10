@@ -6,7 +6,7 @@
  *
  * READ THIS BEFORE YOU DEPLOY. The in-process Map is for `next dev` only. On
  * any serverless host each invocation may land in a fresh instance, so writes
- * appear to succeed and then vanish — which is far more confusing than an
+ * appear to succeed and then vanish, which is far more confusing than an
  * outright failure, because nothing errors. If you deploy without KV env vars,
  * the homepage says so out loud rather than letting you discover it live.
  *

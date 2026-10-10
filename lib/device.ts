@@ -3,7 +3,7 @@ import { mintTokenValue, saveToken } from "@/lib/auth";
 import { scopesAllowedForTier, normalizeScopes, type Scope, type Tier } from "@/lib/scopes";
 
 /**
- * RFC 8628 Device Authorization Grant — the human-approval bridge.
+ * RFC 8628 Device Authorization Grant, the human-approval bridge.
  *
  * This is the single most important module in the kit and the one people skip.
  *

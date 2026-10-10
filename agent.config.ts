@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * agent.config.ts  —  THE ONE SOURCE OF TRUTH
+ * agent.config.ts: THE ONE SOURCE OF TRUTH
  * ============================================================================
  *
  * This deck is built on agent-native-kit, and it is a worked example of the

@@ -2,8 +2,8 @@
  * ONE error contract, used by MCP, A2A and REST alike.
  *
  * RFC 9457 `application/problem+json`. A typed `type` URI, a stable `code`, a
- * human `title`, and — the field almost everyone omits and agents need most —
- * `remedy`: what the caller should actually DO about it.
+ * human `title`, and the field almost everyone omits and agents need most,
+ * `remedy`, which says what the caller should actually DO about it.
  *
  * An agent that gets `{"error":"forbidden"}` retries the same call forever. An
  * agent that gets a remedy string naming the scope it is missing and the URL to

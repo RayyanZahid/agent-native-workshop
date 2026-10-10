@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
  *
  * Your discovery surface will drift. A URL moves, a scope is renamed, a scanner
  * changes what it reads. When that happens the agents hitting you are the only
- * witnesses, and without this endpoint they have no way to tell you — they just
+ * witnesses, and without this endpoint they have no way to tell you, they just
  * fail quietly and stop coming back. You find out from a score drop weeks later.
  *
  * Anonymous and unauthenticated on purpose: an agent that cannot authenticate
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
   }
 
   return Response.json(
-    { ok: true, note: "Logged. Thank you — this is how we find out our discovery surface drifted." },
+    { ok: true, note: "Logged. Thank you. This is how we find out our discovery surface drifted." },
     { headers: { "access-control-allow-origin": "*" } },
   );
 }

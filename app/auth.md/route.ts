@@ -20,7 +20,7 @@ export function GET(req: Request) {
     title: `${agentConfig.product.name}: agent authentication`,
     description: "How an agent gets a human-approved token, what each permission allows, and what errors mean.",
     path: "/auth.md",
-  }) + `# Auth.md — agent authentication
+  }) + `# Auth.md: agent authentication
 
 ${agentConfig.product.name} uses the **RFC 8628 Device Authorization Grant**.
 
@@ -75,7 +75,7 @@ curl -s "${origin}/api/agent/signup/poll?device_code=dev_..."
 \`\`\`
 
 \`202\` with \`status: pending\` means keep waiting. Poll every **3 seconds**, not
-faster. On approval you get \`access_token\` **once** — the flow record is
+faster. On approval you get \`access_token\` **once**: the flow record is
 destroyed on read, so store it immediately.
 
 ## Using the token
@@ -108,7 +108,7 @@ other than what now exists. Mint a new one.
 ## Errors
 
 RFC 9457 \`application/problem+json\`. Every error carries \`code\` and
-\`remedy\`. **Read \`remedy\` before retrying** — it names the missing scope and
+\`remedy\`. **Read \`remedy\` before retrying**: it names the missing scope and
 the URL that fixes it. Retrying an unchanged request against a \`403\` will
 never succeed.
 

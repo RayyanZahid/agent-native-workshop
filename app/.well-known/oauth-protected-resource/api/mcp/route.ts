@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
  * the root one.
  *
  * A strict MCP client that gets a 401 from /api/mcp derives the metadata URL
- * /.well-known/oauth-protected-resource/api/mcp — note the path appended AFTER
+ * /.well-known/oauth-protected-resource/api/mcp, note the path appended AFTER
  * the well-known segment. Ship only the root document and that client gets a
  * 404 and therefore no path to auth at all. It does not fall back.
  *

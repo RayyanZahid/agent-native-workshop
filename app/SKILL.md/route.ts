@@ -126,7 +126,7 @@ ${PARTS.map((p) => `### Part ${p.n}: ${p.name}\n\n${p.summary}\n\nRead it with \
 
 **Two different lists of seven.** Part 2 has seven **layers** (Layer 1 to Layer 7: what a site is made of). Part 3 has seven **build steps** (Step 1 to Step 7: the order you build in). Say "Layer N" or "Step N", never a bare number, and never call a layer a step.
 
-${BUILD_STEPS.map((s) => `Step ${s.n}. **${s.title}** — ${s.goal}\n   Done when: ${s.doneWhen}`).join("\n")}
+${BUILD_STEPS.map((s) => `Step ${s.n}. **${s.title}**: ${s.goal}\n   Done when: ${s.doneWhen}`).join("\n")}
 
 Get any one in full, with commands and traps, via
 \`workshop_build_step(step: <n>)\`.

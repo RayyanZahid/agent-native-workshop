@@ -6,8 +6,8 @@ import agentConfig from "@/agent.config";
  * ================== THE LESSON THIS FILE ENCODES ==================
  * The identical registration written in a React `useEffect` ships, deploys,
  * rescans and moves NOTHING. The effect lives in a hashed JS chunk and does not
- * run until hydration, so anything reading the SERVED HTML — a scanner, a
- * crawler, an agent that fetches the page rather than driving a browser — sees
+ * run until hydration, so anything reading the SERVED HTML, a scanner, a
+ * crawler, an agent that fetches the page rather than driving a browser, sees
  * no tool surface at all. On a real target this check sat at 1/5 until the same
  * code moved into a server-rendered inline script, which took it to 5/5.
  *
