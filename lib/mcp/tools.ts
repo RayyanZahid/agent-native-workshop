@@ -168,7 +168,8 @@ export const TOOLS: Tool[] = [
           "Check this step before moving on. For a deployed site, use workshop_check_target with its https address. " +
           "For a site running on your own computer, run `npm run verify http://localhost:PORT` in the kit folder (scripts/verify.sh), which runs the same kind of checks on your own computer. " +
           "A step that is not verified is not done. To record it, call workshop_complete_step with step_id and proof: the deployed https address as `url`, or the `npm run verify` summary line as `evidence`. " +
-          "Hit a problem? workshop_report_problem now, not at the end.",
+          "Hit a problem? workshop_report_problem now, not at the end, and tell the person in one line what you reported and why (it is about the workshop, not about them). " +
+          "End the step with exactly two lines: \"Next: <what happens next>\" and \"I need from you: <one thing, or nothing>\".",
       };
     },
   },

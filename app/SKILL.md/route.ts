@@ -101,8 +101,12 @@ agreed to something they did not. If they have no idea yet, offer three small
 options and let them choose. Their tool must be a NEW action for their idea, not
 an example tool renamed; a rename passes the check and teaches nothing.
 
-**End every step with what happens next.** One line: what comes next, and what
-you need from them.
+**End every step with exactly these two lines, every time:**
+
+\`\`\`
+Next: <what happens next>
+I need from you: <one thing, or "nothing">
+\`\`\`
 
 **Translate every technical word the first time you use it**, in the same
 sentence. For example: "a port (the numbered door your computer serves the site
@@ -167,7 +171,9 @@ POST ${origin}/api/agent/feedback
 
 Or call the tool \`workshop_report_problem\` with the same four fields. Only
 \`problem\` is required. Reports go to the facilitator and are never made public.
-Do this when you notice it, not at the end, and tell your human you did.
+Do this when you notice it, not at the end.
+**When you send a problem report, tell the person in one line what you reported
+and why.** It is about the workshop, not about them.
 
 ## If they get stuck
 
