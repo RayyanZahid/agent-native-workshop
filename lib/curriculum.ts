@@ -360,6 +360,8 @@ export const BUILD_STEPS: BuildStep[] = [
       "In lib/mcp/tools.ts, add one entry to the TOOLS list. It needs a name, a description, an inputSchema (what the agent sends), scope: null (null means no login needed), rateClass: \"public\", and a handler (the code that runs and returns the answer).",
       "Copy the shape of a nearby entry. Write the description as if explaining it to a new colleague: what it does and when to use it.",
       "Delete the example floor_ tools you do not need, rather than renaming them.",
+      "A scope is a permission your actions ask for, for example posts:write. If you delete every action that uses a permission, verify shows a WARN that the permission is unused. To clear it, have your agent remove that permission from agent.config.ts and from any example route that still names it, then run npm run build. Removing it from only one place breaks the build.",
+      "If your idea has any action that saves, posts or changes something, keep at least one action that needs a login (give it a scope instead of null). Verify needs one to prove that a request with no login is refused, and without one it shows a WARN. A read-only idea can skip this.",
       "lib/room.ts is the example's data. Replace it with yours, or return sample data for now.",
     ],
     commands: ["npm run build"],
