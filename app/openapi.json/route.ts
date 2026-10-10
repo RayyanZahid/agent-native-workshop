@@ -66,14 +66,16 @@ export function GET(req: Request) {
           },
         },
         BuildStep: {
-          type: "object", required: ["id", "n", "title", "goal", "doneWhen", "verify"],
+          type: "object", required: ["id", "n", "title", "goal", "doneWhen", "budgetMinutes", "verify"],
           properties: {
             id: { type: "string" }, n: { type: "integer" }, title: { type: "string" },
             goal: { type: "string" }, why: { type: "string" },
             files: { type: "array", items: { type: "string" } },
             edits: { type: "array", items: { type: "string" }, description: "The exact things to change, in plain words." },
             commands: { type: "array", items: { type: "string" } },
-            doneWhen: { type: "string" }, verify: { type: "string" }, verifyLocal: { type: "string" },
+            doneWhen: { type: "string" },
+            budgetMinutes: { type: "integer", description: "The time this step should take with an agent guiding, in minutes. Past it, the agent stops and checks in." },
+            verify: { type: "string" }, verifyLocal: { type: "string" },
             trap: { type: "string" },
             sayToBeginner: { type: "string", description: "Plain sentences to read aloud word for word to a non-developer." },
             wordsToExplain: { type: "array", items: { type: "object", properties: { word: { type: "string" }, plain: { type: "string" } } }, description: "Technical words this step uses, to explain the first time they come up." },

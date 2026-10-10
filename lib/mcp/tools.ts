@@ -93,7 +93,7 @@ export const TOOLS: Tool[] = [
         ...p,
         slides: slidesForPart(p.n).map((s) => ({ n: s.n, title: s.title, claim: s.claim })),
       })),
-      build_steps: BUILD_STEPS.map((s) => ({ n: s.n, id: s.id, title: s.title, goal: s.goal })),
+      build_steps: BUILD_STEPS.map((s) => ({ n: s.n, id: s.id, title: s.title, goal: s.goal, budgetMinutes: s.budgetMinutes })),
     }),
   },
   {
@@ -119,7 +119,7 @@ export const TOOLS: Tool[] = [
   },
   {
     name: "workshop_slide",
-    description: "One slide in full by its number, 1 to 17. No token required.",
+    description: `One slide in full by its number, 1 to ${SLIDES.length}. No token required.`,
     inputSchema: {
       type: "object",
       properties: { n: { type: "integer", minimum: 1, description: "Slide number." } },
@@ -139,7 +139,7 @@ export const TOOLS: Tool[] = [
     name: "workshop_build_step",
     description:
       "THE GUIDED BUILD. One of seven steps, with its goal, why it is in this order, the files to edit, " +
-      "the exact commands, a checkable done-condition, the command that verifies it, and the trap that " +
+      "the exact commands, a checkable done-condition, a time budget in minutes, the command that verifies it, and the trap that " +
       "costs people the most time. Walk your human through these in order. No token required.",
     inputSchema: {
       type: "object",
@@ -170,6 +170,7 @@ export const TOOLS: Tool[] = [
           "For a site running on your own computer, run `npm run verify http://localhost:PORT` in the kit folder (scripts/verify.sh), which runs the same kind of checks on your own computer. " +
           "A step that is not verified is not done. To record it, call workshop_complete_step with step (the same value you gave workshop_build_step) and proof: the deployed https address as `url`, or the `npm run verify` summary line as `evidence`. " +
           "Hit a problem? workshop_report_problem now, not at the end, and tell the person in one line what you reported and why (it is about the workshop, not about them). " +
+          `This step's budget is ${s.budgetMinutes} minutes. Check in at half. At the budget, stop and tell the person what is shipped, what is mid-flight and what you need decided. After two failed fixes on one check, stop and ask. ` +
           "End the step with exactly two lines: \"Next: <what happens next>\" and \"I need from you: <one thing, or nothing>\".",
       };
     },

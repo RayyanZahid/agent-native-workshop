@@ -33,6 +33,8 @@ export type BuildStep = {
   edits: string[];
   commands: string[];
   doneWhen: string;
+  /** The time this step should take with an agent guiding, in minutes. Past it, the agent stops and checks in. */
+  budgetMinutes: number;
   /** Check a deployed site. Also runnable as workshop_check_target with the https address. */
   verify: string;
   /** The same check against a copy running on your own computer. PORT is the port you started it on. */
@@ -52,6 +54,8 @@ export const AGENT_RULES_ALL_STEPS = [
   "Read /SKILL.md before Step 1. It has the rules for guiding someone who is new to code.",
   "Run the step's check and show the person its result line (for example PASS 22, FAIL 0) before you say a step is done.",
   "Say where the work is happening. If you run on a different machine from the person's, tell them, because they cannot open its local addresses.",
+  "Every step has a time budget in minutes. If a step runs past it, stop, say what is done, what is half done and what you need decided, and ask.",
+  "If a check still fails after two fixes, stop and ask instead of trying a third time.",
 ];
 
 export const PARTS = [
@@ -263,6 +267,19 @@ export const SLIDES: Slide[] = [
   {
     n: 16,
     part: 3,
+    title: "Your agent works in short steps, and a separate check says when each one is done",
+    claim: "Five roles share the work, and no step runs past ten minutes without checking in with you.",
+    body: [
+      "One role splits the work into short steps and writes none of it: the dispatcher.",
+      "A quick lookup goes to a scout, and a simple change to one file goes to a hand.",
+      "Your own idea in Step 3 has no ready answer, so a builder takes it, and the decisions stay yours.",
+      "After every step a verifier reads and runs the check and changes nothing, so the one who built it never marks it done.",
+    ],
+    evidence: "Roles and gates from the project-cycle dispatch family; its brief gate refuses a task with no deliverable or no budget, and warns when there is no check.",
+  },
+  {
+    n: 17,
+    part: 3,
     title: "Three checks so you know it really works",
     claim: "Does it build, does the live site actually work, and what do the scanners say.",
     body: [
@@ -273,7 +290,7 @@ export const SLIDES: Slide[] = [
     ],
   },
   {
-    n: 17,
+    n: 18,
     part: 3,
     title: "What to do next",
     claim: "Start with Layers 1 to 4, add the rest when you need them.",
@@ -344,6 +361,7 @@ export const BUILD_STEPS: BuildStep[] = [
     doneWhen:
       "YOUR_SITE/.well-known/ai-agent.json shows a block of text with a \"name\" and an \"interfaces\" section, not an error page. " +
       "It will still show the kit's own web address until Step 2. That is expected.",
+    budgetMinutes: 10,
     verify: "curl -s YOUR_URL/.well-known/ai-agent.json | head -5",
     verifyLocal: "npm run verify http://localhost:PORT",
     trap:
@@ -414,6 +432,7 @@ export const BUILD_STEPS: BuildStep[] = [
     ],
     doneWhen:
       "YOUR_SITE/.well-known/ai-agent.json shows your product name, your description and your real web address, not \"The Floor\" or agent-native-kit.vercel.app.",
+    budgetMinutes: 5,
     verify: "curl -s YOUR_URL/.well-known/ai-agent.json | head -20",
     verifyLocal: "curl -s http://localhost:PORT/.well-known/ai-agent.json | head -20 && npm run verify http://localhost:PORT",
     trap:
@@ -430,6 +449,7 @@ export const BUILD_STEPS: BuildStep[] = [
     agentShould: [
       "Ask for the person's idea and use their words. Never invent it.",
       "If you add example data, say out loud that it is made up.",
+      "The ten minutes for this step start once the person has chosen their idea. Say so up front.",
     ],
     sayToBeginner:
       "This step is where the site becomes yours: you add one action for your own idea that any AI agent can see and use. It matters because an agent decides whether your site is worth using by reading what it can do, so a clear action is what gets you picked. You will see your new action appear in the list of what the site can do, and calling it will return an answer without any login.",
@@ -480,6 +500,7 @@ export const BUILD_STEPS: BuildStep[] = [
     commands: ["npm run build"],
     doneWhen:
       "tools/list shows a tool you wrote for your idea, not one of the example's floor_ tools (renamed or not), and calling it works without a login.",
+    budgetMinutes: 10, // EXCEPTION: the person's own idea; the clock pauses while they decide.
     verify: `${LIST_CALL("YOUR_URL")} && ${TOOL_CALL("YOUR_URL")}`,
     verifyLocal: `${LIST_CALL("http://localhost:PORT")} && ${TOOL_CALL("http://localhost:PORT")}`,
     trap:
@@ -549,6 +570,7 @@ export const BUILD_STEPS: BuildStep[] = [
     doneWhen:
       "Starting a real signup and then trying to approve its code without being logged in is refused (401 or 403), not approved. " +
       "Approving while signed in records your real name, and the board shows it as verified.",
+    budgetMinutes: 10,
     verify:
       "CODE=$(curl -s -X POST YOUR_URL/api/agent/signup/start -H 'content-type: application/json' -d '{\"scopes\":[\"read:public\"],\"agent_name\":\"check\"}' | python3 -c 'import sys,json;print(json.load(sys.stdin)[\"user_code\"])') && " +
       "curl -s -o /dev/null -w '%{http_code}\\n' -X POST YOUR_URL/api/agent/signup/complete -H 'content-type: application/json' -d \"{\\\"user_code\\\":\\\"$CODE\\\"}\"  # 401 or 403 is a pass, 200 means anyone can approve",
@@ -605,6 +627,7 @@ export const BUILD_STEPS: BuildStep[] = [
       "npx vercel deploy --prod",
     ],
     doneWhen: "YOUR_SITE/api/v1/health says \"ok\" instead of \"degraded\".",
+    budgetMinutes: 5,
     verify: "curl -s YOUR_URL/api/v1/health",
     verifyLocal:
       "curl -s http://localhost:PORT/api/v1/health   # on your own computer this says degraded until you put KV_REST_API_URL and KV_REST_API_TOKEN in .env.local and restart",
@@ -651,6 +674,7 @@ export const BUILD_STEPS: BuildStep[] = [
     commands: ["npm run build", "npx vercel deploy --prod"],
     doneWhen:
       "Your API description lists your real features, and a failed request explains what went wrong and how to fix it.",
+    budgetMinutes: 10,
     verify: "curl -s YOUR_URL/openapi.json",
     verifyLocal: "curl -s http://localhost:PORT/openapi.json",
     trap:
@@ -660,6 +684,7 @@ export const BUILD_STEPS: BuildStep[] = [
     id: "verify-and-scan",
     agentShould: [
       "Report zero failures only when the script's own output says FAIL 0, and show that line.",
+      "The scanner allows six scans a day. After two rounds of fix and re-scan with a finding left, stop, show the person the last result and ask.",
     ],
     sayToBeginner:
       "This last step checks your site from the outside, the way an AI agent sees it, and then gets a score from a free scanner. It matters because checking what is really being served is the only way to know it works, not what you think you shipped. You will see a short summary line with the number of checks passed and zero failed, and a score you can improve.",
@@ -698,6 +723,7 @@ export const BUILD_STEPS: BuildStep[] = [
       "curl -s -X POST https://isitagentready.com/api/scan -H 'content-type: application/json' -d '{\"url\":\"YOUR_URL\"}'",
     ],
     doneWhen: "The test script reports zero failures.",
+    budgetMinutes: 5,
     verify: "bash scripts/verify.sh YOUR_URL",
     verifyLocal: "npm run verify http://localhost:PORT   # the scanner needs a public address, so scan after you deploy",
     trap:
