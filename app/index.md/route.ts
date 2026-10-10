@@ -67,6 +67,10 @@ These are Step 1 to Step 7. They are not the seven layers from Part 2 (Layer 1 t
 ${BUILD_STEPS.map((s) => `
 ### Step ${s.n}: ${s.title}
 
+**In plain words.** ${s.sayToBeginner}
+
+**Words to explain.** ${s.wordsToExplain.map((w) => `${w.word} (${w.plain})`).join("; ")}
+
 **Goal.** ${s.goal}
 
 **Why here.** ${s.why}

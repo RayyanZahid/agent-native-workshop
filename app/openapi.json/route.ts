@@ -75,6 +75,8 @@ export function GET(req: Request) {
             commands: { type: "array", items: { type: "string" } },
             doneWhen: { type: "string" }, verify: { type: "string" }, verifyLocal: { type: "string" },
             trap: { type: "string" },
+            sayToBeginner: { type: "string", description: "Plain sentences to read aloud word for word to a non-developer." },
+            wordsToExplain: { type: "array", items: { type: "object", properties: { word: { type: "string" }, plain: { type: "string" } } }, description: "Technical words this step uses, to explain the first time they come up." },
           },
         },
         Outline: {

@@ -151,7 +151,8 @@ Start with workshop_overview, then ask me which part I want.`}</pre>
           <article className="slide step" key={s.id}>
             <div className="slidenum">Step {s.n} · id <code>{s.id}</code></div>
             <h3>{s.title}</h3>
-            <p className="claim">{s.goal}</p>
+            <p className="claim">{s.sayToBeginner}</p>
+            <p className="dim">Goal: {s.goal}</p>
             <p className="dim">{s.why}</p>
             {s.edits.length > 0 && (
               <>

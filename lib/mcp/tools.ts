@@ -165,6 +165,7 @@ export const TOOLS: Tool[] = [
         complete_with: { step_id: s.id, note: "Pass this exact id to workshop_complete_step, with proof. The number works too." },
         next_step: next ? { n: next.n, id: next.id, title: next.title } : null,
         reminder:
+          "If your person is not a developer, read them sayToBeginner word for word, and explain each item in wordsToExplain the first time it comes up. Never put words in their mouth: only say they wrote or chose something if they did. " +
           "Check this step before moving on. For a deployed site, use workshop_check_target with its https address. " +
           "For a site running on your own computer, run `npm run verify http://localhost:PORT` in the kit folder (scripts/verify.sh), which runs the same kind of checks on your own computer. " +
           "A step that is not verified is not done. To record it, call workshop_complete_step with step_id and proof: the deployed https address as `url`, or the `npm run verify` summary line as `evidence`. " +

@@ -38,6 +38,10 @@ export type BuildStep = {
   /** The same check against a copy running on your own computer. PORT is the port you started it on. */
   verifyLocal: string;
   trap: string;
+  /** 2 to 4 plain sentences an agent can read aloud word for word to a non-developer. */
+  sayToBeginner: string;
+  /** Every technical word this step uses, with its plain meaning, to explain the first time it comes up. */
+  wordsToExplain: { word: string; plain: string }[];
 };
 
 export const PARTS = [
@@ -280,6 +284,34 @@ const TOOL_CALL = (base: string) =>
 export const BUILD_STEPS: BuildStep[] = [
   {
     id: "deploy-first",
+    sayToBeginner:
+      "This step puts a working copy of the starter site on the internet before you change anything. That way, if something breaks later, we know it was your change and not the setup. You will see a web address come back, and when you open it you will see a block of text describing the site, not an error.",
+    wordsToExplain: [
+      {
+        "word": "deploy",
+        "plain": "put your site on the internet so anyone can reach it"
+      },
+      {
+        "word": "starter kit",
+        "plain": "a ready-made website project that already works for AI agents, which you copy and then make your own"
+      },
+      {
+        "word": "localhost",
+        "plain": "a web address that only works on your own computer, so nobody else can see it"
+      },
+      {
+        "word": "port",
+        "plain": "a numbered door on your computer that a running site listens on; the usual one is 3000"
+      },
+      {
+        "word": "terminal command",
+        "plain": "a line of text you type into a window on your computer to make it do something"
+      },
+      {
+        "word": "Vercel",
+        "plain": "a free hosting service that puts your site online"
+      }
+    ],
     n: 1,
     title: "Put the starter kit online before changing anything",
     goal: "A working copy of the kit running, with nothing of yours in it yet.",
@@ -308,6 +340,38 @@ export const BUILD_STEPS: BuildStep[] = [
   },
   {
     id: "make-it-yours",
+    sayToBeginner:
+      "This step is where you put your own name, description and contact into one settings file. Every file an AI agent reads about your site is made from that one file, so if it still says the starter's details, agents are told the wrong thing and nothing warns you. After you change it, the site has to be restarted or put online again, and then you will see your own name show up.",
+    wordsToExplain: [
+      {
+        "word": "config file",
+        "plain": "a plain text file of settings that the rest of the site reads from"
+      },
+      {
+        "word": "restart",
+        "plain": "stop the running site and start it again so it picks up your changes"
+      },
+      {
+        "word": "port",
+        "plain": "a numbered door on your computer that a running site listens on; the usual one is 3000"
+      },
+      {
+        "word": "localhost",
+        "plain": "a web address that only works on your own computer"
+      },
+      {
+        "word": "host name",
+        "plain": "the part of a web address after https://, like my-product.vercel.app"
+      },
+      {
+        "word": "canonical address",
+        "plain": "the one official web address you want agents to use for your site"
+      },
+      {
+        "word": "WARN",
+        "plain": "a yellow note from the checker: it works, but something is not finished yet"
+      }
+    ],
     n: 2,
     title: "Change one file: the settings",
     goal: "Your product's name, web address, and contact, in the one settings file.",
@@ -347,6 +411,34 @@ export const BUILD_STEPS: BuildStep[] = [
   },
   {
     id: "your-idea",
+    sayToBeginner:
+      "This step is where the site becomes yours: you add one action for your own idea that any AI agent can see and use. It matters because an agent decides whether your site is worth using by reading what it can do, so a clear action is what gets you picked. You will see your new action appear in the list of what the site can do, and calling it will return an answer without any login.",
+    wordsToExplain: [
+      {
+        "word": "action",
+        "plain": "one thing an AI agent can ask your site to do, like list items or look something up"
+      },
+      {
+        "word": "tool",
+        "plain": "another word for an action, used in the code"
+      },
+      {
+        "word": "login",
+        "plain": "proving who you are, usually with a password or account"
+      },
+      {
+        "word": "sample data",
+        "plain": "made-up example answers, used until you have real ones"
+      },
+      {
+        "word": "permission",
+        "plain": "a limit on what an agent is allowed to do, like only reading or also posting"
+      },
+      {
+        "word": "build",
+        "plain": "check the code and put it together to make sure there are no mistakes"
+      }
+    ],
     n: 3,
     title: "Swap the example app for your own idea",
     goal: "A new action for your idea that any agent can see and use, with no login.",
@@ -376,6 +468,34 @@ export const BUILD_STEPS: BuildStep[] = [
   },
   {
     id: "wire-auth",
+    sayToBeginner:
+      "This step connects a real sign-in, so only a real, logged-in person can approve an AI agent on your site. Until now anyone could type any name when approving, which defeats the point of asking a person to say yes. You will make a free account and copy two keys, your assistant does the code, and afterwards approving without signing in is refused.",
+    wordsToExplain: [
+      {
+        "word": "Clerk",
+        "plain": "a free sign-in service that handles accounts and logins for you"
+      },
+      {
+        "word": "API key",
+        "plain": "a long secret string that proves a program is allowed to use a service"
+      },
+      {
+        "word": "secret key",
+        "plain": "a key you treat like a password: never paste it into a chat or share it"
+      },
+      {
+        "word": "environment variable",
+        "plain": "a setting stored outside your code, so secrets stay out of it"
+      },
+      {
+        "word": "redeploy",
+        "plain": "put the site online again so it picks up new settings"
+      },
+      {
+        "word": "approve page",
+        "plain": "the page where a person sees what an agent wants and says yes or no"
+      }
+    ],
     n: 4,
     title: "Connect a real login, so only you can approve your agent",
     goal: "The person approving an agent is a real, logged-in user, and their name comes from the login, not from what they type.",
@@ -417,6 +537,34 @@ export const BUILD_STEPS: BuildStep[] = [
   },
   {
     id: "durable-storage",
+    sayToBeginner:
+      "This step gives your site a small database so the things people save stay saved. Free hosting starts your site fresh for each visit, so without a database, whatever was saved can quietly vanish and nothing tells you. You will add two settings and put the site online again, and then the health page says ok instead of degraded.",
+    wordsToExplain: [
+      {
+        "word": "database",
+        "plain": "a place that keeps information safely so it is still there next time"
+      },
+      {
+        "word": "memory",
+        "plain": "temporary storage that is wiped when the site restarts"
+      },
+      {
+        "word": "health page",
+        "plain": "an address that reports whether the site's parts are working"
+      },
+      {
+        "word": "degraded",
+        "plain": "working, but with something missing, such as no database"
+      },
+      {
+        "word": "environment variable",
+        "plain": "a setting stored outside your code, so secrets stay out of it"
+      },
+      {
+        "word": "redeploy",
+        "plain": "put the site online again so it picks up new settings"
+      }
+    ],
     n: 5,
     title: "Add a small database so your site remembers things",
     goal: "Things saved on your site stay saved.",
@@ -439,6 +587,30 @@ export const BUILD_STEPS: BuildStep[] = [
   },
   {
     id: "api-product",
+    sayToBeginner:
+      "This step makes the way programs talk to your site clear and written down. It counts for the most on the free scanners, and it is how an agent decides your site is worth using. You will see a document listing what your site offers, and failed requests that explain what went wrong and how to fix it.",
+    wordsToExplain: [
+      {
+        "word": "API",
+        "plain": "a way for one program to use another directly, without clicking through web pages"
+      },
+      {
+        "word": "API description",
+        "plain": "a written list of what a program can ask your site, and what it gets back"
+      },
+      {
+        "word": "error message",
+        "plain": "the note a program gets back when something fails"
+      },
+      {
+        "word": "scanner",
+        "plain": "a free website that checks your site and scores how easy it is for agents to use"
+      },
+      {
+        "word": "developer page",
+        "plain": "a page that explains your site to people who build with it"
+      }
+    ],
     n: 6,
     title: "Make your API clear and documented",
     goal: "A description of your API, some data anyone can read, and helpful error messages.",
@@ -457,6 +629,30 @@ export const BUILD_STEPS: BuildStep[] = [
   },
   {
     id: "verify-and-scan",
+    sayToBeginner:
+      "This last step checks your site from the outside, the way an AI agent sees it, and then gets a score from a free scanner. It matters because checking what is really being served is the only way to know it works, not what you think you shipped. You will see a short summary line with the number of checks passed and zero failed, and a score you can improve.",
+    wordsToExplain: [
+      {
+        "word": "verify script",
+        "plain": "a small program that tests your site from the outside and reports pass, warn or fail"
+      },
+      {
+        "word": "PASS, WARN, FAIL",
+        "plain": "good, works but unfinished, and broken"
+      },
+      {
+        "word": "scanner",
+        "plain": "a free website that checks your site and scores how easy it is for agents to use"
+      },
+      {
+        "word": "localhost",
+        "plain": "a web address that only works on your own computer"
+      },
+      {
+        "word": "port",
+        "plain": "a numbered door on your computer that a running site listens on; the usual one is 3000"
+      }
+    ],
     n: 7,
     title: "Check it from the outside, then scan it",
     goal: "A test script that checks your live site passes, then a score from a scanner.",

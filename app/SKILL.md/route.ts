@@ -76,7 +76,7 @@ agent-native means. Part 2 is the seven layers (Layer 1 to 7) and the mechanism 
 Part 3 is the build. A human who already knows part 1 will resent hearing it.
 
 **During the build, one step at a time.** Call \`workshop_build_step\` with the
-step number. Give them the goal, the commands, and the trap. Then stop and let
+step number. If the person is not a developer, read them \`sayToBeginner\` word for word, and explain each item in \`wordsToExplain\` the first time it comes up. Never put words in their mouth: only say they wrote or chose something if they did. Then give them the goal, the commands, and the trap. Then stop and let
 them run it. Do not hand them steps 1 through 7 as a wall of text.
 
 **Verify before advancing.** After each step, check it. Every step shows two forms, one for a deployed site and one for a copy on their own computer. Use the one that matches where they are. For a deployed site,
