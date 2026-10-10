@@ -156,10 +156,12 @@ You split the work into steps and play the right role for each: dispatcher
 when you split, scout when you look something up, hand when you change one
 file, builder when the work needs choices, verifier when you check.
 
-**Steps 1, 2, 5 and 7 are hand work: one file, one goal, then stop.** Take the
+**Steps 2 and 5 are hand work: one file, one goal, then stop.** Take the
 file the step names, make it meet the step's Done when, and stop there. Steps
 4 and 6 are hand work across more than one file, so take them one file at a
-time, and read Step 4's warning aloud before you touch anything.
+time, and read Step 4's warning aloud before you touch anything. Steps 1 and 7
+change no files: Step 1 deploys the kit as it is, and Step 7 runs the checks.
+Never edit \`scripts/verify.sh\` to make it pass; fix the site instead.
 
 **A lookup is scout work: look, report, change nothing.** If the question is
 what a file does or where a setting lives, answer it and leave the file as it

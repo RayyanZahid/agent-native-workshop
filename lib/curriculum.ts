@@ -684,7 +684,7 @@ export const BUILD_STEPS: BuildStep[] = [
     id: "verify-and-scan",
     agentShould: [
       "Report zero failures only when the script's own output says FAIL 0, and show that line.",
-      "The scanner allows six scans a day. After two rounds of fix and re-scan with a finding left, stop, show the person the last result and ask.",
+      "The scanner limits how often one site can be scanned. After two rounds of fix and re-scan with a finding left, stop, show the person the last result and ask.",
     ],
     sayToBeginner:
       "This last step checks your site from the outside, the way an AI agent sees it, and then gets a score from a free scanner. It matters because checking what is really being served is the only way to know it works, not what you think you shipped. You will see a short summary line with the number of checks passed and zero failed, and a score you can improve.",
