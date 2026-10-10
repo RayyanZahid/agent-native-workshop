@@ -1,6 +1,5 @@
 import agentConfig from "@/agent.config";
 import { resolveOrigin, discoveryJson } from "@/lib/origin";
-import { SCOPES } from "@/lib/scopes";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +16,7 @@ export function GET(req: Request) {
     preferredTransport: "JSONRPC",
     // REQUIRED AT THE CARD LEVEL, not only per skill. Having it on every skill
     // and not here failed validation with "missing or empty required field
-    // supportedInterfaces" — a message that reads like the skills are wrong.
+    // supportedInterfaces", a message that reads like the skills are wrong.
     supportedInterfaces: [
       { transport: "JSONRPC", url: `${origin}${agentConfig.a2a.path}` },
     ],
@@ -32,10 +31,13 @@ export function GET(req: Request) {
         description: `Agent token from the RFC 8628 device-code flow at ${origin}/api/agent/signup/start`,
       },
     },
-    security: [{ bearer: SCOPES }],
+    // Card level default. Each skill below overrides it with what THAT skill
+    // needs, because two of the three need no token at all.
+    security: [{ bearer: ["progress:write"] }],
     skills: agentConfig.a2a.skills.map((s) => ({
       id: s.id, name: s.name, description: s.description,
-      tags: ["room", "multiplayer", "messaging"],
+      tags: s.tags,
+      security: s.scopes.length ? [{ bearer: s.scopes }] : [],
       inputModes: ["text/plain"], outputModes: ["application/json"],
       supportedInterfaces: ["JSONRPC"],
     })),

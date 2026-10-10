@@ -49,11 +49,11 @@ export function validateTarget(raw: string): { ok: true; url: URL } | { ok: fals
     return { ok: false, error: "Not a valid absolute URL. Include https://" };
   }
   if (url.protocol !== "https:") {
-    return { ok: false, error: "I can only check a site that is on the internet with https. If you're running it on your own computer, run `npm run verify http://localhost:PORT` in the kit folder instead; that runs the same checks." };
+    return { ok: false, error: "I can only check a site that is on the internet with https. If you're running it on your own computer, run `npm run verify http://localhost:PORT` in the kit folder instead; that runs the same kind of checks on your own computer." };
   }
   const h = url.hostname.toLowerCase();
   if (h === "localhost" || h.endsWith(".localhost") || h.endsWith(".local") || h.endsWith(".internal")) {
-    return { ok: false, error: "I can't reach a site on your own computer. Run `npm run verify http://localhost:PORT` in the kit folder instead; that runs the same checks. Once it is deployed, give me the https address." };
+    return { ok: false, error: "I can't reach a site on your own computer. Run `npm run verify http://localhost:PORT` in the kit folder instead; that runs the same kind of checks on your own computer. Once it is deployed, give me the https address." };
   }
   // Reject IP literals outright rather than enumerating private ranges.
   if (/^\d{1,3}(\.\d{1,3}){3}$/.test(h) || h.includes(":") || h.startsWith("[")) {
@@ -247,11 +247,47 @@ export async function checkTarget(raw: string): Promise<{
   );
 
   // --- Layer 5 / 6
-  F.push(
-    isJson(agentCard)
-      ? { check: "a2a-card", ok: true, detail: "A2A agent card serves valid JSON" }
-      : { check: "a2a-card", ok: false, detail: "No A2A agent card (optional)", fix: "Optional. Add it when there is a second agent worth talking to." },
-  );
+  // A card that parses proves nothing if the address it advertises is a 404.
+  // So read the card, then call the address with a harmless request.
+  if (!isJson(agentCard)) {
+    F.push({ check: "a2a-card", ok: false, detail: "No A2A agent card (optional)", fix: "Optional. Add it when there is a second agent worth talking to." });
+  } else {
+    let advertised = "";
+    try { advertised = String(JSON.parse(agentCard.body).url ?? ""); } catch { /* reported below */ }
+    let sameHost: URL | null = null;
+    try { const u = new URL(advertised, base); if (u.host === base.host) sameHost = u; } catch { /* reported below */ }
+    if (!sameHost) {
+      F.push({ check: "a2a-card", ok: false, detail: "The card has no usable url, or it points at another host", fix: "Set the card's url to an address on your own site that answers JSON-RPC." });
+    } else {
+      let answered = false;
+      let status = 0;
+      try {
+        const ctl = new AbortController();
+        const t = setTimeout(() => ctl.abort(), TIMEOUT_MS);
+        const r = await fetch(new URL(sameHost.pathname, base), {
+          method: "POST",
+          signal: ctl.signal,
+          redirect: "manual",
+          headers: { "content-type": "application/json", "user-agent": "agent-native-workshop/1.0" },
+          body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "message/send", params: { message: { role: "user", parts: [] } } }),
+        });
+        clearTimeout(t);
+        status = r.status;
+        const j = JSON.parse((await r.text()).slice(0, MAX_BYTES));
+        answered = j?.jsonrpc === "2.0";
+      } catch { /* reported below */ }
+      F.push(
+        answered
+          ? { check: "a2a-card", ok: true, detail: `A2A card serves valid JSON and its address ${sameHost.pathname} answers JSON-RPC` }
+          : {
+              check: "a2a-card",
+              ok: false,
+              detail: `The card advertises ${sameHost.pathname}, but it did not answer JSON-RPC (status ${status || "none"})`,
+              fix: "Either build that address, or remove A2A from your card and manifest. Advertising an address nothing answers is worse than not advertising one.",
+            },
+      );
+    }
+  }
 
   let pathCount = 0;
   if (isJson(openapi)) {

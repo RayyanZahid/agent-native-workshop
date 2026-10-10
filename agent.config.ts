@@ -33,7 +33,7 @@ export const agentConfig = {
     version: "1.0.0",
     license: "MIT",
     author: "Immersive Commons",
-    contact: "hello@example.com",
+    contact: "https://github.com/RayyanZahid/agent-native-workshop/issues",
   },
 
   hosts: {
@@ -49,7 +49,6 @@ export const agentConfig = {
     "read:public": "Read the curriculum, the build steps and the room board. Everything teaching is already free without a token.",
     "progress:read": "Read your own recorded progress through the build.",
     "progress:write": "Register in the room, mark build steps complete, and ask the facilitator a question.",
-    "admin:facilitate": "Facilitator tools. Never in a default grant.",
   },
 
   tiers: {
@@ -80,10 +79,36 @@ export const agentConfig = {
 
   a2a: {
     path: "/api/a2a",
-    authenticated: true,
+    /**
+     * Each skill names the permission it needs. An empty list means no token.
+     * The card, the endpoint and the checks all read this, so a skill cannot
+     * claim to need a login that the endpoint does not ask for.
+     */
     skills: [
-      { id: "guide-build", name: "Guide a build", description: "Walk another agent's human through the seven build steps." },
-      { id: "check-readiness", name: "Check readiness", description: "Run live agent-readiness checks against a deployed URL and return findings." },
+      {
+        id: "guide-build",
+        name: "Guide a build",
+        description:
+          "Get one of the seven build steps. Send message/send with metadata {\"skill\":\"guide-build\"} and a text part with the step number, for example \"3\".",
+        tags: ["workshop", "build-steps", "guided-build"],
+        scopes: [] as string[],
+      },
+      {
+        id: "check-readiness",
+        name: "Check readiness",
+        description:
+          "Run live agent-readiness checks against a deployed https URL. Send message/send with metadata {\"skill\":\"check-readiness\"} and a text part holding the URL.",
+        tags: ["workshop", "readiness", "verification"],
+        scopes: [] as string[],
+      },
+      {
+        id: "leave-note",
+        name: "Leave a note on the room board",
+        description:
+          "Send any other message/send and it is recorded on your row of the room board, where the facilitator reads it. Needs a token with progress:write.",
+        tags: ["workshop", "room-board", "messaging"],
+        scopes: ["progress:write"] as string[],
+      },
     ],
   },
 

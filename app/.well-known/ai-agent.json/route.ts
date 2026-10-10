@@ -19,7 +19,7 @@ export function GET(req: Request) {
     license: agentConfig.product.license,
     interfaces: {
       mcp: { url: `${origin}${agentConfig.mcp.path}`, transport: "streamable-http", protocol_version: agentConfig.mcp.protocolVersion },
-      a2a: { url: `${origin}${agentConfig.a2a.path}`, card: `${origin}/.well-known/agent-card.json`, authenticated: agentConfig.a2a.authenticated },
+      a2a: { url: `${origin}${agentConfig.a2a.path}`, card: `${origin}/.well-known/agent-card.json`, skills: agentConfig.a2a.skills.map((s) => ({ id: s.id, needs_token: s.scopes.length > 0 })) },
       rest: { base_url: `${origin}${agentConfig.api.basePath}`, openapi: `${origin}/openapi.json` },
     },
     authentication: {

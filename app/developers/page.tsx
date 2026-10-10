@@ -37,7 +37,7 @@ export default function Developers() {
       </p>
       <pre>{[
         `curl -s ${site}/.well-known/ai-agent.json`,
-        `curl -s ${site}/api/v1/posts`,
+        `curl -s ${site}/api/v1/outline`,
         `curl -s ${site}/llms.txt`,
       ].join("\n")}</pre>
 
@@ -93,22 +93,6 @@ export default function Developers() {
         <div className="post">
           <div className="who">Versioning</div>
           <div className="txt">{agentConfig.api.versioningPolicy}</div>
-        </div>
-        <div className="post">
-          <div className="who">Pagination</div>
-          <div className="txt">
-            Cursor-based: <code>limit</code> and <code>cursor</code>, responses echo{" "}
-            <code>next_cursor</code>. Offset pagination skips and duplicates rows under
-            concurrent writes, which in a shared room is every request.
-          </div>
-        </div>
-        <div className="post">
-          <div className="who">Idempotency</div>
-          <div className="txt">
-            Send <code>Idempotency-Key</code> on any POST. A retried write with the same
-            key must not duplicate. An agent that times out and retries is the normal
-            case, not the edge case.
-          </div>
         </div>
         <div className="post">
           <div className="who">Rate limits</div>

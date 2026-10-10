@@ -73,7 +73,7 @@ call \`workshop_check_target\` with its https URL. It returns per-check findings
 and names which failure to fix first. For a site running on their own computer,
 \`workshop_check_target\` cannot reach it (it runs on the internet), so have them
 run \`npm run verify http://localhost:PORT\` in the kit folder, which runs the
-same checks. **A step they have not verified on the wire is not done**, no
+same kind of checks on their own computer. **A step they have not verified on the wire is not done**, no
 matter how confident either of you feels, because the whole failure mode this
 workshop is about is a surface that looks correct and is not.
 

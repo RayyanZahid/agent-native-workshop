@@ -146,7 +146,7 @@ export const TOOLS: Tool[] = [
         next_step: next ? { n: next.n, id: next.id, title: next.title } : null,
         reminder:
           "Check this step before moving on. For a deployed site, use workshop_check_target with its https address. " +
-          "For a site running on your own computer, run `npm run verify http://localhost:PORT` in the kit folder (scripts/verify.sh), which runs the same checks. " +
+          "For a site running on your own computer, run `npm run verify http://localhost:PORT` in the kit folder (scripts/verify.sh), which runs the same kind of checks on your own computer. " +
           "A step that is not verified on the wire is not done.",
       };
     },

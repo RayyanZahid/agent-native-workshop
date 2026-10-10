@@ -81,8 +81,17 @@ export async function listAttendees(limit = 100): Promise<Attendee[]> {
     const a = await kvGet<Attendee>(`attendee:${id}`);
     if (a) out.push(a);
   }
+  // Two registrations that say exactly the same thing are one person on the
+  // board. Keep the most recently active of each.
+  const seen = new Map<string, Attendee>();
+  for (const a of out) {
+    const key = JSON.stringify([a.humanLabel, a.agentName, a.targetUrl, a.step, a.completedSteps, a.note]);
+    const prev = seen.get(key);
+    if (!prev || a.updatedAt > prev.updatedAt) seen.set(key, a);
+  }
+
   // Furthest first, then most recently active. The board should reward progress.
-  return out.sort(
+  return [...seen.values()].sort(
     (x, y) => y.step - x.step || y.updatedAt.localeCompare(x.updatedAt),
   );
 }
