@@ -87,8 +87,12 @@ export default async function Deck() {
         </p>
         <pre>{`Use ${bare} and walk me through this workshop.
 Start with workshop_overview, then ask me which part I want.`}</pre>
+        <p>
+          <strong>Works best with Claude Sonnet or better.</strong> Smaller models can do every step,
+          but in our tests they explained things less clearly to people new to code.
+        </p>
         <p className="dim">
-          It will find the manifest, read the curriculum, and be able to hand you every build step
+          It will find the workshop's instructions, read the lessons, and be able to hand you every build step
           with its commands and its done-condition. Nothing is scraped. This deck exposes itself
           exactly the way it is about to teach you to expose your product.
         </p>
