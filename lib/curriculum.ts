@@ -283,7 +283,7 @@ export const BUILD_STEPS: BuildStep[] = [
       "Deploy the known-good thing first and every later failure has exactly one cause.",
     files: [],
     commands: [
-      "git clone https://github.com/<you>/agent-native-kit my-product && cd my-product",
+      "git clone https://github.com/RayyanZahid/agent-native-kit my-product && cd my-product",
       "npm install",
       "npx vercel deploy --prod",
     ],
