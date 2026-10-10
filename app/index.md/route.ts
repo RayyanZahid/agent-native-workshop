@@ -84,6 +84,8 @@ ${BUILD_STEPS.map((s) => `
 ${s.files.length ? `**Files.** ${s.files.map((f) => `\`${f}\``).join(", ")}\n` : ""}${s.edits.length ? `\n**What to change.**\n\n${s.edits.map((e) => `- ${e}`).join("\n")}\n` : ""}${s.commands.length ? `\n\`\`\`bash\n${s.commands.join("\n")}\n\`\`\`\n` : ""}
 **Done when.** ${s.doneWhen}
 
+**Budget.** ${s.budgetMinutes} minutes. Past it, your agent stops and checks in.
+
 **Verify, deployed.** \`${s.verify}\` (or have your agent call \`workshop_check_target\` with your https address)
 
 **Verify, on your own computer.** \`${s.verifyLocal}\` (replace PORT with the port you started it on)

@@ -35,7 +35,7 @@ homepage: ${origin}
 You are helping a human build a real, deployed, agent-native product today. This
 file tells you how to run that session.
 
-## First, the six things that matter most
+## First, the seven things that matter most
 
 1. **Read this whole file, not a summary.** If your page tool summarises, fetch
    it raw instead (for example \`curl -s ${origin}/SKILL.md\`). In testing,
@@ -52,6 +52,7 @@ file tells you how to run that session.
 5. **Ask before anything becomes public:** which contact email to publish, and
    any tunnel that puts their site on the open internet.
 6. **Talk plainly.** Explain each technical word the first time, in the same sentence.
+7. **Keep to each step's time budget.** Every step carries \`budgetMinutes\`. Check in at half. At the budget, stop and tell the person what is shipped, what is mid-flight and what you need decided.
 
 ## What this is
 
@@ -148,6 +149,41 @@ failed, say so plainly and name the fix. Do not soften it, and do not report a
 step complete because the code looks right. The entire subject of part 2 is
 surfaces that pass inspection and fail on the wire.
 
+## How to run the work: five roles and two gates
+
+**You run this person's build; the idea and every decision in it are theirs.**
+You split the work into steps and play the right role for each: dispatcher
+when you split, scout when you look something up, hand when you change one
+file, builder when the work needs choices, verifier when you check.
+
+**Steps 2 and 5 are hand work: one file, one goal, then stop.** Take the
+file the step names, make it meet the step's Done when, and stop there. Steps
+4 and 6 are hand work across more than one file, so take them one file at a
+time, and read Step 4's warning aloud before you touch anything. Steps 1 and 7
+change no files: Step 1 deploys the kit as it is, and Step 7 runs the checks.
+Never edit \`scripts/verify.sh\` to make it pass; fix the site instead.
+
+**A lookup is scout work: look, report, change nothing.** If the question is
+what a file does or where a setting lives, answer it and leave the file as it
+was.
+
+**Step 3 is builder work: several files, and choices only the person can
+make.** Offer options, let them choose, then build what they chose.
+
+**After every step, switch to verifier and check on the wire.** Use
+\`workshop_check_target\` for a deployed site or \`npm run verify\` for a local
+one, and show the result before you call the step finished. The check says a
+step is done, never the role that built it.
+
+**Every step carries \`budgetMinutes\` from \`workshop_build_step\`; item 7
+above says how to use it.** The three lines at the stop are: what shipped,
+what is mid-flight, the decision you need from them. After two failed fix
+loops on one check, stop and ask.
+
+**Name any exception to the budget before the clock starts, with its reason.**
+Step 3 has a standing one: the clock pauses while the person decides on their
+idea.
+
 ## The three parts
 
 ${PARTS.map((p) => `### Part ${p.n}: ${p.name}\n\n${p.summary}\n\nRead it with \`workshop_part(part: ${p.n})\`.`).join("\n\n")}
@@ -156,7 +192,7 @@ ${PARTS.map((p) => `### Part ${p.n}: ${p.name}\n\n${p.summary}\n\nRead it with \
 
 **Two different lists of seven.** Part 2 has seven **layers** (Layer 1 to Layer 7: what a site is made of). Part 3 has seven **build steps** (Step 1 to Step 7: the order you build in). Say "Layer N" or "Step N", never a bare number, and never call a layer a step.
 
-${BUILD_STEPS.map((s) => `Step ${s.n}. **${s.title}**: ${s.goal}\n   Done when: ${s.doneWhen}`).join("\n")}
+${BUILD_STEPS.map((s) => `Step ${s.n}. **${s.title}**: ${s.goal}\n   Done when: ${s.doneWhen}\n   Budget: ${s.budgetMinutes} min`).join("\n")}
 
 Get any one in full, with commands and traps, via
 \`workshop_build_step(step: <n>)\`.
