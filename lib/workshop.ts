@@ -1,5 +1,5 @@
 import { kvPush, kvList, kvGet, kvSet } from "@/lib/store";
-import { BUILD_STEPS } from "@/lib/curriculum";
+import { BUILD_STEPS, getStep } from "@/lib/curriculum";
 
 /**
  * THE WORKSHOP DOMAIN: who is in the room and how far each of them has got.
@@ -76,7 +76,7 @@ export async function completeStep(
   // than stored independently. Two numbers that mean the same thing drift.
   const furthest = Math.max(
     a.step,
-    ...completed.map((sid) => BUILD_STEPS.find((s) => s.id === sid)?.n ?? 0),
+    ...completed.map((sid) => getStep(sid)?.n ?? 0),
   );
 
   const next: Attendee = {

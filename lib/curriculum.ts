@@ -345,7 +345,7 @@ export const BUILD_STEPS: BuildStep[] = [
       "If your site works both with and without \"www.\", list both in hosts.allowed.",
   },
   {
-    id: "replace-domain",
+    id: "your-idea",
     n: 3,
     title: "Swap the example app for your own idea",
     goal: "A new action for your idea that any agent can see and use, with no login.",
@@ -484,9 +484,13 @@ export function getSlide(n: number): Slide | undefined {
   return SLIDES.find((s) => s.n === n);
 }
 
+/** Old step ids that still resolve, so a saved link or an agent's memory keeps working. */
+export const STEP_ID_ALIASES: Record<string, string> = { "replace-domain": "your-idea" };
+
 export function getStep(idOrN: string | number): BuildStep | undefined {
   if (typeof idOrN === "number") return BUILD_STEPS.find((s) => s.n === idOrN);
   const asNum = Number(idOrN);
   if (!Number.isNaN(asNum)) return BUILD_STEPS.find((s) => s.n === asNum);
-  return BUILD_STEPS.find((s) => s.id === idOrN);
+  const id = STEP_ID_ALIASES[idOrN] ?? idOrN;
+  return BUILD_STEPS.find((s) => s.id === id);
 }
