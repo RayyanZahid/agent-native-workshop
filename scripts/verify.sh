@@ -55,22 +55,32 @@ else
   bad "tools/list is empty or gated - your execution surface is invisible"
 fi
 
-AC=$(curl -sf -X POST "$B/api/mcp" -H 'content-type: application/json' -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"floor_overview","arguments":{}}}' 2>/dev/null)
+AC=$(curl -sf -X POST "$B/api/mcp" -H 'content-type: application/json' -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"workshop_overview","arguments":{}}}' 2>/dev/null)
 if echo "$AC" | grep -q '"result"'; then ok "a token-free tool actually executes with no auth"; else bad "no token-free tool executes"; fi
 
-WWW=$(curl -s -D- -o /dev/null -X POST "$B/api/mcp" -H 'content-type: application/json' -d '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"floor_post","arguments":{"text":"x"}}}' | grep -ci 'www-authenticate' || true)
+WWW=$(curl -s -D- -o /dev/null -X POST "$B/api/mcp" -H 'content-type: application/json' -d '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"workshop_register","arguments":{"note":"x"}}}' | grep -ci 'www-authenticate' || true)
 if [ "${WWW:-0}" -gt 0 ]; then ok "401 carries WWW-Authenticate pointing at PRM"; else bad "401 has no WWW-Authenticate - strict clients cannot discover auth"; fi
 
 echo
 echo "Layer 6 - API as product"
 check_json  "/openapi.json" "d.get('openapi','').startswith('3.') and len(d.get('paths',{}))>0" "OpenAPI 3.x with paths"
-check_json  "/api/v1/posts" "'data' in d" "GET /api/v1/posts is TOKENLESS"
-PJ=$(curl -s -X POST "$B/api/v1/posts" -H 'content-type: application/json' -d '{"text":"x"}')
+check_json  "/api/v1/outline" "'parts' in d" "GET /api/v1/outline is TOKENLESS"
+check_json  "/api/v1/attendees" "'data' in d" "GET /api/v1/attendees is TOKENLESS"
+PJ=$(curl -s "$B/api/agent/signup/poll")
 if echo "$PJ" | python -c "import json,sys; d=json.load(sys.stdin); sys.exit(0 if d.get('remedy') else 1)" 2>/dev/null; then
   ok "errors carry a remedy field"
 else
   bad "errors have no remedy - agents will retry forever"
 fi
+
+echo
+echo "Workshop-specific"
+SK=$(curl -sf -o /dev/null -w '%{content_type}' "$B/SKILL.md" 2>/dev/null)
+case "$SK" in *markdown*) ok "SKILL.md served as text/markdown" ;; *) bad "SKILL.md missing (got: $SK)" ;; esac
+MD=$(curl -sf -o /dev/null -w '%{content_type}' -H 'accept: text/markdown' "$B/" 2>/dev/null)
+case "$MD" in *markdown*) ok "/ content-negotiates to markdown" ;; *) bad "/ does not negotiate markdown (got: $MD)" ;; esac
+CT=$(curl -s --max-time 90 -X POST "$B/api/mcp" -H 'content-type: application/json' --data-binary '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"workshop_check_target","arguments":{"url":"https://agent-native-kit.vercel.app"}}}')
+if echo "$CT" | grep -q '"findings"'; then ok "workshop_check_target runs anonymously"; else bad "workshop_check_target not reachable"; fi
 RL=$(curl -s -D- -o /dev/null "$B/api/v1/posts" | grep -ci 'ratelimit' || true)
 echo "  note  RateLimit-* headers appear on authenticated writes, not public reads"
 
