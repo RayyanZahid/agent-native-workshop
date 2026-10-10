@@ -377,24 +377,42 @@ export const BUILD_STEPS: BuildStep[] = [
     id: "wire-auth",
     n: 4,
     title: "Connect a real login, so only you can approve your agent",
-    goal: "The person approving an agent is a real, logged-in user.",
+    goal: "The person approving an agent is a real, logged-in user, and their name comes from the login, not from what they type.",
     why:
       "Until now, approval has not checked who you are (see the note in Step 1). " +
+      "The approve page takes whatever name is typed into it, and records it as unverified. " +
       "The whole point of the approval step is that a known person said yes. " +
-      "This step needs a free Clerk account (clerk.com) and two keys from it: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY and CLERK_SECRET_KEY. " +
-      "Add both in your Vercel project settings under Environment Variables, then redeploy.",
-    files: ["app/api/agent/signup/complete/route.ts"],
-    edits: [],
-    commands: ["npm install @clerk/nextjs", "npm run build"],
+      "Clerk (clerk.com) is a free sign-in service that fixes this. " +
+      "It splits cleanly: you make the account and copy two keys, and your agent does all the code.",
+    files: [
+      "app/api/agent/signup/complete/route.ts",
+      "app/approve/page.tsx",
+      "app/layout.tsx",
+      "proxy.ts",
+      ".env.local (on your computer) or Environment Variables in your Vercel project (online)",
+    ],
+    edits: [
+      "YOU: create a free account at clerk.com, create an application in it, and copy two keys from its API Keys page: the Publishable key (starts with pk_) and the Secret key (starts with sk_). Treat the secret key like a password: give it to your agent through the .env.local file or the Vercel page, never paste it into a chat or commit it.",
+      "YOU, local: your agent creates a file called .env.local in the kit folder. Put the two keys in it as NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=... and CLERK_SECRET_KEY=... (one per line).",
+      "YOU, online: open your project on vercel.com, go to Settings, then Environment Variables, and add the same two names with the two keys. Then redeploy, because a running site does not pick up new variables.",
+      "YOUR AGENT: runs npm install @clerk/nextjs.",
+      "YOUR AGENT, app/layout.tsx: wraps the page in <ClerkProvider> so every page knows who is signed in.",
+      "YOUR AGENT, proxy.ts: adds Clerk's clerkMiddleware, keeping what the file already does. Nothing under /.well-known, /api/mcp, /llms.txt or the other public discovery files may start requiring a login.",
+      "YOUR AGENT, app/approve/page.tsx: shows Clerk's sign-in button when nobody is signed in, and the approval form when someone is.",
+      "YOUR AGENT, app/api/agent/signup/complete/route.ts: at the top of POST, calls auth() from @clerk/nextjs/server. If there is no userId, it returns the 401 problem response (this is what makes the check pass). Then it calls currentUser() and builds humanId from user.id and humanLabel from the user's name or email address. It deletes the TODO that reads human_label from the request body, and stops reading the name from the body at all. The comment at the top of that file has the exact lines.",
+    ],
+    commands: ["npm install @clerk/nextjs", "npm run build", "npm run restart   # on your own computer; online, redeploy instead"],
     doneWhen:
-      "Starting a real signup and then trying to approve its code without being logged in is refused (401 or 403), not approved. Approvals record who you are.",
+      "Starting a real signup and then trying to approve its code without being logged in is refused (401 or 403), not approved. " +
+      "Approving while signed in records your real name, and the board shows it as verified.",
     verify:
       "CODE=$(curl -s -X POST YOUR_URL/api/agent/signup/start -H 'content-type: application/json' -d '{\"scopes\":[\"read:public\"],\"agent_name\":\"check\"}' | python3 -c 'import sys,json;print(json.load(sys.stdin)[\"user_code\"])') && " +
-      "curl -s -o /dev/null -w '%{http_code}\\n' -X POST YOUR_URL/api/agent/signup/complete -H 'content-type: application/json' -d \"{\\\"user_code\\\":\\\"$CODE\\\"}\"  # 401 or 403 is a pass, 200 means anyone can approve",
+      "curl -s -o /dev/null -w '%{http_code}\n' -X POST YOUR_URL/api/agent/signup/complete -H 'content-type: application/json' -d \"{\\\"user_code\\\":\\\"$CODE\\\"}\"  # 401 or 403 is a pass, 200 means anyone can approve",
     verifyLocal:
-      "Run the same command with http://localhost:PORT in place of YOUR_URL. On your own computer, put the two Clerk keys in .env.local and restart first.",
+      "Run the same command with http://localhost:PORT in place of YOUR_URL, after the keys are in .env.local and npm run restart. Then run npm run verify http://localhost:PORT as well.",
     trap:
-      "Read who the person is from their login, never from what the request says. The comment in that file shows how.",
+      "Read who the person is from their login, never from what the request says. The comment in that file shows how. " +
+      "Keys added to Vercel only reach your site after a redeploy, and keys in .env.local only after npm run restart.",
   },
   {
     id: "durable-storage",
