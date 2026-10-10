@@ -84,7 +84,7 @@ call \`workshop_check_target\` with its https URL. It returns per-check findings
 and names which failure to fix first. For a site running on their own computer,
 \`workshop_check_target\` cannot reach it (it runs on the internet), so have them
 run \`npm run verify http://localhost:PORT\` in the kit folder, which runs the
-same kind of checks on their own computer. **A step they have not verified on the wire is not done**, no
+same kind of checks on their own computer. **A step they have not verified is not done**, no
 matter how confident either of you feels, because the whole failure mode this
 workshop is about is a surface that looks correct and is not.
 
@@ -144,7 +144,12 @@ pattern in Part 2, Layer 3 (ask permission).
 3. Poll \`${origin}/api/agent/signup/poll?device_code=...\` every 3 seconds until
    \`status: completed\`. You get the token **once**.
 4. Then \`workshop_register\`, and \`workshop_complete_step\` as they finish each
-   one.
+   one. **Proof is required.** Pass \`url\` (their deployed https address, which
+   must pass \`workshop_check_target\`) or \`evidence\` (the summary line from
+   \`npm run verify\` on their computer, like \`PASS 40 WARN 1 FAIL 0\`). With
+   neither, or with a FAIL, the step is refused. The board shows which one was used:
+   "checked online" or "checked locally (self-reported)". The step is named by its
+   id: ${BUILD_STEPS.map((s) => `\`${s.id}\``).join(", ")} (its number works too).
 
 If they would rather not register, skip all of this. Every teaching tool works
 without it.

@@ -16,9 +16,19 @@ export type Attendee = {
   targetUrl: string | null;
   step: number;
   completedSteps: string[];
+  /** How each completed step was proved. Absent on records written before proof was required. */
+  verified?: Record<string, HowVerified>;
   note: string | null;
   createdAt: string;
   updatedAt: string;
+};
+
+export type HowVerified = "online" | "local";
+
+/** The words the board shows for each way of proving a step. */
+export const HOW_LABEL: Record<HowVerified, string> = {
+  online: "checked online",
+  local: "checked locally (self-reported)",
 };
 
 const ATTENDEES = "attendees";
@@ -37,6 +47,7 @@ export async function upsertAttendee(
     targetUrl: patch.targetUrl ?? existing?.targetUrl ?? null,
     step: patch.step ?? existing?.step ?? 0,
     completedSteps: existing?.completedSteps ?? [],
+    verified: existing?.verified,
     note: patch.note ?? existing?.note ?? null,
     createdAt: existing?.createdAt ?? now,
     updatedAt: now,
@@ -47,7 +58,11 @@ export async function upsertAttendee(
   return next;
 }
 
-export async function completeStep(id: string, stepId: string): Promise<Attendee | null> {
+export async function completeStep(
+  id: string,
+  stepId: string,
+  how: HowVerified,
+): Promise<Attendee | null> {
   const a = await kvGet<Attendee>(`attendee:${id}`);
   if (!a) return null;
   const step = BUILD_STEPS.find((s) => s.id === stepId);
@@ -67,6 +82,8 @@ export async function completeStep(id: string, stepId: string): Promise<Attendee
   const next: Attendee = {
     ...a,
     completedSteps: completed,
+    // Online proof is never downgraded by a later self-reported one.
+    verified: { ...a.verified, [stepId]: a.verified?.[stepId] === "online" ? "online" : how },
     step: furthest,
     updatedAt: new Date().toISOString(),
   };

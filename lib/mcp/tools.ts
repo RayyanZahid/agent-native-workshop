@@ -38,6 +38,9 @@ export type Tool = {
   handler: (ctx: ToolCtx, input: Record<string, unknown>) => Promise<unknown>;
 };
 
+/** Every step id with its number, for tool descriptions and error messages. */
+const STEP_ID_LIST = BUILD_STEPS.map((s) => `${s.n} = "${s.id}"`).join(", ");
+
 const EMPTY = { type: "object", properties: {}, additionalProperties: false };
 
 export const TOOLS: Tool[] = [
@@ -273,26 +276,73 @@ export const TOOLS: Tool[] = [
   {
     name: "workshop_complete_step",
     description:
-      "Mark a build step complete for your human, after workshop_check_target confirms it on the wire. " +
-      "Moves them up the board. Needs a token with scope progress:write.",
+      "Mark a build step complete for your human. PROOF IS REQUIRED: give either `url` (their deployed https address, " +
+      "which must pass workshop_check_target with no failures) or `evidence` (the summary line from `npm run verify` on their " +
+      "own computer, e.g. \"PASS 40 WARN 1 FAIL 0\"). With neither, or with a failing check, the step is refused. " +
+      "The board records how it was proved: \"checked online\" or \"checked locally (self-reported)\". " +
+      `Step ids: ${STEP_ID_LIST}. The step number (1 to ${BUILD_STEPS.length}) also works. Needs a token with scope progress:write.`,
     inputSchema: {
       type: "object",
       properties: {
-        step_id: { type: "string", description: "The step id, e.g. \"deploy-first\"." },
+        step_id: {
+          type: ["string", "integer"],
+          description: `The step id (${BUILD_STEPS.map((s) => `"${s.id}"`).join(", ")}) or its number, 1 to ${BUILD_STEPS.length}. workshop_build_step returns the same id.`,
+        },
+        url: { type: "string", description: "Proof, online: the deployed https address. It is checked now with workshop_check_target and must have no failures." },
+        evidence: { type: "string", description: "Proof, local: the summary line from `npm run verify`, e.g. \"PASS 40 WARN 1 FAIL 0\". FAIL must be 0." },
       },
       required: ["step_id"],
       additionalProperties: false,
     },
     scope: "progress:write",
     rateClass: "write",
-    annotations: { title: "Mark a build step complete", readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
-    handler: async ({ agent }, { step_id }) => {
+    annotations: { title: "Mark a build step complete", readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+    handler: async ({ agent }, { step_id, url, evidence }) => {
+      const step = getStep(typeof step_id === "number" ? step_id : String(step_id ?? ""));
+      if (!step) throw new Error(`Unknown step_id. Use one of: ${STEP_ID_LIST}.`);
+
+      let how: ws.HowVerified;
+      const urlStr = typeof url === "string" ? url.trim() : "";
+      const evStr = typeof evidence === "string" ? evidence.trim() : "";
+      if (urlStr) {
+        const r = await checkTarget(urlStr);
+        if (r.failed > 0) {
+          throw new Error(
+            `Not recorded: ${urlStr} still has ${r.failed} failing check${r.failed === 1 ? "" : "s"}. ${r.nextAction} ` +
+              "Fix it, then call workshop_complete_step again.",
+          );
+        }
+        how = "online";
+      } else if (evStr) {
+        const pass = /PASS\D{0,4}(\d+)/i.exec(evStr);
+        const fail = /FAIL\D{0,4}(\d+)/i.exec(evStr);
+        if (!pass || !fail) {
+          throw new Error(
+            "Not recorded: evidence must be the summary line from `npm run verify`, like \"PASS 40 WARN 1 FAIL 0\". " +
+              "Run it in the kit folder and paste that line.",
+          );
+        }
+        if (Number(fail[1]) !== 0 || Number(pass[1]) === 0) {
+          throw new Error(
+            `Not recorded: that summary shows ${fail[1]} failing check${fail[1] === "1" ? "" : "s"}. ` +
+              "Fix what `npm run verify` reports as FAIL, run it again, then send the new summary line.",
+          );
+        }
+        how = "local";
+      } else {
+        throw new Error(
+          "Not recorded: a step needs proof. If the site is online, pass `url` with its https address. " +
+            "If it runs on their own computer, run `npm run verify http://localhost:PORT` and pass the summary line as `evidence`.",
+        );
+      }
+
       await ws.upsertAttendee({ id: agent!.id, agentName: agent!.agentName, humanLabel: agent!.humanLabel });
-      const a = await ws.completeStep(agent!.id, String(step_id));
-      if (!a) throw new Error("Unknown step_id. Get valid ids from workshop_outline.");
+      const a = await ws.completeStep(agent!.id, step.id, how);
+      if (!a) throw new Error(`Unknown step_id. Use one of: ${STEP_ID_LIST}.`);
       const next = BUILD_STEPS.find((s) => s.n === a.step + 1);
       return {
         ok: true,
+        recorded: { step_id: step.id, how_verified: ws.HOW_LABEL[how] },
         completed: a.completedSteps,
         step: a.step,
         next_step: next ? { n: next.n, id: next.id, title: next.title } : null,
