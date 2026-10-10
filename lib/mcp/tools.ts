@@ -162,6 +162,7 @@ export const TOOLS: Tool[] = [
       return {
         ...s,
         of: BUILD_STEPS.length,
+        complete_with: { step_id: s.id, note: "Pass this exact id to workshop_complete_step, with proof. The number works too." },
         next_step: next ? { n: next.n, id: next.id, title: next.title } : null,
         reminder:
           "Check this step before moving on. For a deployed site, use workshop_check_target with its https address. " +
@@ -211,6 +212,10 @@ export const TOOLS: Tool[] = [
           agent: a.agentName,
           step: a.step,
           completed: a.completedSteps.length,
+          completed_steps: a.completedSteps.map((id) => ({
+            id,
+            proof: a.verified?.[id] ? ws.HOW_LABEL[a.verified[id]] : "no proof recorded",
+          })),
           target: a.targetUrl,
           note: a.note,
         })),

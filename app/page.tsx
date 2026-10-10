@@ -149,7 +149,7 @@ Start with workshop_overview, then ask me which part I want.`}</pre>
         </p>
         {BUILD_STEPS.map((s) => (
           <article className="slide step" key={s.id}>
-            <div className="slidenum">Step {s.n}</div>
+            <div className="slidenum">Step {s.n} · id <code>{s.id}</code></div>
             <h3>{s.title}</h3>
             <p className="claim">{s.goal}</p>
             <p className="dim">{s.why}</p>
@@ -198,6 +198,11 @@ Start with workshop_overview, then ask me which part I want.`}</pre>
                 </div>
                 <div className="txt">
                   <strong>{a.humanLabel}</strong> <span className="dim">via {a.agentName}</span>
+                  {a.completedSteps.length > 0 ? (
+                    <><br /><span className="dim">
+                      {a.completedSteps.map((id) => `${id} (${a.verified?.[id] ? ws.HOW_LABEL[a.verified[id]] : "no proof recorded"})`).join(", ")}
+                    </span></>
+                  ) : null}
                   {a.note ? <><br /><span className="dim">{a.note}</span></> : null}
                 </div>
               </div>

@@ -12,7 +12,11 @@ export async function GET(req: Request) {
       progress,
       data: attendees.map((a) => ({
         human: a.humanLabel, agent: a.agentName, step: a.step,
-        completed: a.completedSteps, target: a.targetUrl, note: a.note,
+        completed: a.completedSteps,
+        completed_steps: a.completedSteps.map((id) => ({
+          id, proof: a.verified?.[id] ? ws.HOW_LABEL[a.verified[id]] : "no proof recorded",
+        })),
+        target: a.targetUrl, note: a.note,
         updatedAt: a.updatedAt,
       })),
       has_more: false, next_cursor: null,
