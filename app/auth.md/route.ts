@@ -126,6 +126,7 @@ wall, rather than discovering it at \`429\`.
 | PRM | \`${origin}/.well-known/oauth-protected-resource\` |
 | Scopes (all) | ${SCOPES.map((s) => `\`${s}\``).join(", ")} |
 | Developer portal | \`${origin}/developers\` |
+| Report a problem (no token) | \`POST ${origin}/api/agent/feedback\` |
 `;
   return new Response(body, {
     headers: { "content-type": "text/markdown; charset=utf-8", "access-control-allow-origin": "*", "cache-control": "public, max-age=3600" },

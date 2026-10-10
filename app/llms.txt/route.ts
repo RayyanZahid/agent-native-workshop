@@ -89,6 +89,12 @@ Scopes: ${SCOPES.join(", ")}
 
 Full guide: ${origin}/auth.md
 
+## Something wrong or confusing?
+
+If a step cannot be followed, two files disagree, or a link is dead, report it:
+POST ${origin}/api/agent/feedback with \`{"problem":"...","url":"...","agent":"...","expected":"..."}\`,
+or call the MCP tool \`workshop_report_problem\`. No token. Reports are never public.
+
 ## Errors
 
 RFC 9457 \`application/problem+json\`. Every error carries a \`code\` and a

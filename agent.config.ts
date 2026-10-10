@@ -61,10 +61,12 @@ export const agentConfig = {
     path: "/api/mcp",
     protocolVersion: "2025-06-18",
     /**
-     * SEVEN of the ten tools need no token, and that is deliberate pedagogy as
-     * well as good design: an attendee can get the entire curriculum, every
-     * build step, and a live check of their own deployment without signing up
-     * for anything. Only writing to the shared room needs a human's approval.
+     * Most tools need no token, and that is deliberate pedagogy as well as good
+     * design: an attendee can get the entire curriculum, every build step, and a
+     * live check of their own deployment without signing up for anything, and
+     * can report a problem without an account. Only writing to the shared room
+     * needs a human's approval. lib/mcp/tools.ts throws at build time if the
+     * real tool list disagrees with these two lists.
      */
     tokenFreeTools: [
       "workshop_overview",
@@ -74,7 +76,9 @@ export const agentConfig = {
       "workshop_build_step",
       "workshop_check_target",
       "workshop_board",
+      "workshop_report_problem",
     ],
+    gatedTools: ["workshop_register", "workshop_complete_step", "workshop_ask"],
   },
 
   a2a: {

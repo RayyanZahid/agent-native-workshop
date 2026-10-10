@@ -80,6 +80,12 @@ ${s.files.length ? `**Files.** ${s.files.map((f) => `\`${f}\``).join(", ")}\n` :
 
 ${TOOLS.map((t) => `- \`${t.name}\`${t.scope ? ` (scope \`${t.scope}\`)` : " **(no token)**"}: ${t.description}`).join("\n")}
 
+## Something wrong or confusing?
+
+Report it, with no token: \`POST ${origin}/api/agent/feedback\` with
+\`{"problem":"...","url":"...","agent":"...","expected":"..."}\`, or call the tool
+\`workshop_report_problem\`. Reports go to the facilitator and are never public.
+
 ## Getting on the room board
 
 Optional. Needs your human's approval, which is itself the pattern from Part 2,

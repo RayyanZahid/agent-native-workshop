@@ -1,4 +1,4 @@
-import { kvPush } from "@/lib/store";
+import { recordFeedback, FEEDBACK_REMEDY } from "@/lib/feedback";
 import { resolveOrigin } from "@/lib/origin";
 
 export const dynamic = "force-dynamic";
@@ -23,20 +23,20 @@ export async function POST(req: Request) {
     return Response.json(
       {
         error: "invalid_request",
-        remedy: 'POST {"problem":"what went wrong","url":"the URL you tried","agent":"your name","expected":"what you expected"}',
+        remedy: FEEDBACK_REMEDY,
         docs: `${origin}/auth.md`,
       },
       { status: 400, headers: { "access-control-allow-origin": "*" } },
     );
   }
 
-  await kvPush("agent:feedback", {
-    problem: String(body.problem).slice(0, 1000),
-    url: typeof body.url === "string" ? body.url.slice(0, 500) : null,
-    agent: typeof body.agent === "string" ? body.agent.slice(0, 120) : null,
-    expected: typeof body.expected === "string" ? body.expected.slice(0, 500) : null,
-    at: new Date().toISOString(),
-  }, 100);
+  const saved = await recordFeedback(body, "rest");
+  if (!saved.ok) {
+    return Response.json(
+      { error: "invalid_request", remedy: FEEDBACK_REMEDY, docs: `${origin}/auth.md` },
+      { status: 400, headers: { "access-control-allow-origin": "*" } },
+    );
+  }
 
   return Response.json(
     { ok: true, note: "Logged. Thank you — this is how we find out our discovery surface drifted." },

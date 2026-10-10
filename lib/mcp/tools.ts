@@ -4,6 +4,7 @@ import type { AgentToken } from "@/lib/auth";
 import { PARTS, SLIDES, BUILD_STEPS, slidesForPart, getSlide, getStep } from "@/lib/curriculum";
 import * as ws from "@/lib/workshop";
 import { checkTarget } from "@/lib/checkTarget";
+import { recordFeedback, FEEDBACK_REMEDY } from "@/lib/feedback";
 
 /**
  * THE WORKSHOP TOOL CATALOG.
@@ -192,6 +193,32 @@ export const TOOLS: Tool[] = [
       };
     },
   },
+  {
+    name: "workshop_report_problem",
+    description:
+      "REPORT A PROBLEM. If anything in this workshop is wrong, missing, out of date or confusing, say so here: " +
+      "a step that did not work, two files that disagree, an instruction you could not follow. " +
+      "It goes to the facilitator and is how this workshop gets fixed. Say what you tried and what you expected. " +
+      "Nothing you send is made public. No token required.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        problem: { type: "string", description: "What went wrong, in a sentence or two. Max 1000 chars." },
+        url: { type: "string", description: "The address you were using when it went wrong." },
+        agent: { type: "string", description: "Your name, so the facilitator knows who to ask." },
+        expected: { type: "string", description: "What you expected to happen instead." },
+      },
+      required: ["problem"],
+      additionalProperties: false,
+    },
+    scope: null,
+    rateClass: "public",
+    handler: async (_ctx, input) => {
+      const saved = await recordFeedback(input, "mcp");
+      if (!saved.ok) throw new Error(`problem is required. ${FEEDBACK_REMEDY}`);
+      return { ok: true, note: "Logged. Thank you. This is how the workshop gets fixed." };
+    },
+  },
 
   // ---------------- writes, which need a human-approved token ----------------
   {
@@ -274,6 +301,21 @@ export const TOOLS: Tool[] = [
 ];
 
 export const TOKEN_FREE_TOOLS = TOOLS.filter((t) => t.scope === null);
+
+/**
+ * Throws at module load, so a build fails if the tool list and the lists in
+ * agent.config.ts (which the slides and counts read) ever disagree.
+ */
+(function assertToolSplit() {
+  const free = TOKEN_FREE_TOOLS.map((t) => t.name).sort().join(",");
+  const gated = TOOLS.filter((t) => t.scope !== null).map((t) => t.name).sort().join(",");
+  if (free !== [...agentConfig.mcp.tokenFreeTools].sort().join(",")) {
+    throw new Error("agent.config.ts mcp.tokenFreeTools does not match the tools with scope: null");
+  }
+  if (gated !== [...agentConfig.mcp.gatedTools].sort().join(",")) {
+    throw new Error("agent.config.ts mcp.gatedTools does not match the tools with a scope");
+  }
+})();
 
 export function findTool(name: string): Tool | undefined {
   return TOOLS.find((t) => t.name === name);

@@ -1,3 +1,5 @@
+import agentConfig from "@/agent.config";
+
 /**
  * THE CURRICULUM, AS DATA.
  *
@@ -168,7 +170,7 @@ export const SLIDES: Slide[] = [
       "Show the list of things your site can do to everyone. Require login only to actually do them.",
       "Give agents at least one useful thing they can do without logging in, so they can tell your site is worth it.",
     ],
-    evidence: "This workshop site offers 10 actions to agents, and 7 of them need no login.",
+    evidence: `This workshop site offers ${agentConfig.mcp.tokenFreeTools.length + agentConfig.mcp.gatedTools.length} actions to agents, and ${agentConfig.mcp.tokenFreeTools.length} of them need no login.`,
   },
   {
     n: 10,

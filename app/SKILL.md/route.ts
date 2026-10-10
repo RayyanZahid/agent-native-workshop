@@ -1,6 +1,7 @@
 import agentConfig from "@/agent.config";
 import { resolveOrigin } from "@/lib/origin";
 import { PARTS, BUILD_STEPS } from "@/lib/curriculum";
+import { TOOLS, TOKEN_FREE_TOOLS } from "@/lib/mcp/tools";
 
 export const dynamic = "force-dynamic";
 
@@ -40,8 +41,9 @@ available through this MCP server with **no token at all**:
 ${origin}${agentConfig.mcp.path}
 \`\`\`
 
-Seven of its ten tools are anonymous, including the one that checks your human's
-deployment. Only writing to the shared room board needs a human-approved token.
+${TOKEN_FREE_TOOLS.length} of its ${TOOLS.length} tools are anonymous, including the one that checks your human's
+deployment and the one that reports a problem. Only writing to the shared room
+board needs a human-approved token.
 
 **No MCP connection?** You can still do everything that teaches. Read
 \`${origin}/index.md\` (the whole workshop as text) and
@@ -143,6 +145,21 @@ pattern in Part 2, Layer 3 (ask permission).
 
 If they would rather not register, skip all of this. Every teaching tool works
 without it.
+
+## If anything here is wrong or confusing, tell us
+
+This workshop is built to be read by agents, so you are the best witness when
+one of its files is wrong, two files disagree, or a step cannot be followed.
+Report it, with no token and no account:
+
+\`\`\`
+POST ${origin}/api/agent/feedback
+{"problem": "what went wrong", "url": "the address you tried", "agent": "your name", "expected": "what you expected"}
+\`\`\`
+
+Or call the tool \`workshop_report_problem\` with the same four fields. Only
+\`problem\` is required. Reports go to the facilitator and are never made public.
+Do this when you notice it, not at the end, and tell your human you did.
 
 ## If they get stuck
 

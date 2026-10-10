@@ -1,6 +1,6 @@
 import agentConfig from "@/agent.config";
 import { agentGate, hasScope } from "@/lib/auth";
-import { findTool, publicToolList } from "@/lib/mcp/tools";
+import { findTool, publicToolList, TOOLS, TOKEN_FREE_TOOLS } from "@/lib/mcp/tools";
 import { checkRate, rateHeaders } from "@/lib/ratelimit";
 import { resolveOrigin } from "@/lib/origin";
 import * as ws from "@/lib/workshop";
@@ -34,10 +34,11 @@ export async function POST(req: Request) {
       capabilities: { tools: { listChanged: false } },
       serverInfo: { name: agentConfig.product.name, version: agentConfig.product.version },
       instructions:
-        `${ENTRY_LINE} Seven of the ten tools need NO token: the whole ` +
+        `${ENTRY_LINE} ${TOKEN_FREE_TOOLS.length} of the ${TOOLS.length} tools need NO token: the whole ` +
         `curriculum, every build step, and workshop_check_target which runs live readiness ` +
         `checks against your human's deployed URL. Only writing to the shared room needs a ` +
-        `human-approved token: see ${origin}/auth.md`,
+        `human-approved token: see ${origin}/auth.md. ` +
+        `If anything in this workshop is wrong or confusing, call workshop_report_problem (no token).`,
     });
   }
 

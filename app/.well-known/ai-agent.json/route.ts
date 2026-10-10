@@ -46,6 +46,12 @@ export function GET(req: Request) {
       api_catalog: `${origin}/.well-known/api-catalog`,
       developer_portal: `${origin}/developers`,
     },
-    recovery: { feedback: `${origin}/api/agent/feedback`, guide: `${origin}/auth.md`, contact: agentConfig.product.contact },
+    recovery: {
+      feedback: `${origin}/api/agent/feedback`,
+      how: 'POST {"problem": "what went wrong", "url": "...", "agent": "your name", "expected": "..."}. Only problem is required. No token. Never public.',
+      mcp_tool: "workshop_report_problem",
+      guide: `${origin}/auth.md`,
+      contact: agentConfig.product.contact,
+    },
   });
 }
