@@ -67,7 +67,7 @@ Do not guess at the curriculum from this file; read it from the tools, because
 the tools are the source and this file is the instructions.
 
 **Ask which part they want before reading anything aloud.** Part 1 is what
-agent-native means. Part 2 is the seven layers and the mechanism behind each.
+agent-native means. Part 2 is the seven layers (Layer 1 to 7) and the mechanism behind each.
 Part 3 is the build. A human who already knows part 1 will resent hearing it.
 
 **During the build, one step at a time.** Call \`workshop_build_step\` with the
@@ -115,7 +115,9 @@ ${PARTS.map((p) => `### Part ${p.n}: ${p.name}\n\n${p.summary}\n\nRead it with \
 
 ## The seven build steps
 
-${BUILD_STEPS.map((s) => `${s.n}. **${s.title}** — ${s.goal}\n   Done when: ${s.doneWhen}`).join("\n")}
+**Two different lists of seven.** Part 2 has seven **layers** (Layer 1 to Layer 7: what a site is made of). Part 3 has seven **build steps** (Step 1 to Step 7: the order you build in). Say "Layer N" or "Step N", never a bare number, and never call a layer a step.
+
+${BUILD_STEPS.map((s) => `Step ${s.n}. **${s.title}** — ${s.goal}\n   Done when: ${s.doneWhen}`).join("\n")}
 
 Get any one in full, with commands and traps, via
 \`workshop_build_step(step: <n>)\`.
@@ -123,7 +125,7 @@ Get any one in full, with commands and traps, via
 ## Putting your human on the room board
 
 Optional, and it needs their approval, which is itself a demonstration of the
-pattern in part 2 layer 3.
+pattern in Part 2, Layer 3 (ask permission).
 
 1. \`POST ${origin}/api/agent/signup/start\` with
    \`{"scopes":["read:public","progress:read","progress:write"],"agent_name":"<your name>"}\`

@@ -48,7 +48,8 @@ export const TOOLS: Tool[] = [
       how_to_use_this:
         "Call workshop_outline for the shape. Call workshop_part to read a part in full. " +
         "When your human is ready to build, call workshop_build_step with step 1 and work through all seven, " +
-        "checking each one with workshop_check_target against their deployed URL before moving on.",
+        "checking each one with workshop_check_target against their deployed URL before moving on. " +
+        "Note the two lists of seven: Part 2 has Layer 1 to Layer 7, Part 3 has Step 1 to Step 7. Never call a layer a step.",
       parts: PARTS,
       slide_count: SLIDES.length,
       build_step_count: BUILD_STEPS.length,
@@ -84,7 +85,7 @@ export const TOOLS: Tool[] = [
     name: "workshop_part",
     description:
       "Read one whole part in full, every slide with its body. Part 1 is what agent-native means, " +
-      "part 2 is the seven layers and the mechanism behind each, part 3 is the guided build. No token required.",
+      "Part 2 is the seven layers (Layer 1 to 7) and the mechanism behind each, Part 3 is the guided build (Step 1 to 7). No token required.",
     inputSchema: {
       type: "object",
       properties: { part: { type: "integer", enum: [1, 2, 3], description: "Which part, 1 to 3." } },

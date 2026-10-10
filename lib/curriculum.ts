@@ -44,13 +44,13 @@ export const PARTS = [
     n: 2 as const,
     name: "How it works",
     summary:
-      "The seven things to build, in order. For each one: what it is, and what goes wrong if you skip it.",
+      "The seven layers (Layer 1 to Layer 7), in order. For each one: what it is, and what goes wrong if you skip it.",
   },
   {
     n: 3 as const,
     name: "Build your own",
     summary:
-      "Seven steps to put your own agent-ready site on the internet today, with your AI agent checking each step.",
+      "Seven build steps (Step 1 to Step 7) to put your own agent-ready site on the internet today, with your AI agent checking each step. The steps are what you do. The layers in Part 2 are what you are building.",
   },
 ];
 
@@ -106,11 +106,11 @@ export const SLIDES: Slide[] = [
   {
     n: 5,
     part: 1,
-    title: "The good news: it's the same seven things every time",
+    title: "The good news: it's the same seven layers every time",
     claim: "Making a site agent-ready is a short, repeatable checklist, so we turned it into a starter kit.",
     body: [
-      "Be findable, be readable, ask permission properly, be usable, let agents talk to each other, have a good API, and hear about breakages.",
-      "The first two are free and take minutes. The API is the most work and the most valuable.",
+      "The seven layers: be findable, be readable, ask permission properly, be usable, let agents talk to each other, have a good API, and hear about breakages.",
+      "Layers 1 and 2 are free and take minutes. Layer 6, the API, is the most work and the most valuable.",
       "Build them once, in that order, and you can stop thinking about it.",
     ],
     evidence: "The starter kit has all seven built in: agent-native-kit.vercel.app (free to copy).",
@@ -120,7 +120,7 @@ export const SLIDES: Slide[] = [
   {
     n: 6,
     part: 2,
-    title: "1. Be findable: write it down once",
+    title: "Layer 1, Be findable: write it down once",
     claim: "Agents look for a few small files that describe your site. Keep them all in sync by generating them from one place.",
     body: [
       "Your site needs about a dozen small description files at standard addresses that agents check first.",
@@ -132,7 +132,7 @@ export const SLIDES: Slide[] = [
   {
     n: 7,
     part: 2,
-    title: "2. Be readable: put the content in the page from the start",
+    title: "Layer 2, Be readable: put the content in the page from the start",
     claim: "Agents usually read your page as it first arrives. If your content appears only after code runs, they see nothing.",
     body: [
       "Many modern sites send an almost empty page, then fill it in with code in your browser.",
@@ -144,7 +144,7 @@ export const SLIDES: Slide[] = [
   {
     n: 8,
     part: 2,
-    title: "3. Ask permission: never paste a password into a chatbot",
+    title: "Layer 3, Ask permission: never paste a password into a chatbot",
     claim: "Let the agent ask, and let the person approve on their own phone, seeing exactly what they're allowing.",
     body: [
       "Think of a valet key: it starts the car but can't open the trunk.",
@@ -156,7 +156,7 @@ export const SLIDES: Slide[] = [
   {
     n: 9,
     part: 2,
-    title: "4. Be usable: show everyone what your site can do",
+    title: "Layer 4, Be usable: show everyone what your site can do",
     claim: "Agents check what your site can do before signing up. If that list is hidden behind a login, they leave.",
     body: [
       "It's like a shop window: let anyone see what's for sale, and ask for payment only at the till.",
@@ -168,7 +168,7 @@ export const SLIDES: Slide[] = [
   {
     n: 10,
     part: 2,
-    title: "5. Let agents talk to each other: give each one its own address",
+    title: "Layer 5, Let agents talk to each other: give each one its own address",
     claim: "If agents work together on your site, each needs its own address, like a phone number.",
     body: [
       "One shared front desk that forwards every message makes all your agents look like one.",
@@ -179,7 +179,7 @@ export const SLIDES: Slide[] = [
   {
     n: 11,
     part: 2,
-    title: "6. The biggest win is boring: a good, documented API",
+    title: "Layer 6, The biggest win is boring: a good, documented API",
     claim: "Agents are programs, and programs need a clear, documented way in. This is where most of the score comes from.",
     body: [
       "A document describing your API, and some data anyone can read without logging in, count for the most.",
@@ -191,7 +191,7 @@ export const SLIDES: Slide[] = [
   {
     n: 12,
     part: 2,
-    title: "7. Let agents tell you when something breaks",
+    title: "Layer 7, Let agents tell you when something breaks",
     claim: "Agents hit your broken links before you do. Give them a way to tell you.",
     body: [
       "You rename a page. An AI agent that was using it now gets an error.",
@@ -218,9 +218,9 @@ export const SLIDES: Slide[] = [
     n: 14,
     part: 3,
     title: "Start from the free starter kit",
-    claim: "Copy it, change one settings file, put it online. All seven things are already built in.",
+    claim: "Copy it, change one settings file, put it online. All seven layers are already built in.",
     body: [
-      "It's a normal website project with everything from Part 2 included and tested.",
+      "It's a normal website project with all seven layers from Part 2 included and tested.",
       "It comes with a small example app you replace with your own idea.",
       "It's free to copy and use.",
     ],
@@ -229,13 +229,14 @@ export const SLIDES: Slide[] = [
   {
     n: 15,
     part: 3,
-    title: "Seven steps, and your agent checks each one",
+    title: "Seven build steps, and your agent checks each one",
     claim: "Your AI agent gives you a step, you do it, it checks your live site, then you move on.",
     body: [
       "Put the kit online first, before changing anything, so if something breaks you know why.",
       "Then: change the settings, add your own idea, connect a real login, add a small database.",
       "Then: make your API clear, and check everything.",
-      "Ask your agent for step 1 and it will walk you through it.",
+      "These are build steps, not the seven layers from Part 2: the layers are what you build, the steps are the order you do it in.",
+      "Ask your agent for Step 1 and it will walk you through it.",
     ],
   },
   {
@@ -254,11 +255,11 @@ export const SLIDES: Slide[] = [
     n: 17,
     part: 3,
     title: "What to do next",
-    claim: "Start with the first four, add the rest when you need them.",
+    claim: "Start with Layers 1 to 4, add the rest when you need them.",
     body: [
-      "Findable, readable, permission and usable are the smallest useful set.",
-      "Add the good API when you want your score to go up. Add the problem-report address the day you launch.",
-      "Add agent-to-agent addresses only when you have a second agent worth talking to.",
+      "Findable, readable, permission and usable (Layers 1 to 4) are the smallest useful set.",
+      "Add the good API (Layer 6) when you want your score to go up. Add the problem-report address (Layer 7) the day you launch.",
+      "Add agent-to-agent addresses (Layer 5) only when you have a second agent worth talking to.",
       "Don't add payments just to raise a score. Scanners don't count them.",
     ],
   },

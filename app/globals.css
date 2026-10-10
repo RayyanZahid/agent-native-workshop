@@ -70,6 +70,7 @@ nav.toc span { color: var(--fg); font-size: 14px; }
   position: absolute; left: 18px; top: 20px;
   font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--accent);
 }
+.slide.step { padding-left: 88px; }
 .slide h3 { margin: 0 0 8px; font-size: 19px; letter-spacing: -0.01em; }
 .slide .claim { margin: 0 0 12px; font-size: 16px; font-weight: 600; }
 .slide ul { margin: 0; padding-left: 18px; }
@@ -84,7 +85,7 @@ nav.toc span { color: var(--fg); font-size: 14px; }
 footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line); }
 
 @media (max-width: 560px) {
-  .slide { padding: 18px 16px 16px 16px; }
+  .slide, .slide.step { padding: 18px 16px 16px 16px; }
   .slidenum { position: static; display: block; margin-bottom: 6px; }
   .slide.step dl { grid-template-columns: 1fr; gap: 2px; }
   .slide.step dd { margin-bottom: 8px; }

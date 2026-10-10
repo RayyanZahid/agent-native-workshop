@@ -105,7 +105,7 @@ Start with workshop_overview, then ask me which part I want.`}</pre>
         </p>
         {BUILD_STEPS.map((s) => (
           <article className="slide step" key={s.id}>
-            <div className="slidenum">{s.n}</div>
+            <div className="slidenum">Step {s.n}</div>
             <h3>{s.title}</h3>
             <p className="claim">{s.goal}</p>
             <p className="dim">{s.why}</p>
