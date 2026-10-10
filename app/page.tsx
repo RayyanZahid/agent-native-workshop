@@ -109,10 +109,17 @@ Start with workshop_overview, then ask me which part I want.`}</pre>
             <h3>{s.title}</h3>
             <p className="claim">{s.goal}</p>
             <p className="dim">{s.why}</p>
+            {s.edits.length > 0 && (
+              <>
+                <p className="claim">What to change</p>
+                <ul>{s.edits.map((e, i) => <li key={i}>{e}</li>)}</ul>
+              </>
+            )}
             {s.commands.length > 0 && <pre>{s.commands.join("\n")}</pre>}
             <dl>
               <dt>Done when</dt><dd>{s.doneWhen}</dd>
-              <dt>Verify</dt><dd><code>{s.verify}</code></dd>
+              <dt>Verify, deployed</dt><dd><code>{s.verify}</code></dd>
+              <dt>Verify, on your computer</dt><dd><code>{s.verifyLocal}</code></dd>
               <dt>Trap</dt><dd>{s.trap}</dd>
             </dl>
           </article>

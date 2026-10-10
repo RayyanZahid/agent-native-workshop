@@ -71,6 +71,7 @@ export function GET(req: Request) {
             id: { type: "string" }, n: { type: "integer" }, title: { type: "string" },
             goal: { type: "string" }, why: { type: "string" },
             files: { type: "array", items: { type: "string" } },
+            edits: { type: "array", items: { type: "string" }, description: "The exact things to change, in plain words." },
             commands: { type: "array", items: { type: "string" } },
             doneWhen: { type: "string" }, verify: { type: "string" }, verifyLocal: { type: "string" },
             trap: { type: "string" },

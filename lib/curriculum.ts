@@ -27,9 +27,14 @@ export type BuildStep = {
   goal: string;
   why: string;
   files: string[];
+  /** The exact things to change, in plain words. Empty when the step is only commands. */
+  edits: string[];
   commands: string[];
   doneWhen: string;
+  /** Check a deployed site. Also runnable as workshop_check_target with the https address. */
   verify: string;
+  /** The same check against a copy running on your own computer. PORT is the port you started it on. */
+  verifyLocal: string;
   trap: string;
 };
 
@@ -265,61 +270,102 @@ export const SLIDES: Slide[] = [
   },
 ];
 
+const LIST_CALL = (base: string) =>
+  `curl -s -X POST ${base}/api/mcp -H 'content-type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'`;
+const TOOL_CALL = (base: string) =>
+  `curl -s -X POST ${base}/api/mcp -H 'content-type: application/json' -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"YOUR_TOOL","arguments":{}}}'`;
+
 export const BUILD_STEPS: BuildStep[] = [
   {
     id: "deploy-first",
     n: 1,
     title: "Put the starter kit online before changing anything",
-    goal: "A working copy of the kit on the internet, with nothing of yours in it yet.",
+    goal: "A working copy of the kit running, with nothing of yours in it yet.",
     why:
       "If you change things first and something breaks, you won't know whether it's your change or your setup. " +
-      "Put the working version online first, and every later problem has one cause.",
+      "Put the working version up first, and every later problem has one cause.",
     files: [],
+    edits: [],
     commands: [
       "git clone https://github.com/RayyanZahid/agent-native-kit my-product && cd my-product",
       "npm install",
+      "# Online with Vercel (a free hosting site; the first run asks you to log in):",
       "npx vercel deploy --prod",
+      "# Or on your own computer, no account needed. It serves on http://localhost:3000:",
+      "npm run build && npm start",
     ],
-    doneWhen: "Opening YOUR_SITE/.well-known/ai-agent.json in a browser shows text, not an error page.",
+    doneWhen:
+      "YOUR_SITE/.well-known/ai-agent.json shows a block of text with a \"name\" and an \"interfaces\" section, not an error page. " +
+      "It will still show the kit's own web address until Step 2. That is expected.",
     verify: "curl -s YOUR_URL/.well-known/ai-agent.json | head -5",
+    verifyLocal: "npm run verify http://localhost:PORT",
     trap:
-      "The first time you run the deploy command, Vercel asks you to log in and link a project. Accept the defaults. " +
-      "Any other host works too, and the check is the same. Don't add your own domain name yet. That comes in step 2.",
+      "Until Step 4, anyone who gets an approval code can approve an agent on your site. That is fine while you practise. " +
+      "The first deploy asks you to log in and link a project; accept the defaults. " +
+      "Any other host works too, and the check is the same. Don't add your own domain name yet. That comes in Step 2.",
   },
   {
     id: "make-it-yours",
     n: 2,
     title: "Change one file: the settings",
-    goal: "Your product's name, web address, and the permissions agents can ask for.",
+    goal: "Your product's name, web address, and contact, in the one settings file.",
     why:
       "Every description file agents read is generated from agent.config.ts. " +
-      "If the web address there is wrong, every file points agents to the wrong place. " +
-      "The web address in that file must match where your site really runs, or the description files point to the kit's default address. " +
-      "Your changes do not show until you rebuild and redeploy (or restart, if you run it on your own computer).",
+      "If the web address there is wrong, every file points agents to the wrong place, and nothing shows an error. " +
+      "The file only takes effect after you rebuild and restart, so the last part of this step is not optional.",
     files: ["agent.config.ts"],
-    commands: ["npm run build", "npx vercel deploy --prod"],
-    doneWhen: "Your site's description files show your product name and your real web address.",
-    verify: "curl -s YOUR_URL/.well-known/oauth-protected-resource",
+    edits: [
+      "product.name: your product's name.",
+      "product.description: one or two plain sentences about what it does. It still describes the kit's example room until you change it.",
+      "product.author: you or your team. It ships as \"Immersive Commons\".",
+      "product.contact: a web address or email where people can reach you. It ships as hello@example.com, which is a placeholder, not you.",
+      "hosts.canonical: your real address with https://, for example https://my-product.vercel.app. Leave it as is if you are only running on your own computer.",
+      "hosts.allowed: every host name your site answers on, as host:port with no https://. For example \"my-product.vercel.app\" and \"localhost:3000\". If you run on another port, add \"localhost:PORT\" exactly, or the files quietly use the kit's address.",
+    ],
+    commands: [
+      "# Online:",
+      "npm run build",
+      "npx vercel deploy --prod",
+      "# On your own computer: first stop the server you started (Ctrl+C in its window), then:",
+      "npm run build && npm start",
+    ],
+    doneWhen:
+      "YOUR_SITE/.well-known/ai-agent.json shows your product name, your description and your real web address, not \"The Floor\" or agent-native-kit.vercel.app.",
+    verify: "curl -s YOUR_URL/.well-known/ai-agent.json | head -20",
+    verifyLocal: "curl -s http://localhost:PORT/.well-known/ai-agent.json | head -20 && npm run verify http://localhost:PORT",
     trap:
-      "If your site works both with and without \"www.\", list both addresses in the settings, or agents get confused about which one is real.",
+      "Check ai-agent.json, because it is the one file that shows your name. The others only show the address. " +
+      "On your own computer, starting a second server while the first is still running fails with \"address already in use\", and the old one keeps serving the old settings. " +
+      "Stop only the server you started. Do not use pkill -f, which can stop other people's servers on a shared machine. " +
+      "If the server log says your host is \"not in agent.config.ts hosts.allowed\", add that host:port to hosts.allowed. " +
+      "If your site works both with and without \"www.\", list both in hosts.allowed.",
   },
   {
     id: "replace-domain",
     n: 3,
     title: "Swap the example app for your own idea",
-    goal: "Your own features, and the list of actions agents can take on your site.",
+    goal: "A new action for your idea that any agent can see and use, with no login.",
     why:
       "This is the only step about your actual product. Everything else is the foundation. " +
-      "Keep at least one action agents can do without logging in, or they can't tell what your site is for.",
+      "\"Your own tool\" means a new action for your idea, for example \"list the tools I can lend\". " +
+      "It does not mean an example tool with a new name: renaming keeps what the example does, and the check cannot tell the difference. " +
+      "Keep at least one action agents can use without logging in, or they can't tell what your site is for. " +
+      "There is no database until Step 5, so for now the action can return a few sample items. Say so in its description.",
     files: ["lib/mcp/tools.ts", "lib/room.ts"],
+    edits: [
+      "In lib/mcp/tools.ts, add one entry to the TOOLS list. It needs a name, a description, an inputSchema (what the agent sends), scope: null (null means no login needed), rateClass: \"public\", and a handler (the code that runs and returns the answer).",
+      "Copy the shape of a nearby entry. Write the description as if explaining it to a new colleague: what it does and when to use it.",
+      "Delete the example floor_ tools you do not need, rather than renaming them.",
+      "lib/room.ts is the example's data. Replace it with yours, or return sample data for now.",
+    ],
     commands: ["npm run build"],
     doneWhen:
-      "tools/list shows at least one tool you added (not one of the example's floor_ tools), and it works without a login.",
-    verify:
-      "curl -s -X POST YOUR_URL/api/mcp -H 'content-type: application/json' -d '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/list\"}'",
+      "tools/list shows a tool you wrote for your idea, not one of the example's floor_ tools (renamed or not), and calling it works without a login.",
+    verify: `${LIST_CALL("YOUR_URL")} && ${TOOL_CALL("YOUR_URL")}`,
+    verifyLocal: `${LIST_CALL("http://localhost:PORT")} && ${TOOL_CALL("http://localhost:PORT")}`,
     trap:
-      "Agents choose actions by reading their descriptions. Write each one as if explaining it to a new colleague: what it does and when to use it. " +
-      "After you rename things in those two files, search the whole project for floor_ and rename what's left.",
+      "Agents choose actions by reading their descriptions, so a vague description means your action never gets picked. " +
+      "After you change those two files, search the whole project, not just app/, for floor_ and remove what's left. There are about a dozen.",
   },
   {
     id: "wire-auth",
@@ -327,17 +373,20 @@ export const BUILD_STEPS: BuildStep[] = [
     title: "Connect a real login, so only you can approve your agent",
     goal: "The person approving an agent is a real, logged-in user.",
     why:
-      "Right now, anyone who knows an approval code can approve an agent. That's fine for practice, not for real use. " +
+      "Until now, approval has not checked who you are (see the note in Step 1). " +
       "The whole point of the approval step is that a known person said yes. " +
       "This step needs a free Clerk account (clerk.com) and two keys from it: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY and CLERK_SECRET_KEY. " +
       "Add both in your Vercel project settings under Environment Variables, then redeploy.",
     files: ["app/api/agent/signup/complete/route.ts"],
+    edits: [],
     commands: ["npm install @clerk/nextjs", "npm run build"],
     doneWhen:
       "Starting a real signup and then trying to approve its code without being logged in is refused (401 or 403), not approved. Approvals record who you are.",
     verify:
       "CODE=$(curl -s -X POST YOUR_URL/api/agent/signup/start -H 'content-type: application/json' -d '{\"scopes\":[\"read:public\"],\"agent_name\":\"check\"}' | python3 -c 'import sys,json;print(json.load(sys.stdin)[\"user_code\"])') && " +
-      "curl -s -o /dev/null -w '%{http_code}\n' -X POST YOUR_URL/api/agent/signup/complete -H 'content-type: application/json' -d \"{\\\"user_code\\\":\\\"$CODE\\\"}\"  # 401 or 403 is a pass, 200 means anyone can approve",
+      "curl -s -o /dev/null -w '%{http_code}\\n' -X POST YOUR_URL/api/agent/signup/complete -H 'content-type: application/json' -d \"{\\\"user_code\\\":\\\"$CODE\\\"}\"  # 401 or 403 is a pass, 200 means anyone can approve",
+    verifyLocal:
+      "Run the same command with http://localhost:PORT in place of YOUR_URL. On your own computer, put the two Clerk keys in .env.local and restart first.",
     trap:
       "Read who the person is from their login, never from what the request says. The comment in that file shows how.",
   },
@@ -350,6 +399,7 @@ export const BUILD_STEPS: BuildStep[] = [
       "Free hosting runs your code on a fresh machine for each visit. Save something in memory and the next visit can't see it, " +
       "with no error anywhere. A small database fixes that with two settings.",
     files: [".env.local"],
+    edits: [],
     commands: [
       "npx vercel env add KV_REST_API_URL production",
       "npx vercel env add KV_REST_API_TOKEN production",
@@ -357,8 +407,10 @@ export const BUILD_STEPS: BuildStep[] = [
     ],
     doneWhen: "YOUR_SITE/api/v1/health says \"ok\" instead of \"degraded\".",
     verify: "curl -s YOUR_URL/api/v1/health",
+    verifyLocal:
+      "curl -s http://localhost:PORT/api/v1/health   # on your own computer this says degraded until you put KV_REST_API_URL and KV_REST_API_TOKEN in .env.local and restart",
     trap:
-      "If you share the database with another project, give yours its own name prefix in the settings, or the two projects overwrite each other's data.",
+      "If you share the database with another project, give yours its own name prefix (kvNamespace in agent.config.ts), or the two projects overwrite each other's data.",
   },
   {
     id: "api-product",
@@ -369,10 +421,12 @@ export const BUILD_STEPS: BuildStep[] = [
       "This counts for the most on the scanners, and it's what lets an agent decide your site is worth using. " +
       "A site that demands a login before saying anything looks like it has nothing to offer.",
     files: ["app/openapi.json/route.ts", "lib/errors.ts", "lib/ratelimit.ts", "app/developers/page.tsx"],
+    edits: [],
     commands: ["npm run build", "npx vercel deploy --prod"],
     doneWhen:
       "Your API description lists your real features, and a failed request explains what went wrong and how to fix it.",
     verify: "curl -s YOUR_URL/openapi.json",
+    verifyLocal: "curl -s http://localhost:PORT/openapi.json",
     trap:
       "Let the developer page count your features automatically. A page that says 12 when there are 7 is worse than no page.",
   },
@@ -385,12 +439,14 @@ export const BUILD_STEPS: BuildStep[] = [
       "The test script checks what agents actually receive, not what you think you shipped. " +
       "The scanners then tell you what to improve next.",
     files: ["scripts/verify.sh"],
+    edits: [],
     commands: [
       "bash scripts/verify.sh YOUR_URL",
       "curl -s -X POST https://isitagentready.com/api/scan -H 'content-type: application/json' -d '{\"url\":\"YOUR_URL\"}'",
     ],
     doneWhen: "The test script reports zero failures.",
     verify: "bash scripts/verify.sh YOUR_URL",
+    verifyLocal: "npm run verify http://localhost:PORT   # the scanner needs a public address, so scan after you deploy",
     trap:
       "Re-scan after every single fix. Fixing one thing often reveals the next one underneath it.",
   },
