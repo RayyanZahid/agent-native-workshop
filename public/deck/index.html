@@ -548,7 +548,7 @@ pre.code{display:block;align-self:center}
 <style>
 .anw000 .col{flex:1.15}
 .anw000 .display{font-size:132px;max-width:none;white-space:nowrap}
-.anw000 .lede{margin-top:40px;max-width:32ch;color:var(--fg)}
+.anw000 .lede{margin-top:40px;max-width:30ch;color:var(--fg)}
 .anw000 .foot{margin-top:48px}
 .anw000 .art{position:relative;flex:.95;align-items:center;justify-content:center}
 .anw000 .art>svg.mk{width:100%;height:auto;max-height:100%}
@@ -571,9 +571,9 @@ pre.code{display:block;align-self:center}
   <div class="col">
     <p class="kicker"><b>Workshop</b> Harvard Evolution AI</p>
     <h1 class="display">Agent-Native</h1>
-    <p class="lede">Build a product agents can find, trust and call.</p>
+    <p class="lede">Making your website something an AI agent can actually use.</p>
     <div class="foot"><span class="who">Rayyan Zahid &middot; Immersive Commons</span><div class="ember-rule"></div>
-      <span class="meta" data-nonfact>Three parts, then you build one &middot; today</span></div>
+      <span class="meta" data-nonfact>Three parts. Then you build one. Today.</span></div>
   </div>
   <div class="art" aria-hidden="true">
     <svg class="mk" viewBox="0 0 620 850" width="620" height="850" xmlns="http://www.w3.org/2000/svg">
@@ -599,11 +599,11 @@ pre.code{display:block;align-self:center}
     <svg class="ico rd"><use href="#i-eye"/></svg>
     <svg class="ico ag"><use href="#i-agent"/></svg>
   </div>
-  <aside class="notes"><p>I'm Ray. I run Immersive Commons, an AI builder community in San Francisco.</p><p>This workshop is about one thing: making a product that an agent can actually use.</p><p>Not a prettier page. A surface an agent can find, trust and call.</p><p>Three parts. What agent-native means. The seven layers. Then you build one yourself.</p><ul class="ledger"><li>no visible numbers</li><li>subtitle line = data-nonfact (workshop logistics)</li></ul></aside>
+  <aside class="notes"><p>I'm Ray. I run Immersive Commons, a community of AI builders in San Francisco.</p><p>Today is about one thing. Right now your website is built for people to look at. We are going to make it something an AI assistant can use.</p><p>Three parts. First, what an AI agent needs from your site. Then the seven steps. Then you build one yourself, on your own site.</p><p>If I say a word you do not know, stop me. There is a glossary in two slides and I mean it.</p><ul class="ledger"><li>no visible numbers</li><li>subtitle line = data-nonfact (workshop logistics)</li></ul></aside>
 </section>
 
 <!-- ===== 0-01.html ===== -->
-<!-- 0.1 · the opener that IS the demo -->
+<!-- 0.1 · try it before I explain it -->
 <style>
 .anw001{justify-content:center}
 .anw001 .cmdbox{display:flex;align-items:center;gap:32px;background:var(--panel);
@@ -612,28 +612,91 @@ pre.code{display:block;align-self:center}
 .anw001 .cmd{margin:0;font:500 62px/1.34 var(--font-mono);letter-spacing:-.01em;color:var(--paper);white-space:pre}
 .anw001 .capline{display:flex;align-items:baseline;gap:28px;margin:0 0 28px}
 .anw001 .lede{max-width:none;margin-top:52px;font-size:44px}
-.anw001 .body{max-width:62ch;margin-top:28px;font-size:34px}
-.anw001 .row{display:flex;align-items:center;gap:26px;margin-top:48px}
+.anw001 .body{max-width:58ch;margin-top:26px;font-size:34px}
+.anw001 .row{display:flex;align-items:center;gap:26px;margin-top:44px}
 .anw001 .row .ico{width:76px;height:76px}
 .anw001 .row .ico.sm{width:48px;height:48px;color:var(--paper-dim)}
 .anw001 .row figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:12px}
 .anw001 .row figcaption{font:500 24px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--paper-dim)}
 </style>
 <section class="slide t-statement anw001" data-comp="statement" data-theme="dark" data-transition="cut" data-flash data-section="Opening" data-cut="keep">
-  <p class="kicker"><b>Right now</b> the deck is the demo</p>
-  <div class="capline"><p class="label">Type this into any agent you have open</p></div>
+  <p class="kicker"><b>Right now</b> try it before I explain it</p>
+  <div class="capline"><p class="label">Type this into ChatGPT or Claude</p></div>
   <p class="cmdbox"><span class="chev">&gt;</span><span class="cmd">Use agent-native-workshop.vercel.app
 and walk me through this workshop.</span></p>
-  <p class="lede">Your agent finds the manifest, loads SKILL.md, and can hand you every build step in this room.</p>
-  <p class="body">Nothing is scraped. This deck exposes itself the same way it is about to teach you to expose your product.</p>
+  <p class="lede">Your assistant will read these slides and walk you through the workshop itself.</p>
+  <p class="body">I did not send it a copy. The website tells it what is here and how to use it. That is the whole idea, and by the end you will have done it to your own site.</p>
   <div class="row" aria-hidden="true">
-    <figure><svg class="ico ice"><use href="#i-agent"/></svg><figcaption class="label">Your agent</figcaption></figure>
+    <figure><svg class="ico ice"><use href="#i-agent"/></svg><figcaption class="label">Your assistant</figcaption></figure>
     <svg class="ico sm"><use href="#i-arrow"/></svg>
-    <figure><svg class="ico"><use href="#i-page"/></svg><figcaption class="label">Manifest</figcaption></figure>
+    <figure><svg class="ico"><use href="#i-page"/></svg><figcaption class="label">This site</figcaption></figure>
     <svg class="ico sm"><use href="#i-arrow"/></svg>
-    <figure><svg class="ico"><use href="#i-tool"/></svg><figcaption class="label">Steps</figcaption></figure>
+    <figure><svg class="ico"><use href="#i-tool"/></svg><figcaption class="label">Your steps</figcaption></figure>
   </div>
-  <aside class="notes"><p>Before I say anything else, open an agent and type this line.</p><p>Go ahead. Claude, ChatGPT, Cursor, whatever you have.</p><p>It will find the manifest at that domain, load the skill file, and start walking you through this workshop.</p><p>I did not give it a scraper. I gave it a door.</p><p>That is the whole workshop in one line. This deck is built the way I am about to ask you to build your product.</p><p>If it works for you, say so out loud. If it does not, tell me and we debug it live.</p><ul class="ledger"><li>no visible numbers</li><li>live URL = agent-native-workshop.vercel.app (this deck)</li></ul></aside>
+  <aside class="notes"><p>Before I say anything else, open ChatGPT or Claude and type that line.</p><p>Go ahead, really. It takes about twenty seconds.</p><p>What happens: it goes to that web address, finds a small file I published there that lists what this site can do, and then it can walk you through the workshop step by step.</p><p>For the developers: that file is at /.well-known/ai-agent.json and it points at a SKILL.md with the build steps. We cover both in Part II.</p><p>Nobody scraped anything. The site simply says what it offers.</p><p>If it worked, say so out loud. If it did not, tell me and we fix it in front of everyone. That is more useful than a slide.</p><ul class="ledger"><li>no visible numbers</li><li>live URL = agent-native-workshop.vercel.app (this deck)</li></ul></aside>
+</section>
+
+<!-- ===== 0-02.html ===== -->
+<!-- 0.2 · glossary: the six words -->
+<style>
+.anw002 .headline{font-size:60px;max-width:none}
+.anw002 svg.dg{height:590px;margin-top:26px}
+.anw002 .dg .gc{fill:var(--panel);stroke:var(--mute);stroke-width:2}
+.anw002 .dg .gc.hot{stroke:var(--ember);stroke-width:4}
+.anw002 .dg .gw{font:700 44px var(--font-head);fill:var(--fg);letter-spacing:-.02em}
+.anw002 .dg .gd{font:400 29px var(--font-body);fill:var(--paper-dim)}
+.anw002 .foot-note{margin-top:20px;text-transform:none;letter-spacing:.03em;font-size:26px}
+</style>
+<section class="slide t-diagram anw002" data-comp="diagram" data-theme="dark" data-transition="fade" data-section="Opening" data-cut="keep">
+  <div class="top"><div><p class="kicker"><b>Glossary</b> the only six words I will assume</p>
+    <h2 class="headline">Six words you will hear today.</h2></div></div>
+  <svg class="dg" viewBox="0 0 1632 590" xmlns="http://www.w3.org/2000/svg">
+    <g data-build data-build-style="fade">
+      <rect class="gc hot" x="0" y="0" width="520" height="290" rx="12"/>
+      <text class="gw" x="34" y="70">AI agent</text>
+      <text class="gd" x="34" y="128">An AI like ChatGPT or</text>
+      <text class="gd" x="34" y="164">Claude that does tasks,</text>
+      <text class="gd" x="34" y="200">not just answers. It can</text>
+      <text class="gd" x="34" y="236">visit a site and use it.</text>
+    </g>
+    <g data-build data-build-style="fade">
+      <rect class="gc" x="556" y="0" width="520" height="290" rx="12"/>
+      <text class="gw" x="590" y="70">API</text>
+      <text class="gd" x="590" y="128">A way for one program to</text>
+      <text class="gd" x="590" y="164">use another directly, with</text>
+      <text class="gd" x="590" y="200">no clicking through pages.</text>
+    </g>
+    <g data-build data-build-style="fade">
+      <rect class="gc" x="1112" y="0" width="520" height="290" rx="12"/>
+      <text class="gw" x="1146" y="70">MCP</text>
+      <text class="gd" x="1146" y="128">A standard way to hand an</text>
+      <text class="gd" x="1146" y="164">AI agent the list of what</text>
+      <text class="gd" x="1146" y="200">your site can do.</text>
+    </g>
+    <g data-build data-build-style="fade">
+      <rect class="gc" x="0" y="300" width="520" height="290" rx="12"/>
+      <text class="gw" x="34" y="370">Token</text>
+      <text class="gd" x="34" y="428">A digital key that lets an</text>
+      <text class="gd" x="34" y="464">agent act for you, limited</text>
+      <text class="gd" x="34" y="500">to what you allowed.</text>
+    </g>
+    <g data-build data-build-style="fade">
+      <rect class="gc" x="556" y="300" width="520" height="290" rx="12"/>
+      <text class="gw" x="590" y="370">Deploy</text>
+      <text class="gd" x="590" y="428">Put your code on the</text>
+      <text class="gd" x="590" y="464">internet so anyone can</text>
+      <text class="gd" x="590" y="500">reach it.</text>
+    </g>
+    <g data-build data-build-style="fade">
+      <rect class="gc" x="1112" y="300" width="520" height="290" rx="12"/>
+      <text class="gw" x="1146" y="370">Scanner</text>
+      <text class="gd" x="1146" y="428">A free website that checks</text>
+      <text class="gd" x="1146" y="464">your site and scores how</text>
+      <text class="gd" x="1146" y="500">easy it is for agents.</text>
+    </g>
+  </svg>
+  <p class="label foot-note">If I use any other word without explaining it, stop me. That is a mistake on my side, not yours.</p>
+  <aside class="notes"><p>Six words. After this slide I will use these freely and explain everything else.</p><p>An AI agent is an AI that does tasks, not just answers questions. It can go to a website and use it.</p><p>An API is how one program uses another directly, with no clicking through pages.</p><p>MCP is a standard way to hand an agent the list of what your site can do. Think of it as a menu.</p><p>A token is a digital key that lets an agent act for you, limited to what you allowed. Like a valet key.</p><p>Deploy just means put your code on the internet so anyone can reach it.</p><p>A scanner is a free website that checks your site and scores how easy it is for agents to use. We will run one on your site later.</p><p>If I slip and use jargon, call it out. Half the room is not a developer and that is fine.</p><ul class="ledger"><li>no visible numbers</li><li>six words and their plain meanings = VOICE.md glossary table</li></ul></aside>
 </section>
 
 <!-- ===== 1-00.html ===== -->
@@ -651,23 +714,23 @@ and walk me through this workshop.</span></p>
 .anw100 .beats figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:14px}
 .anw100 .beats figcaption{font:500 24px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--paper-dim)}
 </style>
-<section class="slide t-statement anw100" data-comp="statement" data-theme="dark" data-transition="ember-wipe" data-section="I · What agent-native means" data-cut="keep">
-  <p class="kicker"><b>Part I</b> the idea, before the stack</p>
+<section class="slide t-statement anw100" data-comp="statement" data-theme="dark" data-transition="ember-wipe" data-section="I · What it means" data-cut="keep">
+  <p class="kicker"><b>Part I</b> the idea, in plain words</p>
   <svg class="mark" viewBox="0 0 360 520" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <rect class="bar" x="60" y="20" width="240" height="34"/>
     <rect class="bar" x="150" y="54" width="60" height="412"/>
     <rect class="bar" x="60" y="466" width="240" height="34"/>
     <circle class="ring" cx="180" cy="260" r="168"/>
   </svg>
-  <p class="statement"><span class="line">What agent-native</span><span class="line"><em>means.</em></span></p>
+  <p class="statement"><span class="line">Making your site</span><span class="line">work for <em>AI agents.</em></span></p>
   <div class="ember-rule"></div>
-  <p class="lede sub">Two visitors arrive. Five verbs decide whether one of them can do anything at all.</p>
+  <p class="lede sub">Two visitors arrive at your site. One of them gets stuck.</p>
   <div class="beats" aria-hidden="true">
-    <figure><svg class="ico"><use href="#i-eye"/></svg><figcaption class="label">Two readers</figcaption></figure>
-    <figure><svg class="ico ice"><use href="#i-link"/></svg><figcaption class="label">Five verbs</figcaption></figure>
-    <figure><svg class="ico"><use href="#i-network"/></svg><figcaption class="label">Seven layers</figcaption></figure>
+    <figure><svg class="ico"><use href="#i-eye"/></svg><figcaption class="label">Two visitors</figcaption></figure>
+    <figure><svg class="ico ice"><use href="#i-link"/></svg><figcaption class="label">Five needs</figcaption></figure>
+    <figure><svg class="ico"><use href="#i-network"/></svg><figcaption class="label">Same steps every time</figcaption></figure>
   </div>
-  <aside class="notes"><p>Part one. What agent-native actually means.</p><p>Three moves here. Two visitors arrive at your product and only one of them gets served.</p><p>Then a definition you can test your own site against: five verbs.</p><p>Then the claim the rest of the workshop rests on. It is the same seven layers every time.</p><p>Keep your own product in your head while I do this. You will be auditing it shortly.</p><ul class="ledger"><li>no visible numbers</li><li>roman numeral is drawn as SVG decoration, aria-hidden</li></ul></aside>
+  <aside class="notes"><p>Part one. What it means to make your site work for AI agents.</p><p>Three steps. First, two visitors arrive at your site, and only one of them can actually use it.</p><p>Second, the five things an AI agent needs from you. You can check your own site against each one.</p><p>Third, the good news. It is the same seven things to build, every time.</p><p>Keep your own site in your head while I go. You will be checking it shortly.</p><p>For the developers: I call this agent-native. It just means the site works for software visitors as well as human ones.</p><ul class="ledger"><li>no visible numbers</li><li>roman numeral is drawn as SVG decoration, aria-hidden</li></ul></aside>
 </section>
 
 <!-- ===== 1-01.html ===== -->
@@ -684,36 +747,36 @@ and walk me through this workshop.</span></p>
 .anw101 .vis .ico.sm{width:40px;height:40px;color:var(--paper-dim)}
 .anw101 .vis .label{margin:0}
 </style>
-<section class="slide t-split anw101" data-comp="split" data-theme="dark" data-transition="fade" data-section="I · What agent-native means" data-cut="skip">
+<section class="slide t-split anw101" data-comp="split" data-theme="dark" data-transition="fade" data-section="I · What it means" data-cut="skip">
   <div class="l">
-    <p class="kicker"><b>Two visitors</b> one of them is unserved</p>
-    <h2 class="headline">A human reads pixels. An agent reads <em>bytes.</em></h2>
+    <p class="kicker"><b>Two visitors</b> same address, different page</p>
+    <h2 class="headline">You see a full page. An AI agent often gets a <em>blank one.</em></h2>
     <ul class="points">
-      <li data-build><b>Browser:</b> a rendered page, a layout, somewhere to click.</li>
-      <li data-build><b>curl:</b> a shell. Markup, a hydration payload, nothing to act on.</li>
-      <li data-build><b>The agent</b> is not a crawler looking for text. It is a caller looking for a function.</li>
+      <li data-build>You open your site and see menus, text and buttons.</li>
+      <li data-build>An AI agent visits the same address and often gets an almost empty page.</li>
+      <li data-build>The content only appears after code runs in a browser. Many agents never run that code.</li>
     </ul>
   </div>
   <div class="r">
     <div class="vis" aria-hidden="true">
-      <svg class="ico ice"><use href="#i-agent"/></svg>
-      <svg class="ico sm"><use href="#i-arrow"/></svg>
-      <svg class="ico"><use href="#i-code"/></svg>
-      <p class="label">What the agent actually gets</p>
+      <svg class="ico"><use href="#i-eye"/></svg>
+      <p class="label">What you see: the full page</p>
     </div>
-    <pre class="code" data-build data-build-style="fade"><span class="k">$ curl https://your.site</span>
-&lt;div id="root"&gt;&lt;/div&gt;
-&lt;script&gt;__DATA__= ...&lt;/script&gt;
+    <div class="vis" aria-hidden="true">
+      <svg class="ico ice"><use href="#i-agent"/></svg>
+      <p class="label">What the AI agent receives</p>
+    </div>
+    <pre class="code" data-build data-build-style="fade"><span class="k">Menus:    none</span>
+<span class="k">Text:     none</span>
+<span class="k">Buttons:  none</span>
 
-<span class="dim"># no manifest</span>
-<span class="dim"># no tool list</span>
-<span class="dim"># nothing to call</span></pre>
+<span class="dim">Only a note: "Loading..."</span></pre>
   </div>
-  <aside class="notes"><p>Two visitors arrive at your product today.</p><p>One is a person. They get the page you designed. Layout, buttons, somewhere to click.</p><p>The other is an agent. Open your own site with curl instead of a browser and look at what comes back.</p><p>You get a shell. Some markup, a hydration payload, and nothing it can act on.</p><p>Here is the part people miss. The agent is not a crawler hunting for text. It is a caller looking for a function.</p><p>It is not asking what you look like. It is asking what you can do.</p><p>Run that curl on your own domain in the break. It is the cheapest audit there is.</p><ul class="ledger"><li>no visible numbers</li><li>curl output is illustrative, not a capture of a named site</li></ul></aside>
+  <aside class="notes"><p>Two visitors arrive at your site today.</p><p>One is a person. They open the page and see everything you designed. Menus, text, buttons, somewhere to click.</p><p>The other is an AI agent, going to the very same address. And a lot of the time, what it gets back is almost empty.</p><p>Why? On many modern sites the content is not in the page when it first arrives. It shows up only after code runs in the browser. A person's browser runs that code. Many agents do not.</p><p>So the agent is not seeing an ugly version of your site. It is seeing nothing, and it moves on.</p><p>The box on the right is an illustration of that. It is not a capture of a real site.</p><p>For the developers: this is a client side rendered app. Fetch the URL with curl and you get an empty root div and a script tag. Run that curl on your own domain in the break. It is the cheapest audit there is.</p><ul class="ledger"><li>no visible numbers</li><li>the box is illustrative, not a capture of a named site</li></ul></aside>
 </section>
 
 <!-- ===== 1-02.html ===== -->
-<!-- I.2 · agent-native, defined: five verbs -->
+<!-- I.2 · agent-native, defined: five things an AI agent needs -->
 <style>
 .anw102 .headline{font-size:60px;max-width:none}
 .anw102 svg.dg{height:560px;margin-top:30px}
@@ -726,47 +789,47 @@ and walk me through this workshop.</span></p>
 .anw102 .dg .cap{fill:var(--ice)}
 .anw102 .close{margin-top:26px;font-size:34px;color:var(--paper-dim)}
 </style>
-<section class="slide t-diagram anw102" data-comp="diagram" data-theme="dark" data-transition="lift" data-section="I · What agent-native means" data-cut="keep">
-  <div class="top"><div><p class="kicker"><b>Agent-native, defined</b> five verbs you can test for</p>
-    <h2 class="headline">Five verbs. Miss one and the <em>chain breaks.</em></h2></div></div>
+<section class="slide t-diagram anw102" data-comp="diagram" data-theme="dark" data-transition="lift" data-section="I · What it means" data-cut="keep">
+  <div class="top"><div><p class="kicker"><b>What an AI agent needs</b> five things you can test for</p>
+    <h2 class="headline">An AI agent needs five things from your <em>site.</em></h2></div></div>
   <svg class="dg" viewBox="0 0 1632 560" xmlns="http://www.w3.org/2000/svg">
     <g data-build data-build-style="fade">
       <circle class="nodeo" cx="36" cy="60" r="22"/><circle class="nodei" cx="36" cy="60" r="9"/>
-      <text class="vb" x="96" y="74">Discoverable</text>
-      <text class="gl" x="520" y="71">an agent that knows only your domain finds everything else</text>
+      <text class="vb" x="96" y="74">Find it</text>
+      <text class="gl" x="520" y="71">it finds what your site offers from just your web address</text>
       <path class="rl" d="M96 104 H1596"/><circle class="cap" cx="1604" cy="104" r="7"/>
       <path class="lk" d="M36 82 V150"/>
     </g>
     <g data-build data-build-style="fade">
       <circle class="nodeo" cx="36" cy="172" r="22"/><circle class="nodei" cx="36" cy="172" r="9"/>
-      <text class="vb" x="96" y="186">Readable</text>
-      <text class="gl" x="520" y="183">it gets substance, not chrome</text>
+      <text class="vb" x="96" y="186">Read it</text>
+      <text class="gl" x="520" y="183">it gets the real content, not just menus and styling</text>
       <path class="rl" d="M96 216 H1596"/><circle class="cap" cx="1604" cy="216" r="7"/>
       <path class="lk" d="M36 194 V262"/>
     </g>
     <g data-build data-build-style="fade">
       <circle class="nodeo" cx="36" cy="284" r="22"/><circle class="nodei" cx="36" cy="284" r="9"/>
-      <text class="vb" x="96" y="298">Authenticatable</text>
-      <text class="gl" x="520" y="295">credentials without a human pasting a key into a prompt</text>
+      <text class="vb" x="96" y="298">Get permission</text>
+      <text class="gl" x="520" y="295">a person says yes once, with no password pasted into a chat</text>
       <path class="rl" d="M96 328 H1596"/><circle class="cap" cx="1604" cy="328" r="7"/>
       <path class="lk" d="M36 306 V374"/>
     </g>
     <g data-build data-build-style="fade">
       <circle class="nodeo" cx="36" cy="396" r="22"/><circle class="nodei" cx="36" cy="396" r="9"/>
-      <text class="vb" x="96" y="410">Callable</text>
-      <text class="gl" x="520" y="407">it can do what a human can do, through a typed interface</text>
+      <text class="vb" x="96" y="410">Use it</text>
+      <text class="gl" x="520" y="407">it can do what a person can do, like book or buy</text>
       <path class="rl" d="M96 440 H1596"/><circle class="cap" cx="1604" cy="440" r="7"/>
       <path class="lk" d="M36 418 V486"/>
     </g>
     <g data-build data-build-style="fade">
       <circle class="nodeo" cx="36" cy="508" r="22"/><circle class="nodei" cx="36" cy="508" r="9"/>
-      <text class="vb" x="96" y="522">Payable</text>
-      <text class="gl" x="520" y="519">it knows the cost before committing, even if the answer is nothing</text>
+      <text class="vb" x="96" y="522">Know the cost</text>
+      <text class="gl" x="520" y="519">it sees the price first, even when the price is free</text>
       <path class="rl" d="M96 552 H1596"/><circle class="cap" cx="1604" cy="552" r="7"/>
     </g>
   </svg>
-  <p class="body close">Discovery with no auth path is a dead end. Auth with no tools is a login to nowhere.</p>
-  <aside class="notes"><p>Here is the definition. Five verbs. You can hold your own product against each one.</p><p>Discoverable. An agent that knows only your domain can find everything else from there.</p><p>Readable. It gets the substance, not the chrome.</p><p>Authenticatable. It gets credentials without a human pasting an API key into a prompt.</p><p>Callable. It can do what a human can do, through a typed interface.</p><p>Payable. It knows the cost before it commits, even when the answer is that there is no charge.</p><p>Now the important bit. Miss any one of these and the chain breaks at that link.</p><p>Discovery with no auth path is a dead end. Auth with no tools is a login to nowhere.</p><p>Most sites I audit have one or two of the five and think they are done.</p><ul class="ledger"><li>no visible numbers</li><li>five verbs = Ray's own framing, the spine of Part II</li></ul></aside>
+  <p class="body close">Miss one and the agent gets stuck at that step.</p>
+  <aside class="notes"><p>Here are the five things an AI agent needs from your site. You can hold your own site up against each one.</p><p>Find it. The agent knows only your web address, and from there it can work out everything else your site offers.</p><p>Read it. It gets the real content, not just menus and styling.</p><p>Get permission. A person says yes once. Nobody has to paste a password or a secret key into a chat.</p><p>Use it. The agent can do what a person can do, like book a table or buy a ticket.</p><p>Know the cost. It sees the price before it commits, even when the answer is that it is free.</p><p>Here is the important part. Miss any one and the agent gets stuck at that step. If it can find you but cannot get permission, it stops. If it gets permission but has nothing to use, it stops.</p><p>Most sites I check have one or two of the five and think they are done.</p><p>For the developers: the five map to discovery, readability, authentication, a typed callable interface, and pricing metadata.</p><ul class="ledger"><li>no visible numbers</li><li>five things = Ray's own framing, the spine of Part II</li></ul></aside>
 </section>
 
 <!-- ===== 1-03.html ===== -->
@@ -774,7 +837,7 @@ and walk me through this workshop.</span></p>
 <style>
 .anw103.t-statement{flex-direction:row;align-items:center;justify-content:space-between;gap:56px}
 .anw103 .txt{flex:1 1 auto;max-width:1056px}
-.anw103 .statement{font-size:112px;max-width:1056px}
+.anw103 .statement{font-size:104px;max-width:1056px}
 .anw103 .sub{margin-top:44px;max-width:38ch;font-size:42px}
 .anw103 .body{margin-top:26px;max-width:52ch;font-size:34px}
 .anw103 .vis{flex:none;width:480px;display:flex;flex-direction:column;align-items:center;gap:26px}
@@ -785,12 +848,12 @@ and walk me through this workshop.</span></p>
 .anw103 .shelf .frame{fill:var(--panel);stroke:var(--mute);stroke-width:3}
 .anw103 .shelf .slot{fill:none;stroke:var(--mute);stroke-width:3;stroke-dasharray:14 14}
 </style>
-<section class="slide t-statement anw103" data-comp="statement" data-theme="dark" data-transition="fade" data-section="I · What agent-native means" data-cut="skip">
-  <p class="kicker"><b>Why bother</b> the decision happens without you</p>
+<section class="slide t-statement anw103" data-comp="statement" data-theme="dark" data-transition="fade" data-section="I · What it means" data-cut="skip">
+  <p class="kicker"><b>Why it matters</b> an AI can pick another site first</p>
   <div class="txt">
-    <p class="statement"><span class="line">An agent that cannot</span><span class="line">call you cannot</span><span class="line" data-build><em>recommend</em> you.</span></p>
-    <p class="lede sub" data-build data-build-style="fade">Agents are becoming where products get chosen, not just the tool that fetches them.</p>
-    <p class="body" data-build data-build-style="fade">The choice happens before a human ever sees your landing page, using whatever your domain exposes. An empty tool list reads as having no tools, not as having a beautiful website.</p>
+    <p class="statement"><span class="line">Agents send people</span><span class="line">to sites they</span><span class="line" data-build><em>can use.</em></span></p>
+    <p class="lede sub" data-build data-build-style="fade">People now ask an AI to find and book things for them.</p>
+    <p class="body" data-build data-build-style="fade">It picks before anyone sees your homepage. If your site has nothing it can use, it moves on to one that does.</p>
   </div>
   <div class="vis" aria-hidden="true">
     <svg class="ico ice"><use href="#i-agent"/></svg>
@@ -801,9 +864,9 @@ and walk me through this workshop.</span></p>
       <rect class="slot" x="48" y="122" width="324" height="48" rx="8"/>
       <rect class="slot" x="48" y="188" width="324" height="48" rx="8"/>
     </svg>
-    <p class="label">Tools found: none</p>
+    <p class="label">What the AI agent found: nothing to use</p>
   </div>
-  <aside class="notes"><p>So why bother. Here is the blunt version.</p><p>An agent that cannot call you cannot recommend you.</p><p>Agents are turning into the place products get chosen, not just the thing that fetches them.</p><p>Somebody asks their agent to find a tool that does X. It goes and looks. It compares what it can actually use. Then it comes back with one answer.</p><p>That whole decision happens before a human ever sees your landing page.</p><p>And when it looks at you and finds no tools, it does not read that as "beautiful website". It reads it as "no tools".</p><p>For scale, the agent-readiness graders out there put the average site around a third of the way up a hundred point scale, and almost nothing clears seventy. Say it as "most sites score badly and very few score well" if you want to stay safe, because I have not put those two figures in the deck's fact file.</p><ul class="ledger"><li>no visible numbers on screen</li><li>readiness averages are SPOKEN ONLY and not in a FACTS file for this deck: say them qualitatively if unsure</li></ul></aside>
+  <aside class="notes"><p>So why bother? Here is the plain version.</p><p>If an AI agent cannot use your site, it sends people somewhere else.</p><p>Picture someone asking their AI assistant to find a place to book for Friday, or a tool that does a certain job. The assistant goes and looks. It checks what it can actually use. Then it comes back with one answer.</p><p>All of that happens before a person ever sees your homepage.</p><p>And if your site gives the assistant nothing to use, it does not think "nice design, shame about the tools". It just thinks you offer nothing, and picks someone else.</p><p>For scale, the free scanners that score how agent-ready a site is find that most sites score badly and very few score well. Say it that way, because I have not put exact figures in the deck's fact file.</p><ul class="ledger"><li>no visible numbers on screen</li><li>readiness averages are SPOKEN ONLY and not in a FACTS file for this deck: say them qualitatively if unsure</li></ul></aside>
 </section>
 
 <!-- ===== 1-04.html ===== -->
@@ -820,55 +883,55 @@ and walk me through this workshop.</span></p>
 .anw104 .close{margin-top:24px;font-size:34px}
 .anw104 .kit{margin-top:18px;text-transform:none;letter-spacing:.03em;font-size:26px}
 </style>
-<section class="slide t-diagram anw104" data-comp="diagram" data-theme="dark" data-transition="fade" data-section="I · What agent-native means" data-cut="keep">
-  <div class="top"><div><p class="kicker"><b>The thesis</b> what Part II walks through</p>
-    <h2 class="headline">The same seven layers. Every time.</h2></div></div>
+<section class="slide t-diagram anw104" data-comp="diagram" data-theme="dark" data-transition="fade" data-section="I · What it means" data-cut="keep">
+  <div class="top"><div><p class="kicker"><b>The good news</b> what Part II walks through</p>
+    <h2 class="headline">Good news: it's the same seven things every time.</h2></div></div>
   <svg class="dg" viewBox="0 0 1632 510" xmlns="http://www.w3.org/2000/svg">
     <g data-build data-build-style="fade">
       <text class="nm" x="16" y="48" data-nonfact>1</text>
-      <text class="lb" x="86" y="52">Discovery</text>
-      <rect class="track" x="470" y="16" width="700" height="48" rx="10"/>
-      <text class="nt lbl" x="1200" y="49">FREE, MINUTES</text>
+      <text class="lb" x="86" y="52">Be findable</text>
+      <rect class="track" x="570" y="16" width="600" height="48" rx="10"/>
+      <text class="nt lbl" x="1200" y="49">EASY, TAKES MINUTES</text>
     </g>
     <g data-build data-build-style="fade">
       <text class="nm" x="16" y="121" data-nonfact>2</text>
-      <text class="lb" x="86" y="125">Readability</text>
-      <rect class="track" x="470" y="89" width="700" height="48" rx="10"/>
+      <text class="lb" x="86" y="125">Be readable</text>
+      <rect class="track" x="570" y="89" width="600" height="48" rx="10"/>
     </g>
     <g data-build data-build-style="fade">
       <text class="nm" x="16" y="194" data-nonfact>3</text>
-      <text class="lb" x="86" y="198">Identity</text>
-      <rect class="track" x="470" y="162" width="700" height="48" rx="10"/>
+      <text class="lb" x="86" y="198">Ask permission</text>
+      <rect class="track" x="570" y="162" width="600" height="48" rx="10"/>
     </g>
     <g data-build data-build-style="fade">
       <text class="nm" x="16" y="267" data-nonfact>4</text>
-      <text class="lb" x="86" y="271">Execution</text>
-      <rect class="track" x="470" y="235" width="700" height="48" rx="10"/>
+      <text class="lb" x="86" y="271">Be usable</text>
+      <rect class="track" x="570" y="235" width="600" height="48" rx="10"/>
     </g>
     <g data-build data-build-style="fade">
       <text class="nm" x="16" y="340" data-nonfact>5</text>
-      <text class="lb" x="86" y="344">Multiplayer</text>
-      <rect class="track" x="470" y="308" width="700" height="48" rx="10"/>
+      <text class="lb" x="86" y="344">Talk to other agents</text>
+      <rect class="track" x="570" y="308" width="600" height="48" rx="10"/>
     </g>
     <g data-build data-build-style="fade">
       <text class="nm" x="16" y="413" data-nonfact>6</text>
-      <text class="lb" x="86" y="417">API-as-product</text>
-      <rect class="track hot" x="470" y="381" width="700" height="48" rx="10"/>
-      <text class="nt hot lbl" x="1200" y="414">WHERE THE POINTS ARE</text>
+      <text class="lb" x="86" y="417">Be a good API</text>
+      <rect class="track hot" x="570" y="381" width="600" height="48" rx="10"/>
+      <text class="nt hot lbl" x="1200" y="414">BIGGEST SCORE GAIN</text>
     </g>
     <g data-build data-build-style="fade">
       <text class="nm" x="16" y="486" data-nonfact>7</text>
-      <text class="lb" x="86" y="490">Recovery</text>
-      <rect class="track" x="470" y="454" width="700" height="48" rx="10"/>
+      <text class="lb" x="86" y="490">Hear about breakages</text>
+      <rect class="track" x="570" y="454" width="600" height="48" rx="10"/>
     </g>
   </svg>
-  <p class="body close">The order is load-bearing. Discovery is free and takes minutes. API-as-product is where the points are, and it needs the rest to mean anything.</p>
-  <p class="label kit">Build it once and the agent surface stops being a project. It becomes a floor you build on. That is why it ships as a kit: agent-native-kit.vercel.app, MIT.</p>
-  <aside class="notes"><p>Here is the thesis the rest of the workshop runs on.</p><p>It is the same seven layers every time. Discovery, Readability, Identity, Execution, Multiplayer, API-as-product, Recovery.</p><p>I have audited enough of these now that I stopped treating each one as a new problem.</p><p>The order matters. Discovery is free and takes minutes, so it goes first and you have no excuse.</p><p>API-as-product is where the points are, but it needs everything above it to mean anything. A perfect API nobody can discover or authenticate against is worth nothing.</p><p>Build it correctly once and the agent surface stops being a project. It becomes a floor you build the next thing on.</p><p>That is exactly why we shipped it as a kit instead of a blog post. The kit is at agent-native-kit.vercel.app, MIT licensed, and Part II walks the seven in order.</p><ul class="ledger"><li>numerals one to seven are index counters, marked data-nonfact</li><li>seven layers = the kit's own structure, agent-native-kit.vercel.app</li></ul></aside>
+  <p class="body close">Those five needs become seven things to build.</p>
+  <p class="label kit">Do it once and you never start from zero again. It is a free kit: agent-native-kit.vercel.app</p>
+  <aside class="notes"><p>Here is the good news, and the idea the rest of the workshop runs on.</p><p>It is the same seven things every time. Be findable. Be readable. Ask permission. Be usable. Talk to other agents. Be a good API. Hear about breakages.</p><p>I have checked enough sites now that I stopped treating each one as a brand new problem.</p><p>The order matters. Being findable is free and takes minutes, so it goes first and there is no excuse.</p><p>Being a good API is where the scanners give the biggest score gain, but it only means something if the steps above it are done. A perfect API that nobody can find, or get permission to use, is worth nothing.</p><p>Do it once and you never start from zero again. That is why we turned it into a kit instead of a blog post. It is free, at agent-native-kit dot vercel dot app, and Part II walks through the seven in order.</p><p>For the developers: the original layer names were discovery, readability, identity, execution, multiplayer, API as product, and recovery. The kit is MIT licensed.</p><ul class="ledger"><li>numerals one to seven are index counters, marked data-nonfact</li><li>seven layers = the kit's own structure, agent-native-kit.vercel.app</li></ul></aside>
 </section>
 
 <!-- ===== 2-00.html ===== -->
-<!-- II.0 · section opener · seven layers, seven traps -->
+<!-- II.0 · section opener · the seven things to build -->
 <style>
 .s2-00 .dg .n{font:700 40px var(--font-head);fill:var(--paper-dim)}
 .s2-00 .dg .nm{font:700 34px var(--font-head);fill:var(--paper)}
@@ -878,75 +941,77 @@ and walk me through this workshop.</span></p>
 .s2-00 .dg .hd.em{fill:var(--ember)}
 .s2-00 .dg .sep{stroke:var(--mute);stroke-width:2}
 </style>
-<section class="slide t-diagram s2-00" data-comp="diagram" data-theme="dark" data-transition="ember-wipe" data-section="II · What is actually happening" data-cut="keep">
+<section class="slide t-diagram s2-00" data-comp="diagram" data-theme="dark" data-transition="ember-wipe" data-section="II · The seven things" data-cut="keep">
   <div class="top">
     <div>
-      <p class="kicker"><b data-nonfact>Part II</b> seven layers, in order</p>
-      <h2 class="headline">Each layer has one trap that eats a week.</h2>
+      <p class="kicker"><b data-nonfact>Part II</b> the build list, in order</p>
+      <h2 class="headline">Seven things to build, and what breaks without each.</h2>
     </div>
   </div>
-  <svg class="dg" viewBox="0 0 1632 690" xmlns="http://www.w3.org/2000/svg" aria-label="Seven layers, each with its mechanism and the trap that costs a week">
-    <text class="hd lbl" x="440" y="22">MECHANISM</text>
-    <text class="hd em lbl" x="1020" y="22">THE TRAP</text>
-    <path class="sep" d="M1006 34 V684"/>
+  <svg class="dg" viewBox="0 0 1632 690" xmlns="http://www.w3.org/2000/svg" aria-label="Seven things to build, what each one is, and what goes wrong if you skip it">
+    <text class="hd lbl" x="544" y="22">WHAT IT IS</text>
+    <text class="hd em lbl" x="1080" y="22">WHAT GOES WRONG IF YOU SKIP IT</text>
+    <path class="sep" d="M1066 34 V684"/>
     <g data-build data-build-style="fade">
       <rect class="box" x="0" y="34" width="1632" height="86" rx="8"/>
-      <text class="n" x="28" y="90">1</text><text class="nm" x="86" y="88">Discovery</text>
-      <text class="mech" x="440" y="88">eleven documents, one config object</text>
-      <text class="trap" x="1020" y="88">a scope in metadata, not in the token</text>
+      <text class="n" x="28" y="90">1</text><text class="nm" x="86" y="88">Be findable</text>
+      <text class="mech" x="544" y="88">small files that list what you do</text>
+      <text class="trap" x="1080" y="88">agents never learn you exist</text>
 
       <rect class="box" x="0" y="128" width="1632" height="86" rx="8"/>
-      <text class="n" x="28" y="184">2</text><text class="nm" x="86" y="182">Readable</text>
-      <text class="mech" x="440" y="182">server-rendered bytes, not hydration</text>
-      <text class="trap" x="1020" y="182">a tool surface that needs hydration</text>
+      <text class="n" x="28" y="184">2</text><text class="nm" x="86" y="182">Be readable</text>
+      <text class="mech" x="544" y="182">it is all there before code runs</text>
+      <text class="trap" x="1080" y="182">agents see a blank page</text>
 
       <rect class="box" x="0" y="222" width="1632" height="86" rx="8"/>
-      <text class="n" x="28" y="278">3</text><text class="nm" x="86" y="276">Identity</text>
-      <text class="mech" x="440" y="276">RFC 8628: a human approves scopes</text>
-      <text class="trap" x="1020" y="276">a key in the prompt, leaked on ask</text>
+      <text class="n" x="28" y="278">3</text><text class="nm" x="86" y="276">Ask permission</text>
+      <text class="mech" x="544" y="276">the agent asks, a person says yes</text>
+      <text class="trap" x="1080" y="276">passwords pasted into chatbots</text>
 
       <rect class="box" x="0" y="316" width="1632" height="86" rx="8"/>
-      <text class="n" x="28" y="372">4</text><text class="nm" x="86" y="370">Execution</text>
-      <text class="mech" x="440" y="370">remote MCP, writes gated, list open</text>
-      <text class="trap" x="1020" y="370">gate the catalog, score as no tools</text>
+      <text class="n" x="28" y="372">4</text><text class="nm" x="86" y="370">Be usable</text>
+      <text class="mech" x="544" y="370">show your list to everyone</text>
+      <text class="trap" x="1080" y="370">agents look, see nothing, leave</text>
 
       <rect class="box" x="0" y="410" width="1632" height="86" rx="8"/>
-      <text class="n" x="28" y="466">5</text><text class="nm" x="86" y="464">Multiplayer</text>
-      <text class="mech" x="440" y="464">one address per agent, not one hub</text>
-      <text class="trap" x="1020" y="464">one hub reads as one agent</text>
+      <text class="n" x="28" y="466">5</text><text class="nm" x="86" y="464">Talk to other agents</text>
+      <text class="mech" x="544" y="464">one address for each agent</text>
+      <text class="trap" x="1080" y="464">many agents read as one</text>
 
       <rect class="box" x="0" y="504" width="1632" height="86" rx="8"/>
-      <text class="n" x="28" y="560">6</text><text class="nm" x="86" y="558">API as product</text>
-      <text class="mech" x="440" y="558">RFC 9457, cursors, Idempotency-Key</text>
-      <text class="trap" x="1020" y="558">a strong server on a weak API</text>
+      <text class="n" x="28" y="560">6</text><text class="nm" x="86" y="558">Be a good API</text>
+      <text class="mech" x="544" y="558">clear errors, safe to resend</text>
+      <text class="trap" x="1080" y="558">a tidy list of broken buttons</text>
 
       <rect class="box" x="0" y="598" width="1632" height="86" rx="8"/>
-      <text class="n" x="28" y="654">7</text><text class="nm" x="86" y="652">Recovery</text>
-      <text class="mech" x="440" y="652">an open endpoint agents report to</text>
-      <text class="trap" x="1020" y="652">you find out from a score drop</text>
+      <text class="n" x="28" y="654">7</text><text class="nm" x="86" y="652">Hear about breakages</text>
+      <text class="mech" x="544" y="652">an address for reporting problems</text>
+      <text class="trap" x="1080" y="652">you find out months later</text>
     </g>
   </svg>
   <aside class="notes">
-    <p>Here is the whole second act on one slide. Seven layers, in the order you should build them.</p>
-    <p>Left column is the mechanism. Right column is the trap. Every one of those traps cost me real days, and every one of them is silent. That is the pattern: nothing throws, nothing logs, the number just does not move.</p>
-    <p>Discovery: eleven well-known documents generated from one config object. The trap is drift, a scope your metadata advertises and your tokens do not carry.</p>
-    <p>Readable: if a grader cannot read it in the served bytes, it does not exist. The trap is a tool surface that only appears after hydration.</p>
-    <p>Identity: the device authorization grant, so a human approves the scope list. The trap is an API key in the prompt.</p>
-    <p>Execution: remote MCP, writes gated, catalog open to anyone. The trap is gating the catalog and getting judged as having no tools.</p>
-    <p>Multiplayer: one address per agent. The trap is a shared hub endpoint, which a topology audit reads as a single agent.</p>
-    <p>API as product: proper errors, cursors, idempotency, rate-limit headers. The trap is a good MCP server bolted onto a weak API.</p>
-    <p>Recovery: an open endpoint agents can report failures to. The trap is finding out from a score drop weeks later.</p>
-    <p>We are going to walk all seven. Row numbers are just the running order.</p>
+    <p>Here is the whole middle of the talk on one slide. Seven things to build, in the order I would build them.</p>
+    <p>Left column is what the thing is. Right column is what goes wrong if you skip it. I have skipped most of these at some point, and every one of them cost me days.</p>
+    <p>And here is the pattern: none of them fail loudly. Nothing crashes. No error shows up in your logs. The agent just quietly gives up and the person who sent it never comes back.</p>
+    <p>One. Be findable: small files at standard addresses that say what your site can do. Skip it and agents never learn you exist.</p>
+    <p>Two. Be readable: everything important is in the page before any code runs. Skip it and agents see a blank page.</p>
+    <p>Three. Ask permission: the agent asks, and a person says yes. Skip it and people start pasting passwords into chatbots.</p>
+    <p>Four. Be usable: your list of what you can do is open to everyone. Skip it and agents look, see nothing, and leave.</p>
+    <p>Five. Talk to other agents: every agent gets its own address. Skip it and a hundred agents behind one address read as one.</p>
+    <p>Six. Be a good API: clear errors, results in pages, safe retries. Skip it and you have a tidy list of broken buttons.</p>
+    <p>Seven. Hear about breakages: an address agents can report problems to. Skip it and you find out months later.</p>
+    <p>For the developers: layer three is RFC 8628, the device authorization grant. Layer six is RFC 9457 problem details, cursor pagination and an Idempotency-Key header. I will name those as we go.</p>
+    <p>Row numbers are just the running order.</p>
     <ul class="ledger">
-      <li>8628 = F-51 (RFC 8628, OAuth 2.0 Device Authorization Grant, layer 3)</li>
-      <li>9457 = F-52 (RFC 9457, Problem Details for HTTP APIs, layer 6)</li>
+      <li>8628 = F-51 (RFC 8628, OAuth 2.0 Device Authorization Grant, spoken only, slide 3)</li>
+      <li>9457 = F-52 (RFC 9457, Problem Details for HTTP APIs, spoken only, slide 6)</li>
       <li>row numerals 1 to 7 carry class .n, index counters, exempt</li>
     </ul>
   </aside>
 </section>
 
 <!-- ===== 2-01.html ===== -->
-<!-- II.1 · layer 1 · discovery · eleven surfaces, one source -->
+<!-- II.1 · be findable · one file you edit, the rest generated -->
 <style>
 .s2-01 .headline{margin-top:16px}
 .s2-01 .points li b{white-space:normal}
@@ -954,70 +1019,66 @@ and walk me through this workshop.</span></p>
 .s2-01 .fanout{display:block;width:100%;height:100%}
 .s2-01 .fanout .src{fill:none;stroke:var(--ember);stroke-width:4}
 .s2-01 .fanout .ln{stroke:var(--mute);stroke-width:2;fill:none}
-.s2-01 .fanout .srctxt{font:500 32px var(--font-mono);fill:var(--paper)}
+.s2-01 .fanout .srctxt{font:700 34px var(--font-head);fill:var(--paper)}
 .s2-01 .fanout .srccap{font:500 24px var(--font-mono);fill:var(--paper-dim);letter-spacing:.04em}
-.s2-01 .fanout .pathtxt{font:500 24px var(--font-mono);fill:var(--paper-dim)}
-.s2-01 .fanout .pathtxt.on{fill:var(--paper)}
-.s2-01 .fanout .note{font:500 22px var(--font-mono);fill:var(--paper-dim)}
+.s2-01 .fanout .filebar{fill:none;stroke:var(--mute);stroke-width:2}
 /* Q4: the left column was taller than div.l. 30px stays above the 28px sentence floor. */
 .s2-01 .points li{font-size:28px;line-height:1.26}
 .s2-01 .points{gap:12px}
 </style>
-<section class="slide t-split s2-01" data-comp="split" data-theme="dark" data-transition="fade" data-section="II · What is actually happening" data-cut="skip">
+<section class="slide t-split s2-01" data-comp="split" data-theme="dark" data-transition="fade" data-section="II · The seven things" data-cut="skip">
   <div class="l">
-    <p class="kicker"><b data-nonfact>Layer 1 · Discovery</b> eleven well-known documents</p>
-    <h2 class="headline">The enemy is drift, not typing.</h2>
+    <p class="kicker"><b data-nonfact>Be findable</b> the files agents read first</p>
+    <h2 class="headline">Write it once, or your files stop matching.</h2>
     <ul class="points">
-      <li data-build="3"><b>Nothing fails loudly.</b> You add a scope to a token and forget <span class="mono">scopes_supported</span>.</li>
-      <li data-build="3"><b>The 403 has no author.</b> The agent reads your metadata, asks for the scope, gets a token without it.</li>
-      <li data-build="4"><b>One object, many consumers.</b> <span class="mono">agent.config.ts</span> generates all eleven. There is no second place to edit.</li>
-      <li data-build="4"><b>That sixth path is not a duplicate.</b> Ship only the root document and a strict client gets a 404.</li>
+      <li data-build="3"><b>A dozen small files</b> tell agents what your site can do.</li>
+      <li data-build="3"><b>You change one and forget another.</b> Now agents are told something false.</li>
+      <li data-build="4"><b>Nothing breaks loudly.</b> The agent gets an error, gives up, and does not come back.</li>
+      <li data-build="4"><b>The fix:</b> write it in one place and generate the rest.</li>
     </ul>
   </div>
   <div class="r">
     <div class="panel">
-      <svg class="fanout" viewBox="0 0 795 856" xmlns="http://www.w3.org/2000/svg" aria-label="One config object generates eleven well-known documents">
-        <rect class="src" x="24" y="18" width="584" height="96" rx="10"/>
-        <text class="srctxt" x="52" y="60">agent.config.ts</text>
-        <text class="srccap lbl" x="52" y="96">one object, eleven surfaces</text>
+      <svg class="fanout" viewBox="0 0 795 856" xmlns="http://www.w3.org/2000/svg" aria-label="One file you edit, and eleven files generated from it">
+        <rect class="src" x="24" y="18" width="440" height="96" rx="10"/>
+        <text class="srctxt" x="52" y="78">one file you edit</text>
         <g data-build="1" data-build-style="fade">
-          <path class="ln" d="M60 114 V820"/>
-          <path class="ln" d="M60 170 h18"/><text class="pathtxt lbl" x="90" y="178">/.well-known/ai-agent.json</text>
-          <path class="ln" d="M60 235 h18"/><text class="pathtxt lbl" x="90" y="243">/.well-known/agent-card.json</text>
-          <path class="ln" d="M60 300 h18"/><text class="pathtxt lbl" x="90" y="308">/.well-known/mcp.json</text>
-          <path class="ln" d="M60 365 h18"/><text class="pathtxt lbl" x="90" y="373">/.well-known/api-catalog</text>
-          <path class="ln" d="M60 430 h18"/><text class="pathtxt lbl" x="90" y="438">/.well-known/oauth-protected-resource</text>
-          <path class="ln" d="M60 495 h18"/><text class="pathtxt on lbl" x="90" y="503">/.well-known/oauth-protected-resource/api/mcp</text>
-          <path class="ln" d="M60 560 h18"/><text class="pathtxt lbl" x="90" y="568">/.well-known/oauth-authorization-server</text>
-          <path class="ln" d="M60 625 h18"/><text class="pathtxt lbl" x="90" y="633">/.well-known/agent-skills/index.json</text>
-          <path class="ln" d="M60 690 h18"/><text class="pathtxt lbl" x="90" y="698">/.well-known/ai-catalog.json</text>
-          <path class="ln" d="M60 755 h18"/><text class="pathtxt lbl" x="90" y="763">/llms.txt</text>
-          <path class="ln" d="M60 820 h18"/><text class="pathtxt lbl" x="90" y="828">/auth.md</text>
-        </g>
-        <g data-build="2" data-build-style="fade">
-          <text class="note lbl" x="104" y="530">derived from a 401, RFC 9728 3.1</text>
+          <path class="ln" d="M60 114 V790"/>
+          <path class="ln" d="M60 160 h20"/><rect class="filebar" x="88" y="140" width="640" height="40" rx="6"/>
+          <path class="ln" d="M60 223 h20"/><rect class="filebar" x="88" y="203" width="560" height="40" rx="6"/>
+          <path class="ln" d="M60 286 h20"/><rect class="filebar" x="88" y="266" width="600" height="40" rx="6"/>
+          <path class="ln" d="M60 349 h20"/><rect class="filebar" x="88" y="329" width="520" height="40" rx="6"/>
+          <path class="ln" d="M60 412 h20"/><rect class="filebar" x="88" y="392" width="640" height="40" rx="6"/>
+          <path class="ln" d="M60 475 h20"/><rect class="filebar" x="88" y="455" width="580" height="40" rx="6"/>
+          <path class="ln" d="M60 538 h20"/><rect class="filebar" x="88" y="518" width="620" height="40" rx="6"/>
+          <path class="ln" d="M60 601 h20"/><rect class="filebar" x="88" y="581" width="540" height="40" rx="6"/>
+          <path class="ln" d="M60 664 h20"/><rect class="filebar" x="88" y="644" width="600" height="40" rx="6"/>
+          <path class="ln" d="M60 727 h20"/><rect class="filebar" x="88" y="707" width="500" height="40" rx="6"/>
+          <path class="ln" d="M60 790 h20"/><rect class="filebar" x="88" y="770" width="560" height="40" rx="6"/>
+          <text class="srccap lbl" x="88" y="845">eleven files, made for you</text>
         </g>
       </svg>
     </div>
   </div>
   <aside class="notes">
-    <p>Layer one. Discovery. Eleven well-known documents. Writing them by hand is a boring afternoon. Keeping them agreeing with each other for six months is the hard part.</p>
-    <p>The failure has one shape, and I have hit it. You add a scope to a token and you forget to add it to scopes_supported. Now your metadata advertises a permission vocabulary your tokens do not carry.</p>
-    <p>Nothing fails loudly. An agent reads the metadata, requests the scope, gets a token without it, and the call comes back 403 with no explanation anywhere in the chain. Nobody owns that error.</p>
-    <p>So: one config object, many consumers. In the kit, agent.config.ts generates all eleven surfaces. If you can edit a well-known document in two places, you will.</p>
-    <p>Point at the sixth path. It looks like a duplicate of the fifth and it is not. A strict MCP client that gets a 401 from /api/mcp derives that exact path, per RFC 9728 section 3.1. Ship only the root document and that client gets a 404 and no route to auth at all. It does not fall back.</p>
+    <p>First thing to build: be findable.</p>
+    <p>Your site ends up with about a dozen small files sitting at standard addresses. An agent checks those first to work out what you are and what you can do. Writing them is a boring afternoon.</p>
+    <p>Keeping them agreeing with each other for six months is the hard part. Here is the shape of it, and I have done this. You give a key one extra permission, and you forget to add that permission to the file that lists them. Now your site is advertising a permission your keys do not actually carry.</p>
+    <p>Nothing fails loudly. An agent reads the file, asks for that permission, gets a key without it, and the call comes back as an error nobody owns. No crash, no log, nothing in your inbox. It just stops coming back.</p>
+    <p>So write it in one place and generate the rest. In the kit there is one config file, agent.config.ts, and every one of those eleven files is generated from it. If you can edit the same fact in two places, you eventually will.</p>
+    <p>For the developers, the eleven are: ai-agent.json, agent-card.json, mcp.json, api-catalog, oauth-protected-resource, oauth-protected-resource slash api slash mcp, oauth-authorization-server, agent-skills index, ai-catalog.json, llms.txt and auth.md. All under /.well-known except the last two.</p>
+    <p>And one that looks like a duplicate and is not: oauth-protected-resource with the api/mcp path on the end. A strict MCP client that gets a 401 from /api/mcp derives that exact path, per RFC 9728 section 3.1. Ship only the root one and that client gets a 404 and no route to sign in at all. It does not fall back.</p>
     <ul class="ledger">
-      <li>403 = I-31 (the measured drift failure: metadata advertises a scope the minted token lacks; call returns 403, no error anywhere in the chain)</li>
-      <li>404 = I-31 (strict client, root-only PRM, derived path missing)</li>
-      <li>401 = F-50 (RFC 9728, OAuth 2.0 Protected Resource Metadata: the 401 that triggers derivation)</li>
-      <li>9728 = F-50 (RFC 9728) · 3.1 = F-50 (section 3.1, path-insertion rule)</li>
-      <li>"eleven" and "Layer 1" are words / an index counter, not facts (kicker is data-nonfact)</li>
+      <li>403 = I-31 (spoken only now: metadata advertises a permission the minted token lacks, call fails with no error anywhere in the chain)</li>
+      <li>401 and 404 = F-50 (RFC 9728, OAuth 2.0 Protected Resource Metadata, section 3.1 path insertion; spoken only)</li>
+      <li>9728 = F-50 · 3.1 = F-50</li>
+      <li>nothing numeric on the slide face: "a dozen" and "eleven" are words</li>
     </ul>
   </aside>
 </section>
 
 <!-- ===== 2-02.html ===== -->
-<!-- II.2 · layer 2 · readable · the served bytes -->
+<!-- II.2 · be readable · content in the first page -->
 <style>
 .s2-02 .statement{font-size:112px;max-width:1480px}
 .s2-02 .proof{display:flex;align-items:flex-end;gap:72px;margin-top:48px}
@@ -1032,34 +1093,27 @@ and walk me through this workshop.</span></p>
 .s2-02 .d .what{margin:0;font:400 30px/1.32 var(--font-body);color:var(--paper-dim)}
 .s2-02 .neg{margin:44px 0 0;font:400 32px/1.35 var(--font-body);color:var(--paper-dim);max-width:1540px}
 </style>
-<section class="slide t-statement s2-02" data-comp="statement" data-theme="dark" data-transition="cut" data-section="II · What is actually happening" data-cut="keep">
-  <p class="kicker"><b data-nonfact>Layer 2 · Readable</b> the sentence to keep</p>
-  <p class="statement"><span class="line">Anything a grader reads</span><span class="line">must be in the</span><span class="line"><em>served bytes.</em></span></p>
+<section class="slide t-statement s2-02" data-comp="statement" data-theme="dark" data-transition="cut" data-section="II · The seven things" data-cut="keep">
+  <p class="kicker"><b data-nonfact>Be readable</b> what an agent sees first</p>
+  <p class="statement"><span class="line">Put your content</span><span class="line">in the page</span><span class="line"><em>from the start.</em></span></p>
   <div class="proof" data-build data-build-style="fade">
-    <div class="chk">
-      <p class="label">The only check that settles it</p>
-      <pre class="cmd" data-nonfact>curl -s YOUR_URL | grep -c registerTool
-<span class="dim"># must be &gt; 0</span></pre>
-    </div>
     <div class="deltas">
-      <div class="d"><span class="sc">1/5 <i>to</i> 5/5</span><p class="what">WebMCP tools moved out of a React <span class="mono">useEffect</span> into a server-rendered inline script. Identical code.</p></div>
-      <div class="d"><span class="sc">1/2 <i>to</i> 2/2</span><p class="what">A 61KB app-shell 404 replaced with under 1KB that names the right next URLs.</p></div>
+      <div class="d"><span class="sc">1/5 <i>to</i> 5/5</span><p class="what">One change took a scanner score from 1 out of 5 to 5 out of 5.</p></div>
     </div>
   </div>
-  <p class="neg" data-build data-build-style="fade">An agent sending <span class="mono">Accept: text/markdown</span> wants substance. Serving it 40KB of HTML is technically valid and practically a refusal.</p>
+  <p class="neg" data-build data-build-style="fade">Many sites send an almost empty page and fill it in with code in your browser. You never notice. Many AI agents read the page before that code runs, so they see nothing.</p>
   <aside class="notes">
-    <p>If you take one sentence out of tonight, take this one. Anything a grader reads has to be in the served bytes.</p>
-    <p>Here is how I learned it. We registered our WebMCP tools in a React useEffect. Shipped it, deployed it, rescanned, and the score moved nothing. Zero. Because the effect lives in a hashed JS chunk and does not run until hydration, so the HTML that actually comes off the wire contains no tool surface at all.</p>
-    <p>The identical code, moved into a server-rendered inline script, took that check from one out of five to five out of five.</p>
-    <p>So the verification is a curl and a grep. Fetch your own URL, count the matches. If it is zero, the agent sees zero, whatever your browser shows you.</p>
-    <p>Second one. Our 404 was the full app shell, sixty one kilobytes of nothing. We replaced it with under a kilobyte that names the right next URLs in plain text. That check went from one of two to two of two.</p>
-    <p>And content negotiation. If an agent asks for Accept: text/markdown, it is telling you it wants substance. Handing it forty kilobytes of HTML is technically a valid response and practically a refusal.</p>
+    <p>If you take one idea out of tonight, take this one. Put your content in the page from the start.</p>
+    <p>Here is what happens on a lot of sites. The page arrives almost empty, and code running in your browser fills it in. You never notice, because your browser runs that code. But many AI agents read the page the moment it arrives, before any code runs. They see the empty version.</p>
+    <p>We learned this the hard way. We set up our tools inside a React useEffect. We deployed, ran the scanner, and the score did not move. The code only runs in the browser, so the page that came over the wire had nothing in it.</p>
+    <p>The identical code, moved into a script that the server puts in the page, took that check from one out of five to five out of five. Same code, different place.</p>
+    <p>To check your own site, fetch the page the way an agent does and look for your content. For the developers: curl -s YOUR_URL | grep -c registerTool. If the count is zero, the agent sees zero, whatever your browser shows you.</p>
+    <p>Two smaller examples. Our not-found page was the full app, sixty one kilobytes of nothing. We replaced it with under a kilobyte naming the right next addresses, and that check went from one of two to two of two. And if an agent asks for Accept: text/markdown, it wants the substance. Forty kilobytes of HTML is technically valid and practically a refusal.</p>
     <ul class="ledger">
       <li>1/5 to 5/5 = I-32 (WebMCP registerTool in a React useEffect scored 1 of 5 on the readable check; the identical code in a server-rendered inline script scored 5 of 5)</li>
-      <li>1/2 to 2/2 = I-33 (agent-friendly 404 check, before and after)</li>
-      <li>61 = I-33 (the 61KB app-shell 404 it replaced, now under 1KB)</li>
-      <li>40 = I-34 (40KB of HTML returned to a request sending Accept: text/markdown)</li>
-      <li>the curl block is data-nonfact: a command literal, not a measured number</li>
+      <li>1/2 to 2/2 = I-33 (agent-friendly 404 check, before and after; spoken only)</li>
+      <li>61 = I-33 (the 61KB app-shell 404 it replaced, now under 1KB; spoken only)</li>
+      <li>40 = I-34 (40KB of HTML returned to a request sending Accept: text/markdown; spoken only)</li>
     </ul>
   </aside>
 </section>
@@ -1075,28 +1129,26 @@ and walk me through this workshop.</span></p>
 .s2-03 .eps .ep{font:500 28px/1.2 var(--font-mono);color:var(--paper-dim)}
 .s2-03 .eps .ep b{font-weight:500;color:var(--paper)}
 </style>
-<section class="slide t-flow s2-03" data-comp="flow" data-theme="dark" data-transition="fade" data-section="II · What is actually happening" data-cut="keep">
+<section class="slide t-flow s2-03" data-comp="flow" data-theme="dark" data-transition="fade" data-section="II · The seven things" data-cut="keep">
   <div class="top">
-    <p class="kicker"><b data-nonfact>Layer 3 · Identity</b> RFC 8628 device authorization grant</p>
-    <h2 class="headline">An agent must not be able to credential itself.</h2>
+    <p class="kicker"><b data-nonfact>Ask permission</b> like a valet key</p>
+    <h2 class="headline">Never paste a password into a chatbot.</h2>
   </div>
   <ol class="steps">
-    <li data-build><span class="n">1</span><h3>It asks.</h3><p>No key in the prompt. It gets a short code and waits.</p></li>
-    <li class="human" data-build><span class="n">2</span><h3>A human approves.</h3><p>On a device they already trust. Every scope in plain language.</p></li>
-    <li data-build><span class="n">3</span><h3>Minted once.</h3><p>Scopes are frozen at mint time. There is no widen-a-token path.</p></li>
-    <li class="hot" data-build><span class="n">4</span><h3>Then it calls.</h3><p>The audit trail reads: a signed-in human approved these five scopes for an agent calling itself X.</p></li>
+    <li data-build><span class="n">1</span><h3>It asks.</h3><p>The agent asks your site for access.</p></li>
+    <li class="human" data-build><span class="n">2</span><h3>You get a code.</h3><p>A short code shows up on your phone.</p></li>
+    <li data-build><span class="n">3</span><h3>You say yes.</h3><p>You see what it wants and tap yes.</p></li>
+    <li class="hot" data-build><span class="n">4</span><h3>It gets a key.</h3><p>A key that only does what you approved.</p></li>
   </ol>
-  <div class="eps" data-build data-build-style="fade">
-    <span class="ep"><b>POST</b> /api/agent/signup/start</span>
-    <span class="ep"><b>GET</b> /api/agent/signup/poll?device_code=...</span>
-  </div>
+  <p class="body" data-build data-build-style="fade">Like a valet key: it starts the car, but does not open the trunk.</p>
   <aside class="notes">
-    <p>Layer three. Identity. The rule is one line: an agent must not be able to credential itself.</p>
-    <p>So we use the device authorization grant, RFC 8628. The agent posts to signup slash start and gets a short code. Then it polls. It cannot do anything else.</p>
-    <p>Meanwhile a human opens a URL on a device they already trust, sees the exact scope list in plain language, and approves it or does not.</p>
-    <p>Why is every alternative worse? An API key in the prompt is a key the agent can leak to anyone who asks nicely. A browser OAuth redirect assumes the agent has a browser and a human watching it. Device code assumes neither.</p>
-    <p>And the scopes are frozen at mint time. No widen-a-token path, because widening after approval means the human approved something other than what now exists. If the agent needs more, it goes back and asks a person again.</p>
-    <p>Here is the payoff. Your audit trail now reads: a signed-in human approved these five scopes for an agent calling itself X, at this timestamp. That is a sentence that survives a security review. "The agent had a key" is not.</p>
+    <p>Next: ask permission. The rule in one line: never paste a password into a chatbot, and never let an agent hand itself a key.</p>
+    <p>Think of a valet key. It starts the car, but it does not open the trunk. That is what we want to give an agent: a key that does one limited job.</p>
+    <p>Four steps. The agent asks your site for access. You get a short code on your phone. You see exactly what it wants, in plain words, and tap yes or no. Then the agent gets a key limited to only what you approved.</p>
+    <p>Why not just paste a key into the chat? Because anything in the chat can leak to anyone who asks nicely. And a normal sign-in page assumes the agent has a browser and a person watching it. This flow assumes neither.</p>
+    <p>The limits are fixed when the key is made. There is no way to widen a key after you approved it, because then you would have approved something different from what exists now. If the agent needs more, it asks a person again.</p>
+    <p>The payoff is a record that reads: a signed-in person approved these five permissions for an agent calling itself X. That survives a security review. "The agent had a key" does not.</p>
+    <p>For the developers: this is the device authorization grant, RFC 8628. The agent posts to /api/agent/signup/start and gets a short code, then polls /api/agent/signup/poll with the device code. Scopes are frozen at mint time.</p>
     <ul class="ledger">
       <li>8628 = F-51 (RFC 8628, OAuth 2.0 Device Authorization Grant: the flow this layer implements)</li>
       <li>step numerals 1 to 4 are .n index counters, exempt; "Layer 3" is data-nonfact</li>
@@ -1115,36 +1167,36 @@ and walk me through this workshop.</span></p>
 .s2-04 .points li{font-size:30px;line-height:1.32}
 .s2-04 .points{gap:18px}
 </style>
-<section class="slide t-split s2-04" data-comp="split" data-theme="dark" data-transition="fade" data-section="II · What is actually happening" data-cut="keep">
+<section class="slide t-split s2-04" data-comp="split" data-theme="dark" data-transition="fade" data-section="II · The seven things" data-cut="keep">
   <div class="l">
-    <p class="kicker"><b data-nonfact>Layer 4 · Execution</b> remote MCP over streamable HTTP</p>
-    <h2 class="headline">Gate the writes. Never gate the <em>catalog.</em></h2>
+    <p class="kicker"><b data-nonfact>Be usable</b> the list of what you can do</p>
+    <h2 class="headline">Show everyone what your site <em>can do.</em></h2>
     <ul class="points">
-      <li data-build><b>tools/list arrives with no token.</b> Anything evaluating you calls it anonymously.</li>
-      <li data-build><b>Gate every tool and the list comes back empty.</b> You are then judged as having no tools.</li>
-      <li data-build><b>10 tools here, 7 need no token.</b> Including the one that runs live readiness checks against an attendee's own deployed URL.</li>
-      <li data-build><b>Stdio is not an option in production.</b> It is a local-dev transport and a hosted client cannot reach it at all.</li>
+      <li data-build><b>Agents look first.</b> They check what your site can do before they sign up.</li>
+      <li data-build><b>If the list needs a login,</b> they see nothing and leave.</li>
+      <li data-build><b>The fix:</b> open the list. Ask for a login only to act.</li>
+      <li data-build><b>10 tools here, 7 need no login.</b></li>
     </ul>
   </div>
   <div class="r">
-    <pre class="code" data-nonfact data-build data-build-style="fade">curl -s -X POST YOUR_URL/api/mcp \
-  -H 'content-type: application/json' \
-  -d '{"jsonrpc":"2.0","id":1,
-       "method":"tools/list"}'
+    <pre class="code" data-nonfact data-build data-build-style="fade">Shop window
+  anyone can look
 
-<span class="dim"># no token. The catalog still answers.</span></pre>
+<span class="dim">The checkout
+  you pay to act</span></pre>
   </div>
   <aside class="notes">
-    <p>Layer four. Execution. One rule: gate the writes, never gate the catalog.</p>
-    <p>Here is the thing people get wrong. Anything evaluating you, a grader, a crawler, somebody's agent deciding whether to bother with you, calls tools slash list with no token. If every tool on your server needs auth, that list comes back empty, and you are judged as having no tools. You built a server and scored zero for it.</p>
-    <p>So ship at least one genuinely useful anonymous tool. Not a stub. A stub is worse, because now you have advertised something that does nothing.</p>
-    <p>This deck's own server exposes ten tools and seven of them need no token at all, including the one that runs live readiness checks against your own deployed URL. You can point it at your site tonight.</p>
-    <p>And the transport. Remote MCP over streamable HTTP. Stdio is not an option in production. It is a local-dev transport and a hosted client cannot reach it at all. If a tutorial handed you a stdio server and told you to deploy it, that tutorial was written for your laptop.</p>
-    <p>Run that curl against your own URL during the break. No Authorization header. If you get an empty array back, that is the bug.</p>
+    <p>Be usable. One rule: show everyone what your site can do, and ask for a login only when something is actually done.</p>
+    <p>Think of a shop window. Anyone can look in. You only show your card at the till.</p>
+    <p>Here is what people get wrong. Before an agent signs up, it asks your site what it can do. That question comes with no login. If every tool on your server needs a login, the list comes back empty, and the agent, or a scanner, concludes you have no tools. You built a server and scored zero for it.</p>
+    <p>So make at least one genuinely useful tool open. Not a stub. A stub is worse, because you advertised something that does nothing.</p>
+    <p>This deck's own server has ten tools and seven need no login at all, including one that runs live checks against your own deployed site. You can point it at your site tonight.</p>
+    <p>For the developers: that is tools/list on remote MCP over streamable HTTP, called with no token. Stdio is not an option in production. It is a local-dev transport and a hosted client cannot reach it at all. If a tutorial handed you a stdio server and told you to deploy it, it was written for your laptop.</p>
+    <p>Try it during the break: curl -s -X POST YOUR_URL/api/mcp with a JSON-RPC body of method tools/list, and no Authorization header. If you get an empty list back, that is the bug.</p>
     <ul class="ledger">
       <li>10 = I-35 (this workshop kit's MCP server exposes 10 tools)</li>
       <li>7 = I-35 (7 of the 10 require no token, including the live readiness-check tool)</li>
-      <li>the curl block is data-nonfact: JSON-RPC protocol literals, not measured numbers</li>
+      <li>the side panel is data-nonfact: a plain-words picture, no measured numbers</li>
     </ul>
   </aside>
 </section>
@@ -1160,18 +1212,18 @@ and walk me through this workshop.</span></p>
 .s2-05 .dg .ahx{fill:var(--ember);stroke:none}
 .s2-05 .dg .lbl.path{letter-spacing:.02em;fill:var(--ice)}
 </style>
-<section class="slide t-diagram s2-05" data-comp="diagram" data-theme="dark" data-transition="fade" data-section="II · What is actually happening" data-cut="keep">
+<section class="slide t-diagram s2-05" data-comp="diagram" data-theme="dark" data-transition="fade" data-section="II · The seven things" data-cut="keep">
   <div class="top">
     <div>
-      <p class="kicker"><b>Layer 5 · Multiplayer</b> One address per agent</p>
-      <h2 class="headline">The addressable unit is an agent, not a site.</h2>
-      <p class="label mono cardpath">/api/a2a/&lt;agentId&gt;/.well-known/agent-card.json</p>
+      <p class="kicker"><b>Talk to other agents</b> One address each</p>
+      <h2 class="headline">Give every agent its own address.</h2>
+      <p class="label mono cardpath">Like everyone having their own phone number.</p>
     </div>
-    <p class="body auth">Authenticated by default.</p>
+    <p class="body auth">Only agents with permission can message them.</p>
   </div>
   <svg class="dg" viewBox="0 0 1632 620" width="1632" height="620" xmlns="http://www.w3.org/2000/svg">
 
-    <text class="lbl" x="4" y="26">HUB · ONE SHARED ENDPOINT</text>
+    <text class="lbl" x="4" y="26">ONE SHARED ADDRESS</text>
     <rect class="ln" x="0" y="48" width="740" height="490" rx="12"/>
     <g data-build data-build-style="fade">
       <use href="#i-agent" x="36" y="114" width="72" height="72" style="color:var(--paper-dim)"/>
@@ -1182,7 +1234,7 @@ and walk me through this workshop.</span></p>
       <path class="ln" d="M108 430 C210 430 230 290 300 290"/>
       <path class="ah" d="M300 282 l18 8 -18 8z"/>
       <rect class="box" x="318" y="235" width="150" height="110" rx="10"/>
-      <text class="lbl" x="393" y="298" text-anchor="middle">/api/a2a</text>
+      <text class="lbl" x="393" y="298" text-anchor="middle">Front desk</text>
       <path class="ln" d="M468 290 C560 290 580 150 612 150"/>
       <path class="ln" d="M468 290 H612"/>
       <path class="ln" d="M468 290 C560 290 580 430 612 430"/>
@@ -1192,19 +1244,19 @@ and walk me through this workshop.</span></p>
       <use href="#i-agent" x="632" y="114" width="72" height="72" style="color:var(--paper-dim)"/>
       <use href="#i-agent" x="632" y="254" width="72" height="72" style="color:var(--paper-dim)"/>
       <use href="#i-agent" x="632" y="394" width="72" height="72" style="color:var(--paper-dim)"/>
-      <text class="txt" x="4" y="578">Callers pass the recipient in the payload.</text>
-      <text class="txt" x="4" y="612">A topology audit reads one hub.</text>
+      <text class="txt" x="4" y="578">Callers must say who it is for.</text>
+      <text class="txt" x="4" y="612">It looks like one agent, not many.</text>
     </g>
 
-    <text class="lbl" x="896" y="26">MESH · ONE ADDRESS EACH</text>
+    <text class="lbl" x="896" y="26">ONE ADDRESS EACH</text>
     <rect class="hot" x="892" y="48" width="740" height="490" rx="12"/>
     <g data-build data-build-style="fade">
       <use href="#i-agent" x="922" y="114" width="72" height="72" style="color:var(--ice)"/>
       <use href="#i-agent" x="922" y="254" width="72" height="72" style="color:var(--ice)"/>
       <use href="#i-agent" x="922" y="394" width="72" height="72" style="color:var(--ice)"/>
-      <text class="lbl path" x="1004" y="130">/api/a2a/scanner</text>
-      <text class="lbl path" x="1004" y="270">/api/a2a/concierge</text>
-      <text class="lbl path" x="1004" y="410">/api/a2a/auditor</text>
+      <text class="lbl path" x="1004" y="130">Scanner</text>
+      <text class="lbl path" x="1004" y="270">Concierge</text>
+      <text class="lbl path" x="1004" y="410">Auditor</text>
       <path class="ln" d="M1000 150 H1486"/>
       <path class="ln" d="M1000 290 H1486"/>
       <path class="ln" d="M1000 430 H1486"/>
@@ -1214,20 +1266,20 @@ and walk me through this workshop.</span></p>
       <use href="#i-agent" x="1524" y="114" width="72" height="72" style="color:var(--ice)"/>
       <use href="#i-agent" x="1524" y="254" width="72" height="72" style="color:var(--ice)"/>
       <use href="#i-agent" x="1524" y="394" width="72" height="72" style="color:var(--ice)"/>
-      <text class="txt" x="896" y="578">Every agent is a real peer.</text>
-      <text class="txt" x="896" y="612">The cost is one dynamic segment.</text>
+      <text class="txt" x="896" y="578">Each agent can be reached directly.</text>
+      <text class="txt" x="896" y="612">Adding one more is easy.</text>
     </g>
   </svg>
   <aside class="notes">
-    <p>Layer five. Multiplayer. The thing that changes here is what you address.</p>
-    <p>Every agent gets its own endpoint, slash api slash a2a slash agent id. And its own card, at that path plus dot well-known slash agent-card dot json.</p>
-    <p>You could do this with one shared endpoint instead. Left side. It works. But it forces every caller to pass a recipient in the payload, and once that is true, a topology audit reads your whole product as a single hub. The multi-agent claim becomes cosmetic.</p>
-    <p>Routing by path makes each agent a real peer. The entire cost of that is one dynamic segment.</p>
-    <p>Second thing, and this one matters more than it looks. Authenticated by default. Open A2A makes you publicly callable, and that is irreversible once registries cache you. Flip it on purpose or do not flip it at all.</p>
-    <p>One gotcha if you build this tonight. supportedInterfaces is required at the card level, not only per skill. I had it on every skill and not on the card, and validation failed with a message that reads like the skills are wrong.</p>
+    <p>Talk to other agents. The idea: give every agent its own address.</p>
+    <p>Picture a company with one shared front desk. Every call goes there, and the caller has to say who they want. Now picture everyone having their own phone number. That is the difference between the two sides of this slide.</p>
+    <p>The shared front desk works. But it makes every caller say who the message is for, and from outside your whole product looks like one agent, not many. The claim that you have several agents becomes decoration.</p>
+    <p>With one address each, every agent can be reached directly. Adding another is easy.</p>
+    <p>Second point: only agents with permission can message them. Leaving it open makes you publicly callable, and that is hard to undo once registries cache you. Open it on purpose or not at all.</p>
+    <p>For the developers: each agent gets its own endpoint at /api/a2a/agentId, and its own card at that path plus /.well-known/agent-card.json. The cost is one dynamic path segment. A gotcha: supportedInterfaces is required at the card level, not only per skill. I had it on every skill and not on the card, and validation failed with a message that reads like the skills are wrong.</p>
     <ul class="ledger">
-      <li>5 = I-60 (layer 5 of the kit's seven layers)</li>
-      <li>2 = I-61 (the "2" in the a2a path segment, A2A protocol name)</li>
+      <li>5 = I-60 (layer 5 of the kit's seven layers; spoken only, not on the slide face)</li>
+      <li>2 = I-61 (the "2" in a2a, the agent to agent protocol name; spoken only)</li>
     </ul>
   </aside>
 </section>
@@ -1235,7 +1287,7 @@ and walk me through this workshop.</span></p>
 <!-- ===== 2-06.html ===== -->
 <!-- II.6 · layer 6 · API as product (where the points are) -->
 <style>
-.s2-06 .headline{font-size:72px;max-width:14ch}
+.s2-06 .headline{font-size:60px;max-width:18ch}
 .s2-06 .points li b{white-space:normal}
 .s2-06 .points{gap:26px}
 .s2-06 .chart{display:flex;flex-direction:column;justify-content:center;gap:34px;padding:52px 40px}
@@ -1253,47 +1305,47 @@ and walk me through this workshop.</span></p>
 .s2-06 .points li{font-size:30px;line-height:1.32}
 .s2-06 .points{gap:18px}
 </style>
-<section class="slide t-split s2-06" data-comp="split" data-theme="dark" data-transition="fade" data-section="II · What is actually happening" data-cut="keep">
+<section class="slide t-split s2-06" data-comp="split" data-theme="dark" data-transition="fade" data-section="II · The seven things" data-cut="keep">
   <div class="l">
-    <p class="kicker"><b>Layer 6 · API as product</b> Where the points are</p>
-    <h2 class="headline">Being agent-ready is mostly a good <em>API product.</em></h2>
+    <p class="kicker"><b>6 &middot; Be a good API</b> Where scanner points come from</p>
+    <h2 class="headline">The biggest win is boring: a good, documented <em>API.</em></h2>
     <ul class="points">
-      <li data-build><b>An MCP server on a weak API scores badly.</b> The MCP server is not the problem.</li>
-      <li data-build><b>A spec activates dormant checks.</b> On one target the usability denominator grew from 81 to 150.</li>
-      <li data-build><b>RFC 9457 errors, cursors, Idempotency-Key.</b> Honest only because the routes do them.</li>
-      <li data-build><b>RateLimit headers are graded on live responses.</b> Documentation earns none of them.</li>
+      <li data-build><b>AI agents are programs.</b> Programs need a clear, written-down way in.</li>
+      <li data-build><b>A fancy add-on on a weak API still scores badly.</b></li>
+      <li data-build><b>Clear error messages, long lists split into pages, safe to send twice.</b> Only claim them if your API really does them.</li>
+      <li data-build><b>Speed limits are checked on real replies.</b> Writing them in the docs earns nothing.</li>
     </ul>
   </div>
   <div class="r">
     <div class="panel chart">
-      <p class="label ch-head">ora.ai grader, points available per item</p>
+      <p class="label ch-head">Points a scanner gives for each item</p>
       <div class="bar-row" data-build data-build-style="fade">
-        <div class="bl"><p class="ch-lbl">OpenAPI spec</p><div class="ch-track"><i style="width:100%"></i></div></div>
+        <div class="bl"><p class="ch-lbl">A document describing your API</p><div class="ch-track"><i style="width:100%"></i></div></div>
         <p class="ch-val">7</p>
       </div>
       <div class="bar-row" data-build data-build-style="fade">
-        <div class="bl"><p class="ch-lbl">Public API</p><div class="ch-track"><i style="width:100%"></i></div></div>
+        <div class="bl"><p class="ch-lbl">Data anyone can read, no login</p><div class="ch-track"><i style="width:100%"></i></div></div>
         <p class="ch-val">7</p>
       </div>
       <div class="bar-row" data-build data-build-style="fade">
-        <div class="bl"><p class="ch-lbl">Developer portal</p><div class="ch-track"><i style="width:86%"></i></div></div>
+        <div class="bl"><p class="ch-lbl">A page for developers</p><div class="ch-track"><i style="width:86%"></i></div></div>
         <p class="ch-val">6</p>
       </div>
       <div class="bar-row" data-build data-build-style="fade">
-        <div class="bl"><p class="ch-lbl">Any shiny well-known file</p><div class="ch-track"><i style="width:22%"></i></div></div>
+        <div class="bl"><p class="ch-lbl">Each extra agent file</p><div class="ch-track"><i style="width:22%"></i></div></div>
         <p class="ch-val sm">1 to 2</p>
       </div>
-      <p class="label ch-foot">The well-known files are the cheap part. They are also the small part.</p>
+      <p class="label ch-foot">The special files are the cheap part. They are also the small part.</p>
     </div>
   </div>
   <aside class="notes">
-    <p>Layer six. This is the one I would spend your evening on, because this is where the points actually are.</p>
-    <p>The claim is simple. Being agent-ready is mostly being a good API product.</p>
-    <p>Look at the real weights on the ora grader. An OpenAPI spec is seven points. A public API is seven points. A developer portal is six. Every shiny well-known file you can add tonight is worth one to two.</p>
-    <p>So read the chart the other way round. An MCP server bolted onto a weak REST API scores badly, and the MCP server is not the problem.</p>
-    <p>Now the second-order effect, because it surprised me. Publishing a spec activates dormant checks. On one real target the usability denominator grew from eighty one to one hundred and fifty behind a single spec. So expect more movement than seven points, and expect new red checks to appear. Both of those are correct. You did not break anything. You became legible enough to be graded properly.</p>
-    <p>The contracts that each carry their own points: RFC nine four five seven problem plus json errors, each one carrying a remedy field. Cursor pagination. Idempotency-Key on POSTs. IETF RateLimit-Limit, RateLimit-Remaining and RateLimit-Reset headers. Those are only honest because the routes actually do them.</p>
-    <p>One warning on the last one. The rate-limit headers are graded on live responses. No amount of documentation earns them.</p>
+    <p>This is the one I would spend your evening on, because this is where the points are.</p>
+    <p>The idea is simple. An AI agent is a program, and a program needs a clear, written-down way in. That is an API with a document that describes it.</p>
+    <p>Look at what a scanner gives for each item. A document describing your API is worth seven points. Data anyone can read with no login is seven. A page for developers is six. Each of those special agent files is worth one or two. So the fun files are the cheap part, and also the small part.</p>
+    <p>That means a fancy add-on bolted onto a weak API scores badly. The add-on is not the problem. The API under it is.</p>
+    <p>One surprise. Publishing the description switches on checks that were sleeping. On one real site, the number of usability checks counted went from eighty one to one hundred and fifty after a single document. So expect new red marks to appear. That is fine. You did not break anything. You became clear enough to be graded properly.</p>
+    <p>For the developers: the error format is RFC nine four five seven, problem plus json, with a remedy field. Results come in pages using cursors. POST requests accept an Idempotency-Key, which is what makes them safe to retry. Those only count if the routes really do it.</p>
+    <p>And the speed-limit headers, the IETF RateLimit-Limit, RateLimit-Remaining and RateLimit-Reset ones, are checked on live replies. Documentation earns none of them.</p>
     <ul class="ledger">
       <li>6 = I-62 (layer 6 of the kit's seven layers)</li>
       <li>7 = F-60 (ora.ai grader weight: OpenAPI spec, and separately a public API)</li>
@@ -1308,52 +1360,50 @@ and walk me through this workshop.</span></p>
 </section>
 
 <!-- ===== 2-07.html ===== -->
-<!-- II.7 · layer 7 · recovery (the layer nobody builds) -->
+<!-- II.7 · let agents tell you when something breaks -->
 <style>
 .s2-07 .headline{max-width:24ch}
 .s2-07 .steps.three li{justify-content:flex-start;padding:40px 36px}
-.s2-07 .steps.three .ico{width:120px;height:120px;flex:none}
+.s2-07 .steps.three .ico{width:104px;height:104px;flex:none}
 .s2-07 .steps.three h3{margin-top:26px;font-size:52px}
 .s2-07 .steps.three p{font-size:32px}
-.s2-07 .steps .ep{margin:18px 0 0;font-family:var(--font-mono);font-size:26px;
-  text-transform:none;letter-spacing:.02em;color:var(--paper)}
-.s2-07 .loopback{margin:36px 0 0;font-size:32px;max-width:60ch}
+.s2-07 .loopback{margin:36px 0 0;font-size:32px;max-width:62ch}
 .s2-07 .loopback b{color:var(--paper);font-weight:700}
-.s2-07 .steps .ep{font-size:24px;line-height:1.15;margin-top:4px;white-space:normal;letter-spacing:0}
+.s2-07 .loopback i{font-style:italic;color:var(--paper)}
 </style>
-<section class="slide t-flow s2-07" data-comp="flow" data-theme="dark" data-transition="fade" data-section="II · What is actually happening" data-cut="skip">
+<section class="slide t-flow s2-07" data-comp="flow" data-theme="dark" data-transition="fade" data-section="II · The seven things" data-cut="skip">
   <div class="top">
-    <p class="kicker"><b>Layer 7 · Recovery</b> The layer nobody builds</p>
-    <h2 class="headline">Your discovery surface will drift.</h2>
+    <p class="kicker"><b>When something breaks</b> The part nobody builds</p>
+    <h2 class="headline">Let AI agents tell you when something breaks.</h2>
   </div>
   <ol class="steps three">
     <li data-build>
       <svg class="ico dim" aria-hidden="true"><use href="#i-link"/></svg>
-      <h3>The surface drifts.</h3>
-      <p>A URL moves. A scope gets renamed. A grader changes what it reads.</p>
+      <h3>You rename a page.</h3>
+      <p>An AI agent using it now hits an error.</p>
     </li>
     <li data-build>
       <svg class="ico ice" aria-hidden="true"><use href="#i-agent"/></svg>
-      <h3>The agent fails.</h3>
-      <p>Quietly, and it is your only witness. It stops coming back.</p>
+      <h3>It gives up.</h3>
+      <p>No email. The person who sent it never comes back.</p>
     </li>
     <li class="hot" data-build>
       <svg class="ico ember" aria-hidden="true"><use href="#i-message"/></svg>
       <h3>It tells you.</h3>
-      <p>Anonymous and unauthenticated on purpose.</p>
-      <p class="ep">POST /api/agent/<wbr>feedback</p>
+      <p>A &ldquo;report a problem&rdquo; address any agent can use, no login.</p>
     </li>
   </ol>
-  <p class="body loopback" data-build data-build-style="fade">The agent that cannot authenticate is exactly the one with something to report. <b>Without this you find out from a score drop, weeks later.</b></p>
+  <p class="body loopback" data-build data-build-style="fade">A suggestion box by your front door. A real note looks like <i>&ldquo;the page /pricing is gone.&rdquo;</i> <b>Agents hit your broken links before you do. Let them tell you.</b></p>
   <aside class="notes">
-    <p>Last layer. Recovery. Nobody builds this one, and it is the cheapest slide in the deck.</p>
-    <p>Start from the assumption that your discovery surface will drift. A URL moves. A scope gets renamed. A grader changes what it reads. That is not a hypothetical, that is a Tuesday.</p>
-    <p>Now, who sees it break? Not you. The agents hitting you. They are the only witnesses.</p>
-    <p>And without a feedback endpoint they have no way to tell you. So they fail quietly, they stop coming back, and you find out from a score drop weeks later.</p>
-    <p>So: POST slash api slash agent slash feedback. Anonymous. Unauthenticated. And that is deliberate, not laziness. The agent that cannot authenticate against you is exactly the one with something to report.</p>
-    <p>Cheap slide. Important point. Add the route tonight.</p>
+    <p>Last one in this part, and it is the cheapest thing on the list.</p>
+    <p>Here is the situation. You rename a page on your site. Somebody's AI assistant was using that page, and now it hits an error.</p>
+    <p>It does not email you. It does not file a ticket. It just gives up. And the person who sent it never comes back, and you never hear about any of it.</p>
+    <p>Things on your site change all the time, and the agents using it are the only ones who find out first. So give them a way to tell you.</p>
+    <p>The fix is one address on your site that any agent can send a note to, with no login at all. Think of a suggestion box by your front door. A real note looks like: the page slash pricing is gone.</p>
+    <p>No login is deliberate, not laziness. The agent that cannot log in to your site is exactly the one with something to report.</p>
+    <p>For the developers: it is a POST to slash api slash agent slash feedback. Unauthenticated on purpose. Add the route tonight, it is about ten lines.</p>
     <ul class="ledger">
-      <li>7 = I-64 (layer 7 of the kit's seven layers)</li>
+      <li>7 = I-64 (layer 7 of the kit's seven layers; spoken only, not on the slide face)</li>
     </ul>
   </aside>
 </section>
@@ -1361,7 +1411,7 @@ and walk me through this workshop.</span></p>
 <!-- ===== 2-08.html ===== -->
 <!-- II.8 · the scoreboard, read honestly -->
 <style>
-.s2-08 .headline{font-size:72px;max-width:14ch}
+.s2-08 .headline{font-size:60px;max-width:18ch}
 .s2-08 .points li b{white-space:normal}
 .s2-08 .points{gap:26px}
 .s2-08 .cmp{display:flex;flex-direction:column;justify-content:center;gap:28px;padding:52px 44px}
@@ -1379,20 +1429,20 @@ and walk me through this workshop.</span></p>
 .s2-08 .points li{font-size:30px;line-height:1.32}
 .s2-08 .points{gap:18px}
 </style>
-<section class="slide t-split s2-08" data-comp="split" data-theme="dark" data-transition="cut" data-section="II · What is actually happening" data-cut="keep">
+<section class="slide t-split s2-08" data-comp="split" data-theme="dark" data-transition="cut" data-section="II · The seven things" data-cut="keep">
   <div class="l">
-    <p class="kicker"><b>The scoreboard</b> Two graders, two questions</p>
-    <h2 class="headline">Decide which number you are <em>chasing.</em></h2>
+    <p class="kicker"><b>The scoreboard</b> Free scanners</p>
+    <h2 class="headline">Free scanners score your site. Use them as a <em>checklist.</em></h2>
     <ul class="points">
-      <li data-build><b>ora.ai: 100 points, about 125 checks, 6 fresh scans a day.</b> Batch the fixes, then scan once.</li>
-      <li data-build><b>Cloudflare: Level 1 to 5 over 22 checks, no observed rate limit.</b> It reveals sub-checks one at a time, so rescan after every single fix.</li>
-      <li data-build><b>They disagree.</b> One real property held Cloudflare Level 5 and scored 52 on ora at the same time, for six weeks.</li>
-      <li data-build><b>Rank by what a fix is worth.</b> Never walk the red list top to bottom. On a saturated site it is mostly noise.</li>
+      <li data-build><b>A scanner is a free website that scores your site.</b> Each failed check tells you what to fix.</li>
+      <li data-build><b>Two scanners can disagree completely.</b> One real site got the top score on one and only 52 out of 100 on the other.</li>
+      <li data-build><b>So pick one scanner and follow it.</b></li>
+      <li data-build><b>Fix what is worth the most first.</b> Do not just fix failures in list order.</li>
     </ul>
   </div>
   <div class="r">
     <div class="panel cmp">
-      <p class="label cmp-head">isitagentready.com, measured on the kit</p>
+      <p class="label cmp-head">One scanner, on the demo app</p>
       <div class="cmp-row" data-build data-build-style="fade">
         <p class="cmp-k label">Before</p>
         <div class="cmp-n"><b>6</b><span class="label">passing</span></div>
@@ -1403,18 +1453,17 @@ and walk me through this workshop.</span></p>
         <div class="cmp-n"><b>14</b><span class="label">passing</span></div>
         <div class="cmp-n bad"><b>2</b><span class="label">failing</span></div>
       </div>
-      <p class="body cmp-foot" data-build data-build-style="fade">Three separate checks revealed a brand new sub-check the moment they went green. One remaining failure needs DNS records a vercel.app subdomain cannot have.</p>
-      <p class="label cmp-note" data-build data-build-style="fade">Watch the cache between you and the grader.</p>
+      <p class="body cmp-foot" data-build data-build-style="fade">Fixing one check often shows a new one. The last failure needs settings a free web address can't have.</p>
+      <p class="label cmp-note" data-build data-build-style="fade">Scanners remember old results, so wait before rescanning.</p>
     </div>
   </div>
   <aside class="notes">
-    <p>So, the scoreboard. Two graders, and they do not measure the same thing.</p>
-    <p>ora.ai reports out of one hundred, about one hundred and twenty five checks over four weighted layers. Six fresh scans per day. So batch your fixes and scan once, or you will burn the quota on noise.</p>
-    <p>Cloudflare's isitagentready reports Level one to five over twenty two checks. No rate limit I could find. But it reveals sub-checks one at a time, so the loop there is the opposite: rescan after every single fix.</p>
-    <p>Here is the fact that reframes all of it. One real property held Cloudflare Level five and scored fifty two on ora at the same time. For six weeks. Those are not the same question. Decide which number you are chasing before you start, because the work is different.</p>
-    <p>Right side is this kit, measured while building this deck. Six passing and ten failing, to fourteen passing and two failing on the Cloudflare grader.</p>
-    <p>Two things in that number. Three separate checks revealed a brand new sub-check the moment they went green, which is why the denominator moves under you. And the one remaining failure needs DNS records a vercel dot app subdomain cannot have, so it is not fixable from the code.</p>
-    <p>Two traps worth naming out loud. Rank work by what a fix is worth, never by walking the red list top to bottom, because on a saturated site the red list is mostly noise. And watch the cache between you and the grader. A document a grader reads to decide your score should not be cached for an hour.</p>
+    <p>Here is the scoreboard. A scanner is a free website that looks at your site and gives it a score. Treat the failed checks as a to-do list.</p>
+    <p>The catch is that two scanners do not measure the same thing. One real site held the top level on Cloudflare's scanner and scored fifty two out of one hundred on ora dot ai, at the same time, for six weeks. So pick one scanner and follow it, because the work is different for each.</p>
+    <p>On the right is the demo app, measured while building this deck. Six checks passing and ten failing, then fourteen passing and two failing.</p>
+    <p>Two things sit behind those numbers. Fixing one check often reveals a new one, so the total moves under you. And the last failure needs settings that a free vercel dot app address cannot have, so you cannot fix it from the code.</p>
+    <p>The advice: fix what is worth the most first. Do not walk the red list top to bottom, because on a site that is nearly done, most of the list is noise.</p>
+    <p>For the developers: ora dot ai is out of one hundred, about one hundred and twenty five checks, and allows about six fresh scans a day, so batch your fixes and scan once. Cloudflare's isitagentready is Level one to five over twenty two checks with no rate limit I found, but it reveals sub-checks one at a time, so rescan after every fix. And watch the cache between you and the scanner. A file a scanner reads should not be cached for an hour.</p>
     <ul class="ledger">
       <li>100 = F-64 (ora.ai reports out of 100)</li>
       <li>125 = F-65 (ora.ai, about 125 checks over 4 weighted layers)</li>
@@ -1440,19 +1489,19 @@ and walk me through this workshop.</span></p>
 .s3-00 .sym.kit .ico{width:112px;height:112px}
 .s3-00 .sym.kit figcaption{font:500 28px/1.2 var(--font-mono);letter-spacing:.08em;text-transform:uppercase}
 </style>
-<section class="slide t-statement s3-00" data-comp="statement" data-theme="light" data-transition="ember-wipe" data-section="III · What you need to build it" data-cut="keep">
+<section class="slide t-statement s3-00" data-comp="statement" data-theme="light" data-transition="ember-wipe" data-section="III · What you need" data-cut="keep">
   <p class="kicker"><b>III</b> · What you need to build it</p>
-  <p class="statement"><span class="line">This needs less setup</span><span class="line">than you <em>think.</em></span></p>
-  <p class="lede sub" data-build data-build-style="fade">Accounts, dependencies, hosting. The honest list, before a single slide of code.</p>
-  <div class="sym kit" data-build data-build-style="fade" aria-label="Three things to sort out: accounts, dependencies, hosting">
+  <p class="statement"><span class="line">Starting is easier</span><span class="line">than it <em>looks.</em></span></p>
+  <p class="lede sub" data-build data-build-style="fade">Two free accounts. Almost nothing to install. And one hosting trap to avoid.</p>
+  <div class="sym kit" data-build data-build-style="fade" aria-label="Three things to sort out: accounts, code, hosting">
     <figure><svg class="ico" aria-hidden="true"><use href="#i-key"/></svg><figcaption>Accounts</figcaption></figure>
-    <figure><svg class="ico" aria-hidden="true"><use href="#i-code"/></svg><figcaption>Dependencies</figcaption></figure>
+    <figure><svg class="ico" aria-hidden="true"><use href="#i-code"/></svg><figcaption>Code</figcaption></figure>
     <figure><svg class="ico" aria-hidden="true"><use href="#i-globe"/></svg><figcaption>Hosting</figcaption></figure>
   </div>
-  <aside class="notes"><p>Quick change of gear. Every talk like this skips the part you actually need, which is what you have to have in front of you before you can build any of it.</p>
-  <p>So: accounts, dependencies, hosting. Three slides.</p>
-  <p>The short version is that the agent surface is less work than people assume. Two accounts get you live. Three runtime dependencies. And one hosting gotcha that will quietly eat your data if nobody warns you about it.</p>
-  <p>I am going to be specific, because this is the part you can act on tomorrow morning.</p>
+  <aside class="notes"><p>Quick change of gear. Most talks like this skip the boring part, which is what you actually need in front of you before you can build any of it.</p>
+  <p>So, three slides. What you have to sign up for. What you have to install. And where to put it.</p>
+  <p>Short version: two free accounts and you are started. Almost nothing to install. And there is one hosting trap that will quietly lose your data if nobody warns you, so I will warn you.</p>
+  <p>Nothing in this section costs money.</p>
   <ul class="ledger"><li>no visible numbers</li><li>section framing = Ray's own, from the real build of the demo app</li></ul></aside>
 </section>
 
@@ -1471,52 +1520,51 @@ and walk me through this workshop.</span></p>
 .s3-01 .grp{margin-top:18px}
 .s3-01 .gk{margin:0 0 10px;font:500 24px/1.25 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .s3-01 .arow{display:grid;grid-template-columns:1fr auto;column-gap:28px;align-items:baseline;
-  padding:14px 0;border-top:2px solid var(--line)}
+  padding:12px 0;border-top:2px solid var(--line)}
 .s3-01 .aname{font:500 30px/1.25 var(--font-mono);color:var(--fg)}
 .s3-01 .acost{font:500 24px/1.25 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--paper-dim);text-align:right}
 .s3-01 .awhy{grid-column:1 / -1;margin:4px 0 0;font:400 28px/1.25 var(--font-body);color:var(--muted)}
 </style>
-<section class="slide t-split s3-01" data-comp="split" data-theme="dark" data-transition="fade" data-section="III · What you need to build it" data-cut="skip">
+<section class="slide t-split s3-01" data-comp="split" data-theme="dark" data-transition="fade" data-section="III · What you need" data-cut="skip">
   <div class="l">
     <p class="kicker"><b>Accounts</b> · what you sign up for</p>
-    <h2 class="headline">Two accounts get you <em>live.</em></h2>
+    <h2 class="headline">GitHub plus Vercel gets you <em>started.</em></h2>
     <div class="s301-two" aria-hidden="true">
       <figure><svg class="ico" aria-hidden="true"><use href="#i-code"/></svg><figcaption>GitHub</figcaption></figure>
       <span class="plus">+</span>
       <figure><svg class="ico" aria-hidden="true"><use href="#i-globe"/></svg><figcaption>Vercel</figcaption></figure>
     </div>
     <ul class="points">
-      <li data-build><span><b>GitHub plus Vercel</b> gets the first four layers live.</span></li>
-      <li data-build><span><b>Nothing else</b> is needed before step four.</span></li>
-      <li data-build><span><b>Add an account</b> when the step needs it, not before.</span></li>
+      <li data-build><span><b>Two free accounts</b> and your site is on the internet.</span></li>
+      <li data-build><span><b>The rest can wait</b> until the step that needs it.</span></li>
     </ul>
   </div>
   <div class="r">
     <div class="panel acct">
-      <div class="ahead label">Accounts, in the order you need them</div>
+      <div class="ahead label">What you sign up for</div>
       <div class="grp">
         <p class="gk label">Now</p>
-        <div class="arow"><span class="aname">GitHub</span><span class="acost label">free</span><p class="awhy">the repo you clone, and CI later</p></div>
-        <div class="arow"><span class="aname">Vercel or Cloudflare</span><span class="acost label">free tier</span><p class="awhy">hosting for the Next.js app</p></div>
+        <div class="arow"><span class="aname">GitHub</span><span class="acost label">free</span><p class="awhy">keeps your code, where others can see it</p></div>
+        <div class="arow"><span class="aname">Vercel</span><span class="acost label">free</span><p class="awhy">puts your site on the internet</p></div>
       </div>
       <div class="grp">
-        <p class="gk label">Before you demo to anyone</p>
-        <div class="arow"><span class="aname">A KV store</span><span class="acost label">free tier</span><p class="awhy">durable state. Any Upstash protocol KV works.</p></div>
+        <p class="gk label">Before you show anyone</p>
+        <div class="arow"><span class="aname">A small database</span><span class="acost label">free</span><p class="awhy">so your site remembers things</p></div>
       </div>
       <div class="grp">
-        <p class="gk label">Step four, or never</p>
-        <div class="arow"><span class="aname">Clerk, or any auth</span><span class="acost label">free tier</span><p class="awhy">names the human who approves a token</p></div>
-        <div class="arow"><span class="aname">A domain registrar</span><span class="acost label">you have one</span><p class="awhy">DNS for the last discovery check, and DNSSEC</p></div>
+        <p class="gk label">Later</p>
+        <div class="arow"><span class="aname">Clerk (a login service)</span><span class="acost label">free</span><p class="awhy">so you know which human said yes</p></div>
+        <div class="arow"><span class="aname">A domain name</span><span class="acost label">you have one</span><p class="awhy">your own web address. Needed last.</p></div>
       </div>
     </div>
   </div>
-  <aside class="notes"><p>Here is the whole account list. Five rows, and only two of them block you today.</p>
-  <p>GitHub, because you clone the repo, and because CI lands there later. Free.</p>
-  <p>Vercel or Cloudflare, to host the Next.js app. The free tier is genuinely enough for this.</p>
-  <p>Then a KV store, for durable state. Any Upstash protocol KV works: Vercel KV, Upstash itself, or self hosted serverless-redis-http. Get it before you demo to anyone, and the slide after next is why.</p>
-  <p>Clerk, or any auth provider you like. That one exists to identify the HUMAN who approves an agent token. It is step four. Not before.</p>
-  <p>A domain registrar for DNS records on the last discovery check, and for DNSSEC. Last, or never. You probably already have one.</p>
-  <p>The honest headline is the left side. GitHub plus Vercel and nothing else gets the first four layers live. Do not let an account list stop you starting tonight.</p>
+  <aside class="notes"><p>Here is the whole list of sign-ups. Five of them, and only the top two stop you today.</p>
+  <p>GitHub keeps your code. It is where other people can read it, and later it is where the automatic checks run.</p>
+  <p>Vercel puts your site on the internet. Cloudflare does the same job if you prefer it. The free plan is genuinely enough for this.</p>
+  <p>Then a small database, so your site remembers things between visits. Get it before you show this to anyone, and the next slide but one is exactly why. For developers: any Upstash protocol KV works, so Vercel KV, Upstash itself, or self hosted serverless-redis-http.</p>
+  <p>Clerk, or any login provider you like, handles signing in. Its job here is to identify the human who says yes before an agent gets a token. That is step four, not now.</p>
+  <p>A domain name is your own web address. You need it for the very last check, because that one reads DNS records, and for DNSSEC. Last, or never. You probably already have one.</p>
+  <p>The honest headline: GitHub plus Vercel and nothing else gets you started. Do not let a list of sign-ups stop you tonight.</p>
   <ul class="ledger"><li>no visible numbers</li><li>account list, costs and ordering = the real build of the demo app (its README and vercel project), not a vendor claim</li></ul></aside>
 </section>
 
@@ -1527,14 +1575,14 @@ and walk me through this workshop.</span></p>
 .s3-02 .points{margin-top:36px}
 .s3-02 .points li b{white-space:normal}
 </style>
-<section class="slide t-split s3-02" data-comp="split" data-theme="dark" data-transition="fade" data-section="III · What you need to build it" data-cut="keep">
+<section class="slide t-split s3-02" data-comp="split" data-theme="dark" data-transition="fade" data-section="III · What you need" data-cut="keep">
   <div class="l">
-    <p class="kicker"><b>Dependencies</b> · the whole tree</p>
-    <h2 class="headline"><em>Three</em> runtime dependencies.</h2>
+    <p class="kicker"><b>What you install</b> &middot; the whole list</p>
+    <h2 class="headline">You need <em>almost nothing</em> installed.</h2>
     <ul class="points">
-      <li data-build><span><b>No MCP SDK here.</b> Streamable HTTP is one JSON-RPC route handler. A2A is another.</span></li>
-      <li data-build><span><b>The well known documents</b> are route handlers that return JSON.</span></li>
-      <li data-build><span><b>Pin deliberately.</b> A CVE in the version we first pinned forced an upgrade mid build. Run npm audit before you ship.</span></li>
+      <li data-build><span><b>Three free building blocks</b> run the whole app.</span></li>
+      <li data-build><span><b>No special AI library.</b> It is ordinary web code.</span></li>
+      <li data-build><span><b>Keep them updated.</b> A security fix forced one upgrade while we built it.</span></li>
     </ul>
   </div>
   <div class="r">
@@ -1544,15 +1592,14 @@ and walk me through this workshop.</span></p>
   <span class="k">"react-dom"</span>: "19.2.0"
 }
 
-npm install   28 packages
-npm audit     0 vulnerabilities</pre>
+28 code libraries installed
+0 known security problems</pre>
+    <p class="label" style="margin-top:24px">What this app needs, copied from the real project.</p>
   </div>
-  <aside class="notes"><p>This is the entire runtime dependency tree of a complete agent native app. Next, React, React DOM. That is the list.</p>
-  <p>Plus typescript and two at-types packages in devDependencies. Nothing else.</p>
-  <p>npm install reports twenty eight packages. npm audit reports zero vulnerabilities.</p>
-  <p>Here is the point I want to land. There is no MCP SDK in here. MCP over Streamable HTTP is one JSON-RPC route handler, about a hundred and fifty lines. A2A is another one. The well known documents are route handlers that return JSON.</p>
-  <p>You are not adopting a framework. You are writing ordinary HTTP handlers.</p>
-  <p>One caution, so this stays honest. A known CVE in the Next version we first pinned forced an upgrade mid build, and getting to zero vulnerabilities took moving to the current major. So pin deliberately, and run npm audit before you ship.</p>
+  <aside class="notes"><p>This is everything the app needs installed. Three free building blocks: Next, React, and React DOM. That is the list.</p>
+  <p>The point is what is missing. There is no special AI library. Giving an agent a list of what your site can do is one ordinary web address that answers in a set format. It took about a hundred and fifty lines. The agent to agent one is another. You are not adopting a framework. You are writing ordinary web code.</p>
+  <p>One honest note. A security problem had been found in the version we first picked, so we had to upgrade partway through. Keep your pieces updated, and run npm audit before you ship. It checks for known problems.</p>
+  <p>For the developers: typescript and two types packages sit in devDependencies. npm install reports twenty eight packages and npm audit reports zero vulnerabilities, after moving to the current major of Next.</p>
   <ul class="ledger"><li>the code block is a verbatim readout of package.json and the npm install / npm audit output from the real build, marked data-nonfact</li><li>no other visible numbers</li><li>roughly 150 lines for the MCP route handler, and the devDependencies count, are spoken only</li></ul></aside>
 </section>
 
@@ -1564,88 +1611,88 @@ npm audit     0 vulnerabilities</pre>
 .s3-03 .dg .jl{font:500 26px var(--font-mono);fill:var(--paper);letter-spacing:0;text-transform:none}
 .s3-03 .dg .lbl{font-size:24px}
 </style>
-<section class="slide t-diagram s3-03" data-comp="diagram" data-theme="dark" data-transition="fade" data-section="III · What you need to build it" data-cut="keep">
-  <div class="top"><div><p class="kicker"><b>Hosting</b> · the trap that loses data quietly</p>
-    <h2 class="headline">Writes succeed. Then they are <em>gone.</em></h2></div></div>
+<section class="slide t-diagram s3-03" data-comp="diagram" data-theme="dark" data-transition="fade" data-section="III · What you need" data-cut="keep">
+  <div class="top"><div><p class="kicker"><b>Hosting</b> · the quiet trap</p>
+    <h2 class="headline">Free hosting <em>forgets things</em> without a database.</h2></div></div>
   <svg class="dg" viewBox="0 0 1632 690" width="1632" height="690" xmlns="http://www.w3.org/2000/svg">
     <g data-build data-build-style="fade">
-      <text class="lbl" x="4" y="30">NOTHING ERRORS</text>
+      <text class="lbl" x="4" y="30">NOTHING SHOWS AN ERROR</text>
       <rect class="box" x="0" y="44" width="440" height="116" rx="12"/>
-      <text class="big" x="28" y="112">POST a record</text>
+      <text class="big" x="28" y="112">Save a note</text>
       <path class="ln" d="M452 102 H506"/><path class="ah" d="M506 94 l20 8 -20 8 z"/>
       <rect class="box" x="532" y="44" width="470" height="116" rx="12"/>
-      <text class="big" x="560" y="92">Instance A</text>
-      <text class="txt" x="560" y="136">holds it in a Map</text>
+      <text class="big" x="560" y="92">First visit</text>
+      <text class="txt" x="560" y="136">keeps it only while that machine runs</text>
       <path class="ln" d="M1014 102 H1068"/><path class="ah" d="M1068 94 l20 8 -20 8 z"/>
       <text class="big" x="1104" y="92">Returns OK.</text>
-      <text class="lbl" x="1104" y="132">WRITE SUCCEEDED</text>
+      <text class="lbl" x="1104" y="132">SAVED, NO ERROR</text>
     </g>
     <g data-build data-build-style="fade">
       <rect class="box" x="0" y="190" width="440" height="116" rx="12"/>
-      <text class="big" x="28" y="258">GET it back</text>
+      <text class="big" x="28" y="258">Look for it</text>
       <path class="ln" d="M452 248 H506"/><path class="ah" d="M506 240 l20 8 -20 8 z"/>
       <rect class="box dash" x="532" y="190" width="470" height="116" rx="12"/>
-      <text class="big" x="560" y="238">Instance B</text>
-      <text class="txt" x="560" y="282">fresh. nothing there.</text>
+      <text class="big" x="560" y="238">Second visit</text>
+      <text class="txt" x="560" y="282">a new machine. empty.</text>
       <path class="ln" d="M1014 248 H1068"/><path class="ah" d="M1068 240 l20 8 -20 8 z"/>
       <text class="big" x="1104" y="238">Returns OK.</text>
-      <text class="lbl" x="1104" y="278">AND EMPTY</text>
+      <text class="lbl" x="1104" y="278">BUT IT IS EMPTY</text>
     </g>
     <g data-build data-build-style="fade">
-      <text class="lbl" x="0" y="356">THE FIX: MAKE THE APP SAY SO</text>
+      <text class="lbl" x="0" y="356">THE FIX: ADD A DATABASE, AND LET THE SITE SAY WHEN IT IS MISSING</text>
       <rect class="box" x="0" y="376" width="1632" height="160" rx="12"/>
-      <text class="lbl jl" x="28" y="424">GET /api/v1/health</text>
-      <text class="lbl jl" x="28" y="464">{"status":"degraded","storage":"in-process-memory",</text>
-      <text class="lbl jl" x="28" y="504"> "warning":"writes will not persist across invocations"}</text>
+      <text class="lbl jl" x="28" y="424">The site's own status page:</text>
+      <text class="lbl jl" x="28" y="464">{"status":"degraded","storage":"memory only",</text>
+      <text class="lbl jl" x="28" y="504"> "warning":"saved data will be lost"}</text>
       <path class="ln" d="M1006 396 V516"/>
       <text class="lbl jl" x="1030" y="424">KV_REST_API_URL=https://your-kv-host</text>
       <text class="lbl jl" x="1030" y="464">KV_REST_API_TOKEN=...</text>
-      <text class="lbl" x="1030" y="504">TWO ENV VARS. THAT IS ALL.</text>
+      <text class="lbl" x="1030" y="504">two settings: address and secret</text>
     </g>
     <g data-build data-build-style="fade">
       <rect class="box" x="0" y="560" width="900" height="120" rx="12"/>
-      <text class="big" x="28" y="612">Namespace your keys.</text>
-      <text class="txt" x="28" y="656">Two apps writing posts overwrite each other.</text>
+      <text class="big" x="28" y="612">Give each project its own label.</text>
+      <text class="txt" x="28" y="656">Two projects, one database: they overwrite.</text>
       <rect class="box" x="932" y="560" width="700" height="120" rx="12"/>
       <text class="big" x="960" y="612">Free to start.</text>
-      <text class="txt" x="960" y="656">Free tier, plus a free KV.</text>
+      <text class="txt" x="960" y="656">Free hosting plus a free database.</text>
     </g>
   </svg>
-  <aside class="notes"><p>Serverless hosting is the right default for this, and it has one sharp edge that is worth a whole slide.</p>
-  <p>Without a KV, state in an in-process Map appears to work. You POST a record, the instance holds it in memory, you get a success back. Then the next request lands on a fresh instance, and the record is gone.</p>
-  <p>The write succeeded. The read succeeded. Nothing errored. That silent version is far worse than an outright failure, because you only find it when someone else is looking.</p>
-  <p>So the pattern worth copying is: make the app say so. Health returns degraded, with the storage it is actually using and a warning that writes will not persist. The homepage shows a banner until durable storage is configured.</p>
-  <p>Then two env vars, and that is the whole configuration. KV_REST_API_URL and KV_REST_API_TOKEN.</p>
-  <p>One more real gotcha. On a shared KV, namespace your keys. Two products both writing an unprefixed posts key silently overwrite each other, and the symptom is missing data, not an error.</p>
-  <p>Cost: zero to start, genuinely. Vercel free tier plus a free KV tier, or self host the KV for nothing.</p>
+  <aside class="notes"><p>Free hosting is the right default for this, and it has one sharp edge worth a whole slide.</p>
+  <p>Free hosting runs your code on a fresh machine for each visit. Say someone saves a note, and your code keeps it in memory. The site says OK. Then the next visit lands on a different machine that never saw that note. You look for it, the site says OK again, and it is empty.</p>
+  <p>Nothing shows an error. The save worked. The lookup worked. That is worse than a loud failure, because you only find out when somebody else is looking.</p>
+  <p>The fix has two parts. Connect a small database, which is two settings. And make your site say so when the database is missing. Its status page says degraded, says it is using memory only, and warns that saved data will be lost. The homepage can show a banner until a real database is connected.</p>
+  <p>One more gotcha. If two projects share one database, give each its own prefix. Otherwise they overwrite each other, and the symptom is missing data, not an error.</p>
+  <p>Cost: nothing to start. The free hosting plan plus a free database, or run the database yourself.</p>
+  <p>For the developers: the two settings are KV_REST_API_URL and KV_REST_API_TOKEN, the status route is slash api slash v1 slash health, and the in-memory store is a Map in the function process.</p>
   <ul class="ledger"><li>no visible numbers</li><li>health response, env var names and the namespacing failure = the real build, observed; the degraded banner is in the app</li></ul></aside>
 </section>
 
 <!-- ===== 4-00.html ===== -->
 <!-- IV.0 · section opener: how the build runs -->
 <style>
-.s4-00 .statement{font-size:100px;max-width:1560px}
-.s4-00 .chain{margin:72px 0 0;gap:28px}
-.s4-00 .chain .ico{width:112px;height:112px}
-.s4-00 .chain .sym-arrow{width:56px;height:56px;color:var(--mute)}
+.s4-00 .statement{font-size:96px;max-width:1560px}
+.s4-00 .chain{margin:64px 0 0;gap:24px}
+.s4-00 .chain .ico{width:104px;height:104px}
+.s4-00 .chain .sym-arrow{width:52px;height:52px;color:var(--mute)}
 .s4-00 .chain figcaption{font:500 28px/1.2 var(--font-mono);color:var(--paper-dim);letter-spacing:.02em;text-transform:none}
-.s4-00 .sub{margin-top:48px;max-width:42ch;font-size:40px}
+.s4-00 .sub{margin-top:44px;max-width:44ch;font-size:40px}
 .s4-00 .sub b{color:var(--paper);font-weight:700}
 </style>
-<section class="slide t-statement s4-00" data-comp="statement" data-theme="dark" data-transition="ember-wipe" data-section="IV · Build it" data-cut="keep">
-  <p class="kicker"><b>IV · Build it</b> Seven steps, your laptop, your agent</p>
-  <p class="statement"><span class="line">A step you have not verified</span><span class="line" data-build data-build-style="fade">on the wire is <em>not done.</em></span></p>
-  <div class="sym-chain chain" data-build data-build-style="fade" aria-label="Your agent loads the workshop skill, takes one step, then checks your deployment">
-    <figure><svg class="ico ice" aria-hidden="true"><use href="#i-agent"/></svg><figcaption>Your agent</figcaption></figure>
+<section class="slide t-statement s4-00" data-comp="statement" data-theme="dark" data-transition="ember-wipe" data-section="IV · Build yours" data-cut="keep">
+  <p class="kicker"><b>IV · Build it</b> Seven steps, on your own laptop</p>
+  <p class="statement"><span class="line">Your AI agent walks</span><span class="line">you through it,</span><span class="line" data-build data-build-style="fade"><em>one step at a time.</em></span></p>
+  <div class="sym-chain chain" data-build data-build-style="fade" aria-label="Your agent reads the workshop site, gives you one step, then checks your live site">
+    <figure><svg class="ico ice" aria-hidden="true"><use href="#i-agent"/></svg><figcaption>Your AI agent</figcaption></figure>
     <svg class="ico sym-arrow" aria-hidden="true"><use href="#i-arrow"/></svg>
-    <figure><svg class="ico" aria-hidden="true"><use href="#i-page"/></svg><figcaption>The SKILL file</figcaption></figure>
+    <figure><svg class="ico" aria-hidden="true"><use href="#i-page"/></svg><figcaption>Reads the site</figcaption></figure>
     <svg class="ico sym-arrow" aria-hidden="true"><use href="#i-arrow"/></svg>
-    <figure><svg class="ico" aria-hidden="true"><use href="#i-arrow-loop"/></svg><figcaption>One step at a time</figcaption></figure>
+    <figure><svg class="ico" aria-hidden="true"><use href="#i-arrow-loop"/></svg><figcaption>Gives you a step</figcaption></figure>
     <svg class="ico sym-arrow" aria-hidden="true"><use href="#i-arrow"/></svg>
-    <figure><svg class="ico" aria-hidden="true"><use href="#i-scan"/></svg><figcaption>workshop_check_target</figcaption></figure>
+    <figure><svg class="ico" aria-hidden="true"><use href="#i-scan"/></svg><figcaption>Checks your site</figcaption></figure>
   </div>
-  <p class="sub lede" data-build data-build-style="fade">Every done condition is checked against <b>your deployment</b>, never against your config file.</p>
-  <aside class="notes"><p>Here is how the next stretch runs. You are going to build, not watch.</p><p>Point your own agent at agent-native-workshop dot vercel dot app. It loads the SKILL file from that site and hands you one step at a time. You do not get the whole plan at once, on purpose.</p><p>When you think a step is done, your agent calls a tool on that site named workshop underscore check underscore target, with your deployed URL. The site runs the readiness checks against your live deploy and returns which failure to fix first. The workshop is itself agent native, which is the shortest proof I can offer that any of this works.</p><p>And the rule for the whole hour, the one I want you to say back to me: a step you have not verified on the wire is not done. That is the entire subject of Part II. Surfaces that pass inspection in your editor and fail on the wire.</p><p>Seven steps. Each one has a done condition, and the done condition is checked against the deployment, never against your config file.</p><ul class="ledger"><li>no visible numbers</li></ul></aside>
+  <p class="sub lede" data-build data-build-style="fade">A step is not done until the check passes. It checks <b>your live site</b>, not the files on your laptop.</p>
+  <aside class="notes"><p>Here is how the next stretch works. You build, I walk around.</p><p>Point your own AI agent at agent-native-workshop dot vercel dot app. It reads the instructions on that site and gives you one step. You do the step. It checks your live site. Then it gives you the next one. That is the whole loop.</p><p>The check is a tool on the workshop site called workshop check target. You give it your web address, it runs the checks against the real site, and it tells you the one thing to fix first. For the developers in the room: that is an MCP tool on a site that is itself agent native, which is the shortest proof I can give you that any of this works.</p><p>And here is the rule for the hour. A step is not done until the check passes. Not when the code looks right, not when the deploy went green. It checks what your live site actually sends back, which is the whole point of Part Two.</p><p>Seven steps. Say which one you are on if you get stuck and I will come to you.</p><ul class="ledger"><li>no visible numbers</li></ul></aside>
 </section>
 
 <!-- ===== 4-01.html ===== -->
@@ -1659,35 +1706,37 @@ npm audit     0 vulnerabilities</pre>
 .s4-01 .steps .n{font-size:64px}
 .s4-01 .steps h3{margin-top:0;font-size:44px;line-height:1.05}
 .s4-01 pre.code{margin:0;padding:22px 24px;font-size:28px;line-height:1.5;white-space:pre-wrap;border-radius:8px}
+.s4-01 pre.code .c{color:var(--paper-dim)}
 .s4-01 .steps p{font-size:30px;line-height:1.34}
 .s4-01 .steps p b{color:var(--paper);font-weight:700}
 .s4-01 .pathline{font:500 34px/1.3 var(--font-mono);color:var(--paper);margin:0;letter-spacing:.01em;text-transform:none;overflow-wrap:anywhere}
 </style>
-<section class="slide t-flow s4-01" data-comp="flow" data-theme="dark" data-transition="fade" data-section="IV · Build it" data-cut="keep">
-  <div class="top"><p class="kicker"><b>Steps one and two</b> The floor, then the host</p>
-    <h2 class="headline">Deploy first. Then <em>customise.</em></h2></div>
+<section class="slide t-flow s4-01" data-comp="flow" data-theme="dark" data-transition="fade" data-section="IV · Build yours" data-cut="keep">
+  <div class="top"><p class="kicker"><b>Steps one and two</b> Online first, then yours</p>
+    <h2 class="headline">Put the kit online first. Then <em>make it yours.</em></h2></div>
   <ol class="steps">
     <li data-build>
       <span class="n">1</span>
-      <h3>Deploy the kit unchanged.</h3>
-      <pre class="code">git clone https://github.com/\
+      <h3>Put the kit online, unchanged.</h3>
+      <pre class="code" data-nonfact><span class="c"># copy the starter kit to your laptop</span>
+git clone https://github.com/\
   RayyanZahid/agent-native-kit
-cd agent-native-kit
-npm install
-npx vercel deploy --prod</pre>
-      <p data-nonfact><b>Done when:</b> your URL returns 200 for <span class="mono">/.well-known/ai-agent.json</span></p>
-      <p><b>Trap:</b> no custom domain yet. That is step two.</p>
+cd agent-native-kit <span class="c"># go into it</span>
+npm install <span class="c"># get what it needs</span>
+npx vercel deploy --prod <span class="c"># put it online</span></pre>
+      <p><b>You'll know it worked when</b> <span class="mono">your-site/.well-known/ai-agent.json</span> shows text in a browser.</p>
+      <p><b>Watch out:</b> your own web address waits for step two.</p>
     </li>
     <li data-build>
       <span class="n">2</span>
-      <h3>Edit one file. Nothing else.</h3>
+      <h3>Put your name and address in one file.</h3>
       <p class="pathline">agent.config.ts</p>
-      <p>Every discovery surface reads from here. The canonical host you set is what makes eleven documents agree with each other.</p>
-      <p><b>Done when:</b> your manifest homepage equals your real origin, and the PRM lists your scopes.</p>
-      <p><b>Trap:</b> put apex and www in <span class="mono">hosts.allowed</span> if you serve both.</p>
+      <p>Your settings file. Everything else reads from it.</p>
+      <p><b>You'll know it worked when</b> your real web address shows up in the file from step one.</p>
+      <p><b>Watch out:</b> if people reach you with and without www, list both.</p>
     </li>
   </ol>
-  <aside class="notes"><p>Step one. Deploy the kit with nothing changed. Clone, install, deploy to production.</p><p>People resist this order, so here is why it matters. If you customise first and it breaks, you are now debugging your product and the kit and your deploy pipeline all at once. Deploy the known good thing first, and every failure after that has exactly one cause: the thing you just changed.</p><p>It is done when your URL returns a 200 for slash dot well-known slash ai-agent dot json. Not when the deploy log is green. Hit the URL.</p><p>Do not set a custom domain yet. That is step two, and doing it here will cost you twenty minutes.</p><p>Step two. Open agent dot config dot ts, and edit only that. Every discovery surface in the kit reads from this one file, so setting the canonical host here is what makes eleven separate documents self consistent.</p><p>Done when your manifest homepage equals your real origin, and the protected resource metadata lists your scopes.</p><p>The trap here is the expensive one. If you serve both the apex and www, put both in hosts dot allowed. A document that self references the wrong host breaks the discovery chain one link from the end, and it fails looking exactly like an auth bug. You will spend an hour on your token and the problem will be a hostname.</p><ul class="ledger"><li>1, 2 = step index (.n counters, not facts)</li><li>200 = HTTP status required by the kit done condition, scripts/verify.sh assertion on /.well-known/ai-agent.json</li></ul></aside>
+  <aside class="notes"><p>Step one. Put the kit online with nothing changed. Copy it to your laptop, install it, and deploy it.</p><p>People resist this order, so here is why. If you change things first and it breaks, you cannot tell whether your change broke it or the kit did. Put the working thing online first, and every problem after that has one cause: the thing you just changed.</p><p>You know it worked when you can open your site slash dot well-known slash ai-agent dot json in a browser and see text, not an error. Not when the deploy log is green. Open the address. For the developers: the kit's own check expects a 200 on that path.</p><p>Do not set your own domain yet. That is step two, and doing it now will cost you twenty minutes.</p><p>Step two. Open one file, agent dot config dot ts, and edit only that. Every other part of the kit reads from it, so your web address only has to be right in one place.</p><p>You know it worked when your real address shows up in the file from step one.</p><p>The expensive mistake is here. If people can reach you both with and without www, list both addresses. Otherwise a document points agents at the wrong address, and it looks exactly like a login bug. You will spend an hour on your token when the problem is a hostname. The setting is hosts dot allowed.</p><ul class="ledger"><li>1, 2 = step index (.n counters, not facts)</li></ul></aside>
 </section>
 
 <!-- ===== 4-02.html ===== -->
@@ -1705,30 +1754,30 @@ npx vercel deploy --prod</pre>
 .s4-02 .hard em{font-style:normal;color:var(--ember)}
 .s4-02 .spacer{flex:1;min-height:0}
 </style>
-<section class="slide t-split halves s4-02" data-comp="split" data-theme="dark" data-transition="fade" data-section="IV · Build it" data-cut="keep">
-  <p class="kicker"><b>Steps three and four</b> Your product, then your front door</p>
-  <h2 class="headline">One step is about your product. This is it.</h2>
+<section class="slide t-split halves s4-02" data-comp="split" data-theme="dark" data-transition="fade" data-section="IV · Build yours" data-cut="keep">
+  <p class="kicker"><b>Steps three and four</b> Your idea, then your login</p>
+  <h2 class="headline">Make it your own idea. Then add a real login.</h2>
   <div class="pair">
     <div class="half" data-build>
       <p class="label">Step three</p>
-      <h3>Delete the demo domain. Put yours there.</h3>
-      <p class="pathline">lib/ &middot; lib/mcp/tools.ts</p>
-      <p>Your nouns, your tools. Everything else in these seven steps is the floor.</p>
+      <h3>Swap the example app for your own idea.</h3>
+      <p class="pathline">lib/mcp/tools.ts</p>
+      <p>Replace the example with what your product does. The rest of the kit stays.</p>
       <div class="spacer"></div>
-      <p><b>Done when:</b> an anonymous <span class="mono">tools/list</span> returns your tools, and one of them executes with no token.</p>
-      <p><b>Trap:</b> keep a tool at <span class="mono">scope: null</span>. A description is read by an agent deciding whether to call it, so say what it returns.</p>
+      <p><b>You'll know it worked when</b> your tools appear in the list, and one of them runs with no login.</p>
+      <p><b>Watch out:</b> describe what each tool returns. An agent reads that to decide whether to use it.</p>
     </div>
     <div class="half" data-build>
       <p class="label">Step four</p>
-      <h3>Wire your identity provider in.</h3>
+      <h3>Connect a real login so only you can approve your agent.</h3>
       <p class="pathline">app/api/agent/signup/complete/route.ts</p>
-      <p class="hard">As shipped, anyone who knows a <em>user_code</em> can approve it.</p>
+      <p class="hard">Right now, <em>anyone</em> with the approval code can approve an agent.</p>
       <div class="spacer"></div>
-      <p><b>Done when:</b> an unauthenticated POST to the complete endpoint is refused, and an approval records a real user id from the session.</p>
-      <p><b>Trap:</b> pass the approving user's real tier, so the scope ceiling is enforced against who they actually are.</p>
+      <p><b>You'll know it worked when</b> a stranger's approval is refused, and a real approval shows who you are.</p>
+      <p><b>Watch out:</b> pass along the approver's real permissions.</p>
     </div>
   </div>
-  <aside class="notes"><p>Step three. Delete the demo domain and put your product in its place. Your nouns in lib, your tools in lib slash mcp slash tools dot ts. This is the only step in the seven that is actually about your product. Everything else is the floor.</p><p>Done when an anonymous tools slash list returns your tools, and at least one of them executes with no token at all.</p><p>Keep one tool with scope null. And write the description for the reader it actually has: an agent deciding whether to call this thing. Say what it returns and when to reach for it. Not what it is called.</p><p>Step four, and this is the one I will not soften. As shipped, anyone who knows a user code can approve it. The kit leaves that seam open deliberately, because it has no opinion about your auth. You are the one who has an identity provider.</p><p>The entire value of the device code flow is that a known human approved a specific grant. An identity supplied in the request body throws that away. So wire your provider into that route, in app slash api slash agent slash signup slash complete slash route dot ts.</p><p>Done when an unauthenticated POST to the complete endpoint is refused, and an approval records a real user id taken from the session.</p><p>And pass the approving user's real tier through, so the scope ceiling is enforced against who they actually are, not against a default.</p><ul class="ledger"><li>no visible numbers</li></ul></aside>
+  <aside class="notes"><p>Step three. Swap the example app for your own idea. Your words and your tools go in lib, and the tool list is in lib slash mcp slash tools dot ts. This is the only step of the seven that is about your product. Everything else is the same for everyone.</p><p>You know it worked when your tools show up in the list and one of them runs with no login at all.</p><p>Keep one tool open to everyone. And write each description for the reader it actually has: an AI agent deciding whether to use it. Say what it returns and when to reach for it, not just what it is called.</p><p>Step four, and this is the one I will not soften. As shipped, anyone who has the code on screen can approve it. The kit leaves that open on purpose, because it does not know how you log people in. You do.</p><p>The whole point of the approval step is that a known person said yes to a specific agent. If the request can simply claim who the person is, that point is gone. So connect your own login to this file: app slash api slash agent slash signup slash complete slash route dot ts.</p><p>You know it worked when a stranger's approval is refused, and a real approval records the real person from their session.</p><p>And pass along the approver's real account level, so the limit on what an agent can do matches who actually approved it. For the developers: that is the scope ceiling, enforced against the real tier.</p><ul class="ledger"><li>no visible numbers</li></ul></aside>
 </section>
 
 <!-- ===== 4-03.html ===== -->
@@ -1742,39 +1791,41 @@ npx vercel deploy --prod</pre>
 .s4-03 .steps .n{font-size:64px}
 .s4-03 .steps h3{margin-top:0;font-size:44px;line-height:1.05}
 .s4-03 pre.code{margin:0;padding:22px 24px;font-size:28px;line-height:1.5;white-space:pre-wrap;border-radius:8px}
+.s4-03 pre.code .c{color:var(--paper-dim)}
 .s4-03 .steps p{font-size:30px;line-height:1.34}
 .s4-03 .steps p b{color:var(--paper);font-weight:700}
 .s4-03 .shiplist{font:500 30px/1.4 var(--font-mono);color:var(--paper);margin:0;overflow-wrap:anywhere}
 </style>
-<section class="slide t-flow s4-03" data-comp="flow" data-theme="dark" data-transition="fade" data-section="IV · Build it" data-cut="keep">
-  <div class="top"><p class="kicker"><b>Steps five and six</b> Durable, then sellable</p>
-    <h2 class="headline">Make it durable. Then make it a <em>product.</em></h2></div>
+<section class="slide t-flow s4-03" data-comp="flow" data-theme="dark" data-transition="fade" data-section="IV · Build yours" data-cut="keep">
+  <div class="top"><p class="kicker"><b>Steps five and six</b> A memory, then clear documentation</p>
+    <h2 class="headline">Make it remember things. Then make the API <em>clear.</em></h2></div>
   <ol class="steps">
     <li data-build>
       <span class="n">5</span>
-      <h3>Add storage before you demo.</h3>
-      <pre class="code">npx vercel env add KV_REST_API_URL production
+      <h3>Add a small database.</h3>
+      <pre class="code"><span class="c"># tell your live site where the database is</span>
+npx vercel env add KV_REST_API_URL production
 npx vercel env add KV_REST_API_TOKEN production</pre>
-      <p><b>Done when:</b> <span class="mono">/api/v1/health</span> returns status ok with storage kv, not degraded.</p>
-      <p><b>Trap:</b> set <span class="mono">kvNamespace</span> if you share a KV. Two products writing one unprefixed key overwrite each other, and the symptom is missing data, not an error.</p>
+      <p><b>You'll know it worked when</b> <span class="mono">your-site/api/v1/health</span> says ok, not degraded.</p>
+      <p><b>Watch out:</b> two projects sharing one database need different prefixes.</p>
     </li>
     <li data-build>
       <span class="n">6</span>
-      <h3>Ship the API as the product.</h3>
-      <p class="shiplist">OpenAPI spec &middot; tokenless read &middot; typed errors &middot; live rate-limit headers</p>
-      <p>This is where the points are. A spec and a public API are worth seven each, against one or two for a well-known file.</p>
-      <p><b>Done when:</b> a write with no token returns <span class="mono">problem+json</span> carrying a remedy field, and an authenticated write carries RateLimit headers.</p>
-      <p><b>Trap:</b> derive the portal's counts from the tool catalog.</p>
+      <h3>Make your API clear and documented.</h3>
+      <p class="shiplist">API guide &middot; no-login reads &middot; clear errors &middot; usage limits</p>
+      <p>This is where most scanner points are.</p>
+      <p><b>You'll know it worked when</b> an error tells the agent how to fix it.</p>
+      <p><b>Watch out:</b> let your developer page count your tools for you.</p>
     </li>
   </ol>
-  <aside class="notes"><p>Step five. Add durable storage before you demo to anybody. Two environment variables on production, and the kit picks them up.</p><p>Done when slash api slash v1 slash health returns status ok with storage kv. If it says degraded, you are running on memory and your demo will lose state in front of people.</p><p>If you share a KV with another project, set kvNamespace. Two products writing the same unprefixed key silently overwrite each other, and the symptom is missing data, not an error. Nothing in your logs will tell you.</p><p>Step six is where the score actually moves. An OpenAPI spec, one read that works with no token, a typed error contract, and live rate limit headers. A spec and a public API are worth seven points each. A well known file is worth one or two. So if you want the number to move, this is the step, not another metadata file.</p><p>Done when your spec lists your real paths, a write with no token comes back as problem plus json carrying a remedy field, and an authenticated write carries RateLimit headers you can read.</p><p>Derive the developer portal's counts from the tool catalog. A portal claiming twelve tools next to a server exposing seven is worse than no portal at all, and hand maintained numbers always end up there.</p><ul class="ledger"><li>5, 6 = step index (.n counters, not facts)</li><li>v1 = path name in /api/v1/health, not a quantity</li><li>seven, one, two = grader point weights for spec / public API / well-known file, spoken in words; source: the two live graders cited in Part III</li></ul></aside>
+  <aside class="notes"><p>Step five. Add a small database before you demo to anybody. It is two settings on your live site, and the kit picks them up. Without it, your site forgets everything when it restarts.</p><p>You know it worked when slash api slash v1 slash health says ok, with storage kv. If it says degraded, you are running on memory, and your demo will lose its data in front of people.</p><p>If two projects share one database, give yours its own prefix. The setting is kvNamespace. Two products writing under the same name silently overwrite each other. The symptom is missing data, not an error, so nothing in your logs will warn you.</p><p>Step six is where the score actually moves. Make your API clear and documented: a written API guide, which is the OpenAPI spec, one read that works with no login, clear error messages that say how to fix the problem, and usage limits shown in each reply, which are the rate limit headers. The scanners give about seven points each for the spec and for a public API, and one or two for a standard address file. So if you want the number to move, this is the step, not another small file.</p><p>You know it worked when your guide lists your real paths, a request with no login gets back an error that says how to fix it, and a logged in request shows its usage limit. For the developers: that is problem plus json with a remedy field, and RateLimit headers.</p><p>Build your docs page's counts from your real tool list. A page claiming twelve tools next to a server that offers seven is worse than no page, and hand-kept numbers always end up there.</p><ul class="ledger"><li>5, 6 = step index (.n counters, not facts)</li><li>v1 = path name in /api/v1/health, not a quantity</li><li>seven, one, two = grader point weights for spec / public API / well-known file, spoken in words; source: the two live graders cited in Part III</li></ul></aside>
 </section>
 
 <!-- ===== 4-04.html ===== -->
 <!-- IV.4 · step 7, the gates -->
 <style>
 .s4-04 .l{flex:1}
-.s4-04 .headline{font-size:72px;max-width:18ch}
+.s4-04 .headline{font-size:64px;max-width:20ch}
 .s4-04 .points{gap:26px}
 .s4-04 .points li{align-items:flex-start}
 .s4-04 .points li b{white-space:normal}
@@ -1785,34 +1836,34 @@ npx vercel env add KV_REST_API_TOKEN production</pre>
 .s4-04 .trap{margin:0;font:400 30px/1.34 var(--font-body);color:var(--paper-dim)}
 .s4-04 .trap b{color:var(--paper);font-weight:700}
 </style>
-<section class="slide t-split s4-04" data-comp="split" data-theme="dark" data-transition="fade" data-section="IV · Build it" data-cut="keep">
+<section class="slide t-split s4-04" data-comp="split" data-theme="dark" data-transition="fade" data-section="IV · Build yours" data-cut="keep">
   <div class="l">
-    <p class="kicker"><b>Step seven</b> The gates</p>
-    <h2 class="headline">Three checks, in order. None of them an <em>opinion.</em></h2>
+    <p class="kicker"><b>Step seven</b> The three checks</p>
+    <h2 class="headline">Three checks: does it build, does the live site work, what do the <em>scanners</em> say.</h2>
     <ul class="points">
-      <li data-build><b>The build</b> proves it compiles.</li>
-      <li data-build><b>verify.sh</b> proves it is true on the wire.</li>
-      <li data-build><b>The graders</b> tell you where you stand.</li>
+      <li data-build><b>The build</b> checks the code has no mistakes.</li>
+      <li data-build><b>verify.sh</b> checks your live site really works.</li>
+      <li data-build><b>The scanners</b> show how you score.</li>
       <li data-build><b>Shipping today?</b> Stop after the second one.</li>
     </ul>
   </div>
   <div class="r">
     <pre class="code" data-nonfact>npm run build
-<span class="c"># typechecks every route</span>
+<span class="c"># checks your code for mistakes</span>
 
 bash scripts/verify.sh YOUR_URL
-<span class="c"># 18 assertions on the LIVE deploy</span></pre>
-    <p class="trap" data-build><b>Trap:</b> on the Cloudflare grader, rescan after every single fix. It reveals sub-checks one at a time, so a check that just went green can be hiding the next one.</p>
+<span class="c"># tests your live site, 18 checks</span></pre>
+    <p class="trap" data-build><b>Watch out:</b> run the scanner again after every fix. It shows new problems one at a time, so a green check can hide the next problem.</p>
   </div>
-  <aside class="notes"><p>Step seven. Three checks, in this order, and none of them is a matter of taste.</p><p>First, npm run build. It typechecks every route. That is all it tells you. It tells you the thing compiles.</p><p>Second, bash scripts slash verify dot sh with your URL. Eighteen assertions, run against your live deployment. This is the one that is about correctness. The build proves it compiles. This proves it is true on the wire. Only the middle one is about correctness.</p><p>Third, the graders. They are the acceptance test, not the build plan. Do not work down a grader's checklist as if it were a roadmap. Run it to find out where you stand.</p><p>Say this out loud, because the room needs permission: if you are shipping something at the end of today, stop after the second gate. A product that passes verify dot sh is already further than almost anything on the web.</p><p>One trap on the graders. On the Cloudflare one, rescan after every single fix. It reveals sub checks one at a time, so a check that just went green can be hiding the next one underneath it. Three of ours took two or three passes each before they stayed green.</p><ul class="ledger"><li>18 = assertion count in scripts/verify.sh, the kit's live-deploy verifier (marked data-nonfact: it is the command's own output count, not a sourced claim)</li></ul></aside>
+  <aside class="notes"><p>Step seven. Three checks, in this order.</p><p>First, npm run build. It checks the code has no mistakes. That is all it tells you: the thing compiles.</p><p>Second, bash scripts slash verify dot sh with your address. Eighteen checks, run against your live site. This is the one that tells you it actually works. The build says the code is fine. This says the live site really does what it claims. Only the middle one is about whether it is true.</p><p>Third, the scanners. They are the final exam, not the instructions. Do not work down a scanner's checklist as if it were a plan. Run it to find out where you stand.</p><p>Say this out loud, because the room needs permission: if you are shipping something at the end of today, stop after the second check. A product that passes verify dot sh is already further than almost anything on the web.</p><p>One thing to watch on the scanners. On the Cloudflare one, run it again after every single fix. It reveals its sub-checks one at a time, so a check that just went green can be hiding the next one underneath it. Three of ours took two or three passes each before they stayed green.</p><ul class="ledger"><li>18 = assertion count in scripts/verify.sh, the kit's live-deploy verifier (marked data-nonfact: it is the command's own output count, not a sourced claim)</li></ul></aside>
 </section>
 
 <!-- ===== 4-05.html ===== -->
 <!-- IV.5 · closing: what to keep, what to skip -->
 <style>
 .s4-05 .l{flex:1.25}
-.s4-05 .statement{font-size:104px;max-width:none}
-.s4-05 .served{margin-top:40px;max-width:30ch;font-size:40px;color:var(--paper-dim)}
+.s4-05 .statement{font-size:96px;max-width:none}
+.s4-05 .served{margin-top:36px;max-width:30ch;font-size:40px;color:var(--paper-dim)}
 .s4-05 .mono-lines{font:500 42px/1.5 var(--font-mono);margin:36px 0 0;color:var(--paper);overflow-wrap:anywhere}
 .s4-05 .mit{margin-top:24px;font-size:30px}
 .s4-05 .r{flex:1;justify-content:center;gap:52px}
@@ -1822,34 +1873,34 @@ bash scripts/verify.sh YOUR_URL
 .s4-05 .kl li b{color:var(--paper);font-weight:700}
 .s4-05 .kl li::before{content:'';flex:none;width:14px;height:14px;background:var(--mute);transform:translateY(-2px)}
 </style>
-<section class="slide t-close fin s4-05" data-comp="close" data-theme="dark" data-transition="lift" data-section="IV · Build it" data-cut="keep">
+<section class="slide t-close fin s4-05" data-comp="close" data-theme="dark" data-transition="lift" data-section="IV · Build yours" data-cut="keep">
   <div class="l">
     <p class="kicker"><b>Take this with you</b> One sentence</p>
-    <p class="statement">Verify on the wire. <em>Every time.</em></p>
-    <p class="served lede">Anything a grader or an agent reads from your site has to be in the served bytes.</p>
+    <p class="statement">Check what agents <em>really receive.</em></p>
+    <p class="served lede">Open your live site the way an agent would.</p>
     <div class="mute-rule"></div>
     <p class="mono-lines">agent-native-kit.vercel.app<br>agent-native-workshop.vercel.app</p>
-    <p class="body mit">The kit is MIT. The workshop is itself agent native, so point your agent at it.</p>
+    <p class="body mit">The kit is free to use. The workshop site works with AI agents too, so give your AI this address.</p>
   </div>
   <div class="r">
     <div class="block">
       <p class="label">Keep</p>
       <ul class="kl">
-        <li data-build><span><b>Layers one to four.</b> Discoverable, readable, authenticated, callable. The smallest genuinely useful thing.</span></li>
-        <li data-build><span><b>Add six</b> when you want the number to move.</span></li>
-        <li data-build><span><b>Add five</b> when there is a second agent worth talking to.</span></li>
-        <li data-build><span><b>Add seven</b> the day you ship. It costs nothing and it is how you find out you broke something.</span></li>
+        <li data-build><span><b>Be findable, Be readable, Ask permission, Be usable.</b> The smallest useful version.</span></li>
+        <li data-build><span><b>Be a good API</b> when you want a higher score.</span></li>
+        <li data-build><span><b>Talk to other agents</b> when there is a second agent worth talking to.</span></li>
+        <li data-build><span><b>Hear about breakages</b> the day you ship. It is free.</span></li>
       </ul>
     </div>
     <div class="block">
       <p class="label">Skip</p>
       <ul class="kl">
-        <li data-build><span><b>No paywall to chase a score.</b> The commerce checks are neutral and do not count.</span></li>
-        <li data-build><span><b>DNS records last,</b> or never.</span></li>
+        <li data-build><span><b>Don't add payments to raise a score.</b> Scanners don't count them.</span></li>
+        <li data-build><span><b>Domain settings last,</b> or never.</span></li>
       </ul>
     </div>
   </div>
-  <aside class="notes"><p>What to keep from today, and what to put down.</p><p>Keep layers one through four. Discoverable, readable, authenticated, agent callable. That is a product an agent can actually use, and it is the smallest genuinely useful thing you can own. If you only ever do that, you are fine.</p><p>Add six when you want the number to move, because that is where the points are. Add five when there is a second agent worth talking to, and not before. Add seven on the day you ship, because it costs nothing and it is how you find out you broke something.</p><p>And put two things down. Do not build a paywall to chase a score. The commerce checks are neutral, they do not count, and you will spend a week on them. Do DNS records last, or never.</p><p>One sentence to leave with. Anything a grader or an agent reads from your site has to be in the served bytes. Not in your config, not in your editor, not in your head. In the bytes you serve. So verify on the wire, every time.</p><p>Both links are on screen. The kit is MIT, take it. The workshop is itself agent native, so you can point your agent at it tonight and it will walk you through the whole thing again.</p><ul class="ledger"><li>no visible numbers</li></ul></aside>
+  <aside class="notes"><p>What to keep from today, and what to put down.</p><p>Keep the first four: Be findable, Be readable, Ask permission, Be usable. That gives you a product an AI agent can actually use, and it is the smallest useful thing you can own. If you only ever do that, you are fine.</p><p>Add Be a good API when you want the score to move, because that is where the points are. Add Talk to other agents when there is a second agent worth talking to, and not before. Add Hear about breakages on the day you ship, because it costs nothing and it is how you find out you broke something.</p><p>And put two things down. Do not build a paywall to chase a score. The commerce checks are neutral, they do not count, and you will spend a week on them. Do your domain settings, the DNS records, last, or never.</p><p>One sentence to leave with. Check what agents actually receive, not what you think you shipped. Anything a scanner or an agent reads from your site has to be in the page as it first arrives, before any code runs. Not in your config, not in your editor, not in your head. So open your live site the way an agent would, every time.</p><p>Both links are on screen. The kit is MIT licensed, so take it. The workshop is itself agent native, so you can point your agent at it tonight and it will walk you through the whole thing again.</p><ul class="ledger"><li>no visible numbers</li></ul></aside>
 </section>
 
 
