@@ -162,13 +162,13 @@ export const TOOLS: Tool[] = [
       return {
         ...s,
         of: BUILD_STEPS.length,
-        complete_with: { step_id: s.id, note: "Pass this exact id to workshop_complete_step, with proof. The number works too." },
+        complete_with: { step: s.id, note: "Pass this as `step` to workshop_complete_step, with proof. The number works too." },
         next_step: next ? { n: next.n, id: next.id, title: next.title } : null,
         reminder:
           "If your person is not a developer, read them sayToBeginner word for word, and explain each item in wordsToExplain the first time it comes up. Never put words in their mouth: only say they wrote or chose something if they did. " +
           "Check this step before moving on. For a deployed site, use workshop_check_target with its https address. " +
           "For a site running on your own computer, run `npm run verify http://localhost:PORT` in the kit folder (scripts/verify.sh), which runs the same kind of checks on your own computer. " +
-          "A step that is not verified is not done. To record it, call workshop_complete_step with step_id and proof: the deployed https address as `url`, or the `npm run verify` summary line as `evidence`. " +
+          "A step that is not verified is not done. To record it, call workshop_complete_step with step (the same value you gave workshop_build_step) and proof: the deployed https address as `url`, or the `npm run verify` summary line as `evidence`. " +
           "Hit a problem? workshop_report_problem now, not at the end, and tell the person in one line what you reported and why (it is about the workshop, not about them). " +
           "End the step with exactly two lines: \"Next: <what happens next>\" and \"I need from you: <one thing, or nothing>\".",
       };
@@ -292,22 +292,28 @@ export const TOOLS: Tool[] = [
     inputSchema: {
       type: "object",
       properties: {
+        step: {
+          type: ["string", "integer"],
+          description: `Which step: its number, 1 to ${BUILD_STEPS.length}, or its id (${BUILD_STEPS.map((s) => `"${s.id}"`).join(", ")}). Same value you passed to workshop_build_step.`,
+        },
         step_id: {
           type: ["string", "integer"],
-          description: `The step id (${BUILD_STEPS.map((s) => `"${s.id}"`).join(", ")}) or its number, 1 to ${BUILD_STEPS.length}. workshop_build_step returns the same id.`,
+          description: "Older name for `step`. Either works.",
         },
         url: { type: "string", description: "Proof, online: the deployed https address. It is checked now with workshop_check_target and must have no failures." },
         evidence: { type: "string", description: "Proof, local: the summary line from `npm run verify`, e.g. \"PASS 40 WARN 1 FAIL 0\". FAIL must be 0." },
       },
-      required: ["step_id"],
+      anyOf: [{ required: ["step"] }, { required: ["step_id"] }],
       additionalProperties: false,
     },
     scope: "progress:write",
     rateClass: "write",
     annotations: { title: "Mark a build step complete", readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true },
-    handler: async ({ agent }, { step_id, url, evidence }) => {
-      const step = getStep(typeof step_id === "number" ? step_id : String(step_id ?? ""));
-      if (!step) throw new Error(`Unknown step_id. Use one of: ${STEP_ID_LIST}.`);
+    handler: async ({ agent }, { step: stepArg, step_id, url, evidence }) => {
+      // workshop_build_step takes `step`, so agents pass `step` here too. Accept both names.
+      const raw = stepArg ?? step_id;
+      const step = getStep(typeof raw === "number" ? raw : String(raw ?? ""));
+      if (!step) throw new Error(`Unknown step. Pass \`step\` as a number 1 to ${BUILD_STEPS.length} or one of: ${STEP_ID_LIST}.`);
 
       let how: ws.HowVerified;
       const urlStr = typeof url === "string" ? url.trim() : "";
