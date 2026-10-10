@@ -108,7 +108,7 @@ export const SLIDES: Slide[] = [
     title: "Try it on this workshop right now",
     claim: "Paste one sentence into your AI agent and it can guide you through everything here.",
     body: [
-      "Type: \"Use agent-native-workshop.vercel.app and walk me through this workshop.\"",
+      "Type: \"Read agent-native-workshop.vercel.app/SKILL.md and walk me through this workshop.\"",
       "Your agent will find this workshop, read it, and walk you through the steps one at a time.",
       "Nobody set that up for your agent specifically. This site is built the way we're about to teach.",
     ],

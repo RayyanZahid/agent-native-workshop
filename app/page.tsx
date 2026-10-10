@@ -85,7 +85,7 @@ export default async function Deck() {
         <p>
           Paste this into Claude, ChatGPT, Cursor or any agent you have open:
         </p>
-        <pre>{`Use ${bare} and walk me through this workshop.
+        <pre>{`Read ${bare}/SKILL.md and walk me through this workshop.
 Start with workshop_overview, then ask me which part I want.`}</pre>
         <p>
           <strong>Works best with Claude Sonnet or better.</strong> Smaller models can do every step,
