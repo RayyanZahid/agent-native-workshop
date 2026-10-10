@@ -620,11 +620,11 @@ pre.code{display:block;align-self:center}
 .anw001 .row figcaption{font:500 24px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--paper-dim)}
 </style>
 <section class="slide t-statement anw001" data-comp="statement" data-theme="dark" data-transition="cut" data-flash data-section="Opening" data-cut="keep">
-  <p class="kicker"><b>Right now</b> try it before I explain it</p>
-  <div class="capline"><p class="label">Type this into ChatGPT or Claude</p></div>
+  <p class="kicker"><b>Right now</b> type this into ChatGPT or Claude</p>
   <p class="cmdbox"><span class="chev">&gt;</span><span class="cmd">Use agent-native-workshop.vercel.app
 and walk me through this workshop.</span></p>
   <p class="lede">Your assistant will read these slides and walk you through the workshop itself.</p>
+  <p class="body" style="margin-top:20px;font-size:30px;color:var(--paper-dim)">Works best with Claude Sonnet or better.</p>
   <p class="body">I did not send it a copy. The website tells it what is here and how to use it. That is the whole idea, and by the end you will have done it to your own site.</p>
   <div class="row" aria-hidden="true">
     <figure><svg class="ico ice"><use href="#i-agent"/></svg><figcaption class="label">Your assistant</figcaption></figure>
@@ -944,11 +944,12 @@ and walk me through this workshop.</span></p>
 <section class="slide t-diagram s2-00" data-comp="diagram" data-theme="dark" data-transition="ember-wipe" data-section="II · The seven things" data-cut="keep">
   <div class="top">
     <div>
-      <p class="kicker"><b data-nonfact>Part II</b> the build list, in order</p>
-      <h2 class="headline">Seven things to build, and what breaks without each.</h2>
+      <p class="kicker"><b data-nonfact>Part II</b> seven layers, in order</p>
+      <h2 class="headline">Seven layers to build, and what breaks without each.</h2>
     </div>
   </div>
   <svg class="dg" viewBox="0 0 1632 690" xmlns="http://www.w3.org/2000/svg" aria-label="Seven things to build, what each one is, and what goes wrong if you skip it">
+    <text class="hd lbl" x="28" y="22">LAYER</text>
     <text class="hd lbl" x="544" y="22">WHAT IT IS</text>
     <text class="hd em lbl" x="1080" y="22">WHAT GOES WRONG IF YOU SKIP IT</text>
     <path class="sep" d="M1066 34 V684"/>
@@ -1028,7 +1029,7 @@ and walk me through this workshop.</span></p>
 </style>
 <section class="slide t-split s2-01" data-comp="split" data-theme="dark" data-transition="fade" data-section="II · The seven things" data-cut="skip">
   <div class="l">
-    <p class="kicker"><b data-nonfact>Be findable</b> the files agents read first</p>
+    <p class="kicker"><b data-nonfact>Layer 1 &middot; Be findable</b> the files agents read first</p>
     <h2 class="headline">Write it once, or your files stop matching.</h2>
     <ul class="points">
       <li data-build="3"><b>A dozen small files</b> tell agents what your site can do.</li>
@@ -1094,7 +1095,7 @@ and walk me through this workshop.</span></p>
 .s2-02 .neg{margin:44px 0 0;font:400 32px/1.35 var(--font-body);color:var(--paper-dim);max-width:1540px}
 </style>
 <section class="slide t-statement s2-02" data-comp="statement" data-theme="dark" data-transition="cut" data-section="II · The seven things" data-cut="keep">
-  <p class="kicker"><b data-nonfact>Be readable</b> what an agent sees first</p>
+  <p class="kicker"><b data-nonfact>Layer 2 &middot; Be readable</b> what an agent sees first</p>
   <p class="statement"><span class="line">Put your content</span><span class="line">in the page</span><span class="line"><em>from the start.</em></span></p>
   <div class="proof" data-build data-build-style="fade">
     <div class="deltas">
@@ -1131,7 +1132,7 @@ and walk me through this workshop.</span></p>
 </style>
 <section class="slide t-flow s2-03" data-comp="flow" data-theme="dark" data-transition="fade" data-section="II · The seven things" data-cut="keep">
   <div class="top">
-    <p class="kicker"><b data-nonfact>Ask permission</b> like a valet key</p>
+    <p class="kicker"><b data-nonfact>Layer 3 &middot; Ask permission</b> like a valet key</p>
     <h2 class="headline">Never paste a password into a chatbot.</h2>
   </div>
   <ol class="steps">
@@ -1169,13 +1170,13 @@ and walk me through this workshop.</span></p>
 </style>
 <section class="slide t-split s2-04" data-comp="split" data-theme="dark" data-transition="fade" data-section="II · The seven things" data-cut="keep">
   <div class="l">
-    <p class="kicker"><b data-nonfact>Be usable</b> the list of what you can do</p>
+    <p class="kicker"><b data-nonfact>Layer 4 &middot; Be usable</b> the list of what you can do</p>
     <h2 class="headline">Show everyone what your site <em>can do.</em></h2>
     <ul class="points">
       <li data-build><b>Agents look first.</b> They check what your site can do before they sign up.</li>
       <li data-build><b>If the list needs a login,</b> they see nothing and leave.</li>
       <li data-build><b>The fix:</b> open the list. Ask for a login only to act.</li>
-      <li data-build><b>10 tools here, 7 need no login.</b></li>
+      <li data-build><b>11 tools here, 8 need no login.</b></li>
     </ul>
   </div>
   <div class="r">
@@ -1190,12 +1191,12 @@ and walk me through this workshop.</span></p>
     <p>Think of a shop window. Anyone can look in. You only show your card at the till.</p>
     <p>Here is what people get wrong. Before an agent signs up, it asks your site what it can do. That question comes with no login. If every tool on your server needs a login, the list comes back empty, and the agent, or a scanner, concludes you have no tools. You built a server and scored zero for it.</p>
     <p>So make at least one genuinely useful tool open. Not a stub. A stub is worse, because you advertised something that does nothing.</p>
-    <p>This deck's own server has ten tools and seven need no login at all, including one that runs live checks against your own deployed site. You can point it at your site tonight.</p>
+    <p>This deck's own server has eleven tools and eight need no login at all, including one that runs live checks against your own deployed site. You can point it at your site tonight.</p>
     <p>For the developers: that is tools/list on remote MCP over streamable HTTP, called with no token. Stdio is not an option in production. It is a local-dev transport and a hosted client cannot reach it at all. If a tutorial handed you a stdio server and told you to deploy it, it was written for your laptop.</p>
     <p>Try it during the break: curl -s -X POST YOUR_URL/api/mcp with a JSON-RPC body of method tools/list, and no Authorization header. If you get an empty list back, that is the bug.</p>
     <ul class="ledger">
-      <li>10 = I-35 (this workshop kit's MCP server exposes 10 tools)</li>
-      <li>7 = I-35 (7 of the 10 require no token, including the live readiness-check tool)</li>
+      <li>11 = F-80 (this workshop kit's MCP server exposes 11 tools)</li>
+      <li>8 = F-80 (8 of the 11 require no token, including the live readiness-check tool)</li>
       <li>the side panel is data-nonfact: a plain-words picture, no measured numbers</li>
     </ul>
   </aside>
@@ -1215,7 +1216,7 @@ and walk me through this workshop.</span></p>
 <section class="slide t-diagram s2-05" data-comp="diagram" data-theme="dark" data-transition="fade" data-section="II · The seven things" data-cut="keep">
   <div class="top">
     <div>
-      <p class="kicker"><b>Talk to other agents</b> One address each</p>
+      <p class="kicker"><b data-nonfact>Layer 5 &middot; Talk to other agents</b> One address each</p>
       <h2 class="headline">Give every agent its own address.</h2>
       <p class="label mono cardpath">Like everyone having their own phone number.</p>
     </div>
@@ -1307,7 +1308,7 @@ and walk me through this workshop.</span></p>
 </style>
 <section class="slide t-split s2-06" data-comp="split" data-theme="dark" data-transition="fade" data-section="II · The seven things" data-cut="keep">
   <div class="l">
-    <p class="kicker"><b>6 &middot; Be a good API</b> Where scanner points come from</p>
+    <p class="kicker"><b data-nonfact>Layer 6 &middot; Be a good API</b> Where scanner points come from</p>
     <h2 class="headline">The biggest win is boring: a good, documented <em>API.</em></h2>
     <ul class="points">
       <li data-build><b>AI agents are programs.</b> Programs need a clear, written-down way in.</li>
@@ -1373,14 +1374,14 @@ and walk me through this workshop.</span></p>
 </style>
 <section class="slide t-flow s2-07" data-comp="flow" data-theme="dark" data-transition="fade" data-section="II · The seven things" data-cut="skip">
   <div class="top">
-    <p class="kicker"><b>When something breaks</b> The part nobody builds</p>
+    <p class="kicker"><b data-nonfact>Layer 7 &middot; Hear about breakages</b></p>
     <h2 class="headline">Let AI agents tell you when something breaks.</h2>
   </div>
   <ol class="steps three">
     <li data-build>
       <svg class="ico dim" aria-hidden="true"><use href="#i-link"/></svg>
-      <h3>You rename a page.</h3>
-      <p>An AI agent using it now hits an error.</p>
+      <h3>A page moves.</h3>
+      <p>An agent using it hits an error.</p>
     </li>
     <li data-build>
       <svg class="ico ice" aria-hidden="true"><use href="#i-agent"/></svg>
@@ -1393,16 +1394,18 @@ and walk me through this workshop.</span></p>
       <p>A &ldquo;report a problem&rdquo; address any agent can use, no login.</p>
     </li>
   </ol>
-  <p class="body loopback" data-build data-build-style="fade">A suggestion box by your front door. A real note looks like <i>&ldquo;the page /pricing is gone.&rdquo;</i> <b>Agents hit your broken links before you do. Let them tell you.</b></p>
+  <p class="body loopback" data-build data-build-style="fade">A suggestion box by your front door. In our tests, agents filed <b>18 reports</b> in ours. <b>Let them tell you.</b></p>
   <aside class="notes">
     <p>Last one in this part, and it is the cheapest thing on the list.</p>
     <p>Here is the situation. You rename a page on your site. Somebody's AI assistant was using that page, and now it hits an error.</p>
     <p>It does not email you. It does not file a ticket. It just gives up. And the person who sent it never comes back, and you never hear about any of it.</p>
     <p>Things on your site change all the time, and the agents using it are the only ones who find out first. So give them a way to tell you.</p>
+    <p>When we tested this workshop with AI agents, they sent eighteen problem reports through our own suggestion box, and the count matched what the agents said they sent.</p>
     <p>The fix is one address on your site that any agent can send a note to, with no login at all. Think of a suggestion box by your front door. A real note looks like: the page slash pricing is gone.</p>
     <p>No login is deliberate, not laziness. The agent that cannot log in to your site is exactly the one with something to report.</p>
     <p>For the developers: it is a POST to slash api slash agent slash feedback. Unauthenticated on purpose. Add the route tonight, it is about ten lines.</p>
     <ul class="ledger">
+      <li>18 = F-83 (problem reports the test agents filed through the workshop's own suggestion box)</li>
       <li>7 = I-64 (layer 7 of the kit's seven layers; spoken only, not on the slide face)</li>
     </ul>
   </aside>
@@ -1680,7 +1683,7 @@ and walk me through this workshop.</span></p>
 .s4-00 .sub b{color:var(--paper);font-weight:700}
 </style>
 <section class="slide t-statement s4-00" data-comp="statement" data-theme="dark" data-transition="ember-wipe" data-section="IV · Build yours" data-cut="keep">
-  <p class="kicker"><b>IV · Build it</b> Seven steps, on your own laptop</p>
+  <p class="kicker"><b>IV · Build it</b> Seven steps, online or on your laptop</p>
   <p class="statement"><span class="line">Your AI agent walks</span><span class="line">you through it,</span><span class="line" data-build data-build-style="fade"><em>one step at a time.</em></span></p>
   <div class="sym-chain chain" data-build data-build-style="fade" aria-label="Your agent reads the workshop site, gives you one step, then checks your live site">
     <figure><svg class="ico ice" aria-hidden="true"><use href="#i-agent"/></svg><figcaption>Your AI agent</figcaption></figure>
@@ -1691,8 +1694,8 @@ and walk me through this workshop.</span></p>
     <svg class="ico sym-arrow" aria-hidden="true"><use href="#i-arrow"/></svg>
     <figure><svg class="ico" aria-hidden="true"><use href="#i-scan"/></svg><figcaption>Checks your site</figcaption></figure>
   </div>
-  <p class="sub lede" data-build data-build-style="fade">A step is not done until the check passes. It checks <b>your live site</b>, not the files on your laptop.</p>
-  <aside class="notes"><p>Here is how the next stretch works. You build, I walk around.</p><p>Point your own AI agent at agent-native-workshop dot vercel dot app. It reads the instructions on that site and gives you one step. You do the step. It checks your live site. Then it gives you the next one. That is the whole loop.</p><p>The check is a tool on the workshop site called workshop check target. You give it your web address, it runs the checks against the real site, and it tells you the one thing to fix first. For the developers in the room: that is an MCP tool on a site that is itself agent native, which is the shortest proof I can give you that any of this works.</p><p>And here is the rule for the hour. A step is not done until the check passes. Not when the code looks right, not when the deploy went green. It checks what your live site actually sends back, which is the whole point of Part Two.</p><p>Seven steps. Say which one you are on if you get stuck and I will come to you.</p><ul class="ledger"><li>no visible numbers</li></ul></aside>
+  <p class="sub lede" data-build data-build-style="fade">A step counts only with <b>proof</b>: a passing online check, or the summary line from your laptop.</p>
+  <aside class="notes"><p>Here is how the next stretch works. You build, I walk around.</p><p>Point your own AI agent at agent-native-workshop dot vercel dot app. It reads the instructions on that site and gives you one step. You do the step. It checks your live site. Then it gives you the next one. That is the whole loop.</p><p>Online, the check is a tool on the workshop site called workshop check target. You give it your web address, it runs the checks against the real site, and it tells you the one thing to fix first. On your own computer, you run one command, npm run verify, and read the last line. For the developers in the room: that is an MCP tool on a site that is itself agent native, which is the shortest proof I can give you that any of this works.</p><p>And here is the rule for the hour. A step is not done until it has proof: a passing online check, or the summary line from the local command. The progress board asks for that proof and labels each step checked online or checked locally. Not when the code looks right, not when the deploy went green.</p><p>Seven steps. Say which one you are on if you get stuck and I will come to you.</p><ul class="ledger"><li>no visible numbers</li></ul></aside>
 </section>
 
 <!-- ===== 4-01.html ===== -->
@@ -1712,7 +1715,7 @@ and walk me through this workshop.</span></p>
 .s4-01 .pathline{font:500 34px/1.3 var(--font-mono);color:var(--paper);margin:0;letter-spacing:.01em;text-transform:none;overflow-wrap:anywhere}
 </style>
 <section class="slide t-flow s4-01" data-comp="flow" data-theme="dark" data-transition="fade" data-section="IV · Build yours" data-cut="keep">
-  <div class="top"><p class="kicker"><b>Steps one and two</b> Online first, then yours</p>
+  <div class="top"><p class="kicker"><b>Steps <span class="n">1</span> and <span class="n">2</span></b> Online first, then yours</p>
     <h2 class="headline">Put the kit online first. Then <em>make it yours.</em></h2></div>
   <ol class="steps">
     <li data-build>
@@ -1725,18 +1728,18 @@ cd agent-native-kit <span class="c"># go into it</span>
 npm install <span class="c"># get what it needs</span>
 npx vercel deploy --prod <span class="c"># put it online</span></pre>
       <p><b>You'll know it worked when</b> <span class="mono">your-site/.well-known/ai-agent.json</span> shows text in a browser.</p>
-      <p><b>Watch out:</b> your own web address waits for step two.</p>
+      <p><b>Watch out:</b> your own web address waits for Step <span data-nonfact>2</span>.</p>
     </li>
     <li data-build>
       <span class="n">2</span>
       <h3>Put your name and address in one file.</h3>
       <p class="pathline">agent.config.ts</p>
       <p>Your settings file. Everything else reads from it.</p>
-      <p><b>You'll know it worked when</b> your real web address shows up in the file from step one.</p>
-      <p><b>Watch out:</b> if people reach you with and without www, list both.</p>
+      <p><b>You'll know it worked when</b> your own name shows up on the site.</p>
+      <p><b>Watch out:</b> nothing changes until you run <span class="mono">npm run restart</span>, or redeploy.</p>
     </li>
   </ol>
-  <aside class="notes"><p>Step one. Put the kit online with nothing changed. Copy it to your laptop, install it, and deploy it.</p><p>People resist this order, so here is why. If you change things first and it breaks, you cannot tell whether your change broke it or the kit did. Put the working thing online first, and every problem after that has one cause: the thing you just changed.</p><p>You know it worked when you can open your site slash dot well-known slash ai-agent dot json in a browser and see text, not an error. Not when the deploy log is green. Open the address. For the developers: the kit's own check expects a 200 on that path.</p><p>Do not set your own domain yet. That is step two, and doing it now will cost you twenty minutes.</p><p>Step two. Open one file, agent dot config dot ts, and edit only that. Every other part of the kit reads from it, so your web address only has to be right in one place.</p><p>You know it worked when your real address shows up in the file from step one.</p><p>The expensive mistake is here. If people can reach you both with and without www, list both addresses. Otherwise a document points agents at the wrong address, and it looks exactly like a login bug. You will spend an hour on your token when the problem is a hostname. The setting is hosts dot allowed.</p><ul class="ledger"><li>1, 2 = step index (.n counters, not facts)</li></ul></aside>
+  <aside class="notes"><p>Step one. Put the kit online with nothing changed. Copy it to your laptop, install it, and deploy it.</p><p>People resist this order, so here is why. If you change things first and it breaks, you cannot tell whether your change broke it or the kit did. Put the working thing online first, and every problem after that has one cause: the thing you just changed.</p><p>You know it worked when you can open your site slash dot well-known slash ai-agent dot json in a browser and see text, not an error. Not when the deploy log is green. Open the address. For the developers: the kit's own check expects a 200 on that path.</p><p>Do not set your own domain yet. That is Step two, and doing it now will cost you twenty minutes.</p><p>Step two. Open one file, agent dot config dot ts, and edit only that. Every other part of the kit reads from it, so your name and web address only have to be right in one place.</p><p>You know it worked when your own name shows up on the site.</p><p>The expensive mistake is here. The file does nothing until the site restarts. On your own computer that is npm run restart. Online, you redeploy. Also, if you run on a different port, add it to hosts dot allowed and pass PORT to every command, or the files quietly use the kit's address. On your own computer the checker will warn that the address is not yours yet. That is expected until you put the site online.</p><ul class="ledger"><li>1, 2 = step index (.n counters, not facts)</li></ul></aside>
 </section>
 
 <!-- ===== 4-02.html ===== -->
@@ -1755,29 +1758,29 @@ npx vercel deploy --prod <span class="c"># put it online</span></pre>
 .s4-02 .spacer{flex:1;min-height:0}
 </style>
 <section class="slide t-split halves s4-02" data-comp="split" data-theme="dark" data-transition="fade" data-section="IV · Build yours" data-cut="keep">
-  <p class="kicker"><b>Steps three and four</b> Your idea, then your login</p>
+  <p class="kicker"><b>Steps <span class="n">3</span> and <span class="n">4</span></b> Your idea, then your login</p>
   <h2 class="headline">Make it your own idea. Then add a real login.</h2>
   <div class="pair">
     <div class="half" data-build>
-      <p class="label">Step three</p>
-      <h3>Swap the example app for your own idea.</h3>
+      <p class="label">Step <span class="n">3</span></p>
+      <h3>Add a new action for your own idea.</h3>
       <p class="pathline">lib/mcp/tools.ts</p>
-      <p>Replace the example with what your product does. The rest of the kit stays.</p>
+      <p>A new action, not a renamed example. If it saves anything, keep one that needs a login.</p>
       <div class="spacer"></div>
-      <p><b>You'll know it worked when</b> your tools appear in the list, and one of them runs with no login.</p>
-      <p><b>Watch out:</b> describe what each tool returns. An agent reads that to decide whether to use it.</p>
+      <p><b>You'll know it worked when</b> your new action is in the list, and one runs with no login.</p>
+      <p><b>Watch out:</b> describe what each action returns. An agent reads that to decide.</p>
     </div>
     <div class="half" data-build>
-      <p class="label">Step four</p>
+      <p class="label">Step <span class="n">4</span></p>
       <h3>Connect a real login so only you can approve your agent.</h3>
-      <p class="pathline">app/api/agent/signup/complete/route.ts</p>
+      <p><b>You:</b> make a free Clerk account and copy two keys. <b>Your agent:</b> adds the login and changes the approval page.</p>
       <p class="hard">Right now, <em>anyone</em> with the approval code can approve an agent.</p>
       <div class="spacer"></div>
       <p><b>You'll know it worked when</b> a stranger's approval is refused, and a real approval shows who you are.</p>
-      <p><b>Watch out:</b> pass along the approver's real permissions.</p>
+      <p><b>Keys go in</b> <span class="mono">.env.local</span>, or Vercel settings online.</p>
     </div>
   </div>
-  <aside class="notes"><p>Step three. Swap the example app for your own idea. Your words and your tools go in lib, and the tool list is in lib slash mcp slash tools dot ts. This is the only step of the seven that is about your product. Everything else is the same for everyone.</p><p>You know it worked when your tools show up in the list and one of them runs with no login at all.</p><p>Keep one tool open to everyone. And write each description for the reader it actually has: an AI agent deciding whether to use it. Say what it returns and when to reach for it, not just what it is called.</p><p>Step four, and this is the one I will not soften. As shipped, anyone who has the code on screen can approve it. The kit leaves that open on purpose, because it does not know how you log people in. You do.</p><p>The whole point of the approval step is that a known person said yes to a specific agent. If the request can simply claim who the person is, that point is gone. So connect your own login to this file: app slash api slash agent slash signup slash complete slash route dot ts.</p><p>You know it worked when a stranger's approval is refused, and a real approval records the real person from their session.</p><p>And pass along the approver's real account level, so the limit on what an agent can do matches who actually approved it. For the developers: that is the scope ceiling, enforced against the real tier.</p><ul class="ledger"><li>no visible numbers</li></ul></aside>
+  <aside class="notes"><p>Step three. Swap the example app for your own idea. Add a new action for your idea in lib slash mcp slash tools dot ts. A new action, not an example with a new name: renaming keeps what the example does, and the check cannot tell the difference. This is the only step of the seven that is about your product.</p><p>You know it worked when your new action shows up in the list and one of them runs with no login at all.</p><p>Keep one action open to everyone, so agents can tell what your site is for. If your idea saves or changes anything, also keep one action that needs a login, because the check needs one to prove a request with no login is refused. Write each description for the reader it actually has: an AI agent deciding whether to use it.</p><p>Step four, and this is the one I will not soften. As shipped, anyone who has the code on screen can approve it. The kit leaves that open on purpose, because it does not know how you log people in. You do.</p><p>Here is who does what. You make a free Clerk account and copy two keys from it. Your agent adds the login and changes the approval page. Treat the secret key like a password. Locally the keys go in a file called dot env dot local. Online they go in your Vercel settings, and then you redeploy.</p><p>The whole point of the approval step is that a known person said yes to a specific agent. If the request can simply claim who the person is, that point is gone. So connect a real login.</p><p>You know it worked when a stranger's approval is refused, and a real approval records the real person from their session.</p><p>For the developers: the approver's real account level becomes the ceiling on what the agent can do.</p><ul class="ledger"><li>no visible numbers</li></ul></aside>
 </section>
 
 <!-- ===== 4-03.html ===== -->
@@ -1797,7 +1800,7 @@ npx vercel deploy --prod <span class="c"># put it online</span></pre>
 .s4-03 .shiplist{font:500 30px/1.4 var(--font-mono);color:var(--paper);margin:0;overflow-wrap:anywhere}
 </style>
 <section class="slide t-flow s4-03" data-comp="flow" data-theme="dark" data-transition="fade" data-section="IV · Build yours" data-cut="keep">
-  <div class="top"><p class="kicker"><b>Steps five and six</b> A memory, then clear documentation</p>
+  <div class="top"><p class="kicker"><b>Steps <span class="n">5</span> and <span class="n">6</span></b> A memory, then clear documentation</p>
     <h2 class="headline">Make it remember things. Then make the API <em>clear.</em></h2></div>
   <ol class="steps">
     <li data-build>
@@ -1815,10 +1818,10 @@ npx vercel env add KV_REST_API_TOKEN production</pre>
       <p class="shiplist">API guide &middot; no-login reads &middot; clear errors &middot; usage limits</p>
       <p>This is where most scanner points are.</p>
       <p><b>You'll know it worked when</b> an error tells the agent how to fix it.</p>
-      <p><b>Watch out:</b> let your developer page count your tools for you.</p>
+      <p><b>Watch out:</b> let your developer page count your actions for you.</p>
     </li>
   </ol>
-  <aside class="notes"><p>Step five. Add a small database before you demo to anybody. It is two settings on your live site, and the kit picks them up. Without it, your site forgets everything when it restarts.</p><p>You know it worked when slash api slash v1 slash health says ok, with storage kv. If it says degraded, you are running on memory, and your demo will lose its data in front of people.</p><p>If two projects share one database, give yours its own prefix. The setting is kvNamespace. Two products writing under the same name silently overwrite each other. The symptom is missing data, not an error, so nothing in your logs will warn you.</p><p>Step six is where the score actually moves. Make your API clear and documented: a written API guide, which is the OpenAPI spec, one read that works with no login, clear error messages that say how to fix the problem, and usage limits shown in each reply, which are the rate limit headers. The scanners give about seven points each for the spec and for a public API, and one or two for a standard address file. So if you want the number to move, this is the step, not another small file.</p><p>You know it worked when your guide lists your real paths, a request with no login gets back an error that says how to fix it, and a logged in request shows its usage limit. For the developers: that is problem plus json with a remedy field, and RateLimit headers.</p><p>Build your docs page's counts from your real tool list. A page claiming twelve tools next to a server that offers seven is worse than no page, and hand-kept numbers always end up there.</p><ul class="ledger"><li>5, 6 = step index (.n counters, not facts)</li><li>v1 = path name in /api/v1/health, not a quantity</li><li>seven, one, two = grader point weights for spec / public API / well-known file, spoken in words; source: the two live graders cited in Part III</li></ul></aside>
+  <aside class="notes"><p>Step five. Add a small database before you demo to anybody. It is two settings on your live site, and the kit picks them up. On your own computer they go in dot env dot local, then npm run restart. Without it, your site forgets everything when it restarts.</p><p>You know it worked when slash api slash v1 slash health says ok, with storage kv. If it says degraded, you are running on memory, and your demo will lose its data in front of people.</p><p>If two projects share one database, give yours its own prefix. The setting is kvNamespace. Two products writing under the same name silently overwrite each other. The symptom is missing data, not an error, so nothing in your logs will warn you.</p><p>Step six is where the score actually moves. Make your API clear and documented: a written API guide, which is the OpenAPI spec, one read that works with no login, clear error messages that say how to fix the problem, and usage limits shown in each reply, which are the rate limit headers. The scanners give about seven points each for the spec and for a public API, and one or two for a standard address file. So if you want the number to move, this is the step, not another small file.</p><p>You know it worked when your guide lists your real paths, a request with no login gets back an error that says how to fix it, and a logged in request shows its usage limit. For the developers: that is problem plus json with a remedy field, and RateLimit headers.</p><p>Build your docs page's counts from your real tool list. A page claiming twelve tools next to a server that offers seven is worse than no page, and hand-kept numbers always end up there.</p><ul class="ledger"><li>5, 6 = step index (.n counters, not facts)</li><li>v1 = path name in /api/v1/health, not a quantity</li><li>seven, one, two = grader point weights for spec / public API / well-known file, spoken in words; source: the two live graders cited in Part III</li></ul></aside>
 </section>
 
 <!-- ===== 4-04.html ===== -->
@@ -1838,11 +1841,11 @@ npx vercel env add KV_REST_API_TOKEN production</pre>
 </style>
 <section class="slide t-split s4-04" data-comp="split" data-theme="dark" data-transition="fade" data-section="IV · Build yours" data-cut="keep">
   <div class="l">
-    <p class="kicker"><b>Step seven</b> The three checks</p>
+    <p class="kicker"><b>Step <span class="n">7</span></b> The three checks</p>
     <h2 class="headline">Three checks: does it build, does the live site work, what do the <em>scanners</em> say.</h2>
     <ul class="points">
       <li data-build><b>The build</b> checks the code has no mistakes.</li>
-      <li data-build><b>verify.sh</b> checks your live site really works.</li>
+      <li data-build><b>The check</b> tests that it works: the workshop's checker online, verify on your laptop.</li>
       <li data-build><b>The scanners</b> show how you score.</li>
       <li data-build><b>Shipping today?</b> Stop after the second one.</li>
     </ul>
@@ -1851,11 +1854,67 @@ npx vercel env add KV_REST_API_TOKEN production</pre>
     <pre class="code" data-nonfact>npm run build
 <span class="c"># checks your code for mistakes</span>
 
-bash scripts/verify.sh YOUR_URL
-<span class="c"># tests your live site, 18 checks</span></pre>
+npm run verify http://localhost:PORT
+<span class="c"># on your laptop, 40 checks</span></pre>
     <p class="trap" data-build><b>Watch out:</b> run the scanner again after every fix. It shows new problems one at a time, so a green check can hide the next problem.</p>
   </div>
-  <aside class="notes"><p>Step seven. Three checks, in this order.</p><p>First, npm run build. It checks the code has no mistakes. That is all it tells you: the thing compiles.</p><p>Second, bash scripts slash verify dot sh with your address. Eighteen checks, run against your live site. This is the one that tells you it actually works. The build says the code is fine. This says the live site really does what it claims. Only the middle one is about whether it is true.</p><p>Third, the scanners. They are the final exam, not the instructions. Do not work down a scanner's checklist as if it were a plan. Run it to find out where you stand.</p><p>Say this out loud, because the room needs permission: if you are shipping something at the end of today, stop after the second check. A product that passes verify dot sh is already further than almost anything on the web.</p><p>One thing to watch on the scanners. On the Cloudflare one, run it again after every single fix. It reveals its sub-checks one at a time, so a check that just went green can be hiding the next one underneath it. Three of ours took two or three passes each before they stayed green.</p><ul class="ledger"><li>18 = assertion count in scripts/verify.sh, the kit's live-deploy verifier (marked data-nonfact: it is the command's own output count, not a sourced claim)</li></ul></aside>
+  <aside class="notes"><p>Step seven. Three checks, in this order.</p><p>First, npm run build. It checks the code has no mistakes. That is all it tells you: the thing compiles.</p><p>Second, the real check. Online, give the workshop's checker your address. On your own computer, run npm run verify with your local address. Forty checks, and the last line is your proof. This is the one that tells you it actually works. The build says the code is fine. This says the live site really does what it claims. Only the middle one is about whether it is true. The progress board will not accept a step without that proof.</p><p>Third, the scanners. They are the final exam, not the instructions. Do not work down a scanner's checklist as if it were a plan. Run it to find out where you stand.</p><p>Say this out loud, because the room needs permission: if you are shipping something at the end of today, stop after the second check. A product that passes the check is already further than almost anything on the web.</p><p>One thing to watch on the scanners. On the Cloudflare one, run it again after every single fix. It reveals its sub-checks one at a time, so a check that just went green can be hiding the next one underneath it. Three of ours took two or three passes each before they stayed green.</p><ul class="ledger"><li>40 = F-81 (npm run verify live checks on the deployed kit; the on-screen 40 sits in a data-nonfact code block)</li></ul></aside>
+</section>
+
+<!-- ===== 4-04a.html ===== -->
+<!-- IV.4a · we tested this workshop on AI agents first -->
+<style>
+.s4-04a .l{flex:1}
+.s4-04a .headline{font-size:64px;max-width:20ch}
+.s4-04a .points{gap:26px}
+.s4-04a .points li{align-items:flex-start}
+.s4-04a .points li b{white-space:normal}
+.s4-04a .r{flex:1;flex-direction:column;gap:28px}
+.s4-04a .r > *{flex:none;width:100%}
+.s4-04a .scores{display:flex;flex-direction:column;justify-content:center;gap:34px;padding:44px 48px;margin:0}
+.s4-04a .srow{display:flex;align-items:baseline;justify-content:space-between;gap:24px;border-top:2px solid var(--line);padding-top:22px}
+.s4-04a .srow:first-of-type{border-top:0;padding-top:0}
+.s4-04a .srow .label{color:var(--paper-dim)}
+.s4-04a .srow .v{font:700 72px/1 var(--font-head);color:var(--paper)}
+.s4-04a .srow .v .arr{color:var(--ember);margin:0 14px}
+.s4-04a .take{margin:0;font:700 34px/1.3 var(--font-body);color:var(--paper)}
+.s4-04a .points li{display:block}
+.s4-04a .points li b{display:inline;margin-right:.25em}
+</style>
+<section class="slide t-split s4-04a" data-comp="split" data-theme="dark" data-transition="fade" data-section="IV · Build yours" data-cut="keep">
+  <div class="l">
+    <p class="kicker"><b data-nonfact>Before you ship</b> We did this first</p>
+    <h2 class="headline">We tested this workshop on AI <em>agents</em> first.</h2>
+    <ul class="points">
+      <li data-build><b>11 test runs.</b> Each was a fresh AI agent on its own computer account, given one sentence.</li>
+      <li data-build><b>Every run</b> found the workshop and its seven steps.</li>
+      <li data-build><b>About 25 problems</b> turned up. We fixed them.</li>
+      <li data-build><b>Scores went up</b> after the fixes.</li>
+    </ul>
+  </div>
+  <div class="r">
+    <div class="panel scores" data-build data-build-style="fade">
+      <div class="srow"><span class="label">Workshop score</span><span class="v">71<span class="arr">&rarr;</span>76</span></div>
+      <div class="srow"><span class="label">Kit score</span><span class="v">68<span class="arr">&rarr;</span>74</span></div>
+    </div>
+    <p class="take" data-build>Test your site with the agents who will use it.</p>
+  </div>
+  <aside class="notes">
+    <p>Before we close, one thing we did to this workshop that you can do to your site.</p>
+    <p>We did not just build it and hope. We ran it on AI agents first. Eleven runs. Each one was a fresh agent on its own empty computer account, and the only thing it got was the one sentence from the start of the talk.</p>
+    <p>Every single run found the workshop and its seven steps from that sentence. That was the good news. The rest was not as clean, and that is the point.</p>
+    <p>The agents ran into about twenty five problems. A check script that failed on a plain Ubuntu machine. A checker that dead ended instead of telling them what to do next. We fixed all of them. After the fixes the workshop's agent readiness score went from seventy one to seventy six, and the kit's from sixty eight to seventy four.</p>
+    <p>Two things we learned about the testing itself. The smaller model, Haiku, only read the rules once we made every entry point say read the skill file first. And with a beginner, Haiku still used jargon, so we shipped ready made plain words in each step instead of hoping it would find them. Sonnet did better on its own.</p>
+    <p>And the judge needed checking too. We used an AI to grade how well a beginner would follow along, and we had to test that judge against known answers before we trusted its scores.</p>
+    <p>So the takeaway: test your site with the agents who will use it.</p>
+    <ul class="ledger">
+      <li>11 = F-82 (simulated attendee agent runs, each in a fresh Linux user, given one sentence)</li>
+      <li>seven = F-85 (all 11 runs found the workshop and its 7 steps)</li>
+      <li>25 = F-86 (about 25 bugs found by the test agents were fixed)</li>
+      <li>71 to 76 = F-84 (ora.ai fresh scan, workshop)</li>
+      <li>68 to 74 = F-84 (ora.ai fresh scan, kit)</li>
+    </ul>
+  </aside>
 </section>
 
 <!-- ===== 4-05.html ===== -->
