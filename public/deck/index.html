@@ -1886,10 +1886,10 @@ npm run verify http://localhost:PORT
     <p class="kicker"><b data-nonfact>Before you ship</b> We did this first</p>
     <h2 class="headline">We tested this workshop on AI <em>agents</em> first.</h2>
     <ul class="points">
-      <li data-build><b>11 test runs.</b> Each was a fresh AI agent on its own computer account, given one sentence.</li>
-      <li data-build><b>Every run</b> found the workshop and its seven steps.</li>
-      <li data-build><b>About 25 problems</b> turned up. We fixed them.</li>
-      <li data-build><b>Scores went up</b> after the fixes.</li>
+      <li data-build><b>19 test runs.</b> Each was a fresh AI agent on its own computer account, given one sentence.</li>
+      <li data-build><b>A plain Claude Code missed the rules.</b> Its page reader sent it a summary, and the summary left them out.</li>
+      <li data-build><b>Naming SKILL.md in the first sentence</b> fixed it. That is why <span data-nonfact>slide 2</span> says it.</li>
+      <li data-build><b>About 30 problems</b> turned up. We fixed them.</li>
     </ul>
   </div>
   <div class="r">
@@ -1901,16 +1901,18 @@ npm run verify http://localhost:PORT
   </div>
   <aside class="notes">
     <p>Before we close, one thing we did to this workshop that you can do to your site.</p>
-    <p>We did not just build it and hope. We ran it on AI agents first. Eleven runs. Each one was a fresh agent on its own empty computer account, and the only thing it got was the one sentence from the start of the talk.</p>
-    <p>Every single run found the workshop and its seven steps from that sentence. That was the good news. The rest was not as clean, and that is the point.</p>
-    <p>The agents ran into about twenty five problems. A check script that failed on a plain Ubuntu machine. A checker that dead ended instead of telling them what to do next. We fixed all of them. After the fixes the workshop's agent readiness score went from seventy one to seventy six, and the kit's from sixty eight to seventy four.</p>
+    <p>We did not just build it and hope. We ran it on AI agents first. Nineteen runs. Each one was a fresh agent on its own empty computer account, and the only thing it got was the one sentence from the start of the talk.</p>
+    <p>Eleven of those agents were helpers from my own session. They found the workshop every time. Then we tried a plain Claude Code, straight out of the box, with nothing from me. It missed the rules. Its tool for reading a web page does not hand it the page. It hands it a summary, and the summary dropped every line written for agents. One agent published the account email as the site contact. Another wrote its own app instead of using the kit.</p>
+    <p>The fix was in the sentence you typed. Once it named the SKILL.md file, every plain agent read the rules first. Sonnet then did steps one to three in four turns, asked before publishing a contact, and showed the check result at every step.</p>
+    <p>The agents ran into about thirty problems in all. A check script that failed on a plain Ubuntu machine. A checker that dead ended instead of telling them what to do next. We fixed all of them. After the fixes the workshop's agent readiness score went from seventy one to seventy six, and the kit's from sixty eight to seventy four.</p>
     <p>Two things we learned about the testing itself. The smaller model, Haiku, only read the rules once we made every entry point say read the skill file first. And with a beginner, Haiku still used jargon, so we shipped ready made plain words in each step instead of hoping it would find them. Sonnet did better on its own.</p>
     <p>And the judge needed checking too. We used an AI to grade how well a beginner would follow along, and we had to test that judge against known answers before we trusted its scores.</p>
     <p>So the takeaway: test your site with the agents who will use it.</p>
     <ul class="ledger">
-      <li>11 = F-82 (simulated attendee agent runs, each in a fresh Linux user, given one sentence)</li>
-      <li>seven = F-85 (all 11 runs found the workshop and its 7 steps)</li>
-      <li>25 = F-86 (about 25 bugs found by the test agents were fixed)</li>
+      <li>19 = F-82 (simulated attendee agent runs, each in a fresh Linux user, given one sentence)</li>
+      <li>plain Claude Code missed the rules; naming SKILL.md fixed it = F-87</li>
+      <li>slide 2 = the opening line on 0-01.html</li>
+      <li>30 = F-86 (about 30 problems found by the test agents were fixed)</li>
       <li>71 to 76 = F-84 (ora.ai fresh scan, workshop)</li>
       <li>68 to 74 = F-84 (ora.ai fresh scan, kit)</li>
     </ul>
