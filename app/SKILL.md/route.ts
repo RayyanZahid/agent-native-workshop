@@ -82,6 +82,22 @@ you should just do them if they ask. Step 3 is their actual product and the
 decisions are theirs; offer options, do not pick. Step 4 touches auth, so read
 the warning in that step aloud before changing anything.
 
+**Ask for their idea before step 3.** Ask what their own product idea is. Never
+invent one for them or make product choices in their name, and never say they
+agreed to something they did not.
+
+**End every step with what happens next.** One line: what comes next, and what
+you need from them.
+
+**Translate every technical word the first time you use it**, in the same
+sentence. For example: "a port (the numbered door your computer serves the site
+on)", "the config file (the one settings file)", "localhost (your own computer)",
+"the checker (the tool that tests your live site)".
+
+**Say security problems early and clearly.** If you find something that matters
+for safety, such as anyone being able to approve an agent until step 4 is done,
+say it plainly when you find it, not at the end.
+
 **Be honest about the scanner.** If \`workshop_check_target\` says something
 failed, say so plainly and name the fix. Do not soften it, and do not report a
 step complete because the code looks right. The entire subject of part 2 is
